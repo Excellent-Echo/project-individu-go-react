@@ -39,5 +39,12 @@ func main() {
 	r.PUT("booking/:booking_id", handler.UpdateBookingByID)
 	r.DELETE("booking/:booking_id", handler.DeleteByBookingID)
 
+	// Endpoint Psikolog
+	r.GET("/psikolog", handler.GetAllPsikolog)
+	r.POST("/psikolog", handler.CreateNewPsikolog)
+	r.GET("psikolog/:psikolog_id", handler.GetPsikologByID)
+	r.PUT("psikolog/:psikolog_id", handler.UpdatePsikologByID)
+	r.DELETE("psikolog/:psikolog_id", handler.DeleteByPsikologID)
+
 	r.Run(":3000")
 }

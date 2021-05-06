@@ -12,3 +12,13 @@ type BookingInput struct {
 	BookingDate int `json:"booking_date"`
 	BookingTime int `json:"booking_time"`
 }
+
+type PsikologInput struct {
+	Firstname       string `json:"firstname"`
+	Lastname        string `json:"lastname"`
+	Title           string `json:"title"`
+	Price           int    `json:"price"`
+	JenisKonsultasi string `json:"jenis_konsultasi"`
+	Description     string `json:"description"`
+	Review          string `json:"review"`
+}
