@@ -3,7 +3,7 @@ package entity
 import "time"
 
 type User struct {
-	IdUSer    int       `gorm:"primaryKey" json:"id"`
+	ID        int       `gorm:"primaryKey" json:"id"`
 	FirstName string    `json:"first_name"`
 	LastName  string    `json:"last_name"`
 	Email     string    `json:"email"`
@@ -14,6 +14,6 @@ type User struct {
 }
 
 type SportList struct {
-	IdSport   int    `gorm:"primaryKey" json:"id"`
+	ID        int    `gorm:"primaryKey" json:"id"`
 	SportName string `json:"sport_name"`
 }
