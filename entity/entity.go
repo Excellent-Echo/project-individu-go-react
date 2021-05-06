@@ -27,37 +27,37 @@ type Role struct {
 
 // Booking struct tabel bookings
 type Booking struct {
-	ID             int `gorm:"primaryKey"`
-	UserID         int
-	PsikologID     int
-	BookingDate    int
-	BookingTime    int
-	CreateAt       time.Time
-	UpdatedAt      time.Time
-	DeletedAt      time.Time       `gorm:"index"`
+	ID             int             `gorm:"primaryKey"`
+	UserID         int             `json:"user_id"`
+	PsikologID     int             `json:"psikolog_id"`
+	BookingDate    int             `json:"booking_date"`
+	BookingTime    int             `json:"booking_time"`
+	CreateAt       time.Time       `json:"create_at"`
+	UpdatedAt      time.Time       `json:"updated_at"`
+	DeletedAt      time.Time       `gorm:"index" json:"-"`
 	BookingDetails []BookingDetail `gorm:"foreignKey:BookingID"`
 }
 
 // BookingDetail struct tabel bookingdetail
 type BookingDetail struct {
 	ID         int `gorm:"primaryKey"`
-	BookingID  int
-	PsikologID int
+	BookingID  int `json:"booking_id"`
+	PsikologID int `json:"psikolog_id"`
 }
 
 // Psikologi struct tabel psychologists
 type Psikologi struct {
-	ID              int `gorm:"primaryKey"`
-	Firstname       string
-	Lastname        string
-	Title           string
-	Price           int
-	JenisKonsultasi string
-	Description     string
-	Review          string
-	CreateAt        time.Time
-	UpdatedAt       time.Time
-	DeletedAt       time.Time       `gorm:"index"`
+	ID              int             `gorm:"primaryKey"`
+	Firstname       string          `json:"firstname"`
+	Lastname        string          `json:"lastname"`
+	Title           string          `json:"title"`
+	Price           int             `json:"price"`
+	JenisKonsultasi string          `json:"jenis_konsultasi"`
+	Description     string          `json:"description"`
+	Review          string          `json:"review"`
+	CreateAt        time.Time       `json:"create_at"`
+	UpdatedAt       time.Time       `json:"updated_at"`
+	DeletedAt       time.Time       `gorm:"index"  json:"-"`
 	Bookings        []Booking       `gorm:"foreignKey:PsikologID"`
 	BookingDetails  []BookingDetail `gorm:"foreignKey:PsikologID"`
 }

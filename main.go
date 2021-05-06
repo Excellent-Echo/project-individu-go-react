@@ -32,7 +32,12 @@ func main() {
 	r.PUT("roles/:role_id", handler.UpdateRoleByID)
 	r.DELETE("roles/:role_id", handler.DeleteByRoleID)
 
-	// Endpoint
+	// Endpoint booking
+	r.GET("/booking", handler.GetAllBooking)
+	r.POST("/booking", handler.CreateNewBooking)
+	r.GET("booking/:booking_id", handler.GetBookingByID)
+	r.PUT("booking/:booking_id", handler.UpdateBookingByID)
+	r.DELETE("booking/:booking_id", handler.DeleteByBookingID)
 
 	r.Run(":3000")
 }

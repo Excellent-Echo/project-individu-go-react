@@ -7,3 +7,8 @@ type UserInput struct {
 	Email     string `json:"email"`
 	Password  string `json:"password"`
 }
+
+type BookingInput struct {
+	BookingDate int `json:"booking_date"`
+	BookingTime int `json:"booking_time"`
+}
