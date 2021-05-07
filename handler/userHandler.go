@@ -1,11 +1,9 @@
 package handler
 
 import (
-	"net/http"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
 	"project-individu-go-react/user"
-	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -71,52 +69,28 @@ func (h *userHandler) ShowUserByIdHandler(c *gin.Context) {
 }
 
 func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
-	var user entity.User
-	var userInput entity.UserInput
-
 	id := c.Params.ByName("user_id")
 
-	if err := db.Where("user_id = ?", id).Find(&user).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status":        "error in internal server",
-			"message_error": err.Error(),
-		})
+	var updateUserInput entity.UpdateUserInput
+
+	if err := c.ShouldBindJSON(&updateUserInput); err != nil {
+		splitError := helper.SplitErrorInformation(err)
+		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"errors": splitError})
+
+		c.JSON(400, responseError)
 		return
 	}
 
-	if user.UserID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{
-			"status":        "error not found",
-			"message_error": "user id " + id + " not found in database",
-		})
+	user, err := h.userService.UpdateUserByID(id, updateUserInput)
+	if err != nil {
+		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
+
+		c.JSON(500, responseError)
 		return
 	}
 
-	if err := c.ShouldBindJSON(&userInput); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status":        "error bad request",
-			"message_error": err.Error(),
-		})
-		return
-	}
-
-	user.FirstName = userInput.FirstName
-	user.LastName = userInput.LastName
-	user.UserName = userInput.UserName
-	user.Email = userInput.Email
-	user.Password = userInput.Password
-	user.UpdatedAt = time.Now()
-
-	if err := db.Where("user_id = ?", id).Save(&user).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status":        "error in internal server",
-			"message_error": err.Error(),
-		})
-		return
-	}
-
-	c.JSON(http.StatusOK, user)
-
+	response := helper.APIResponse("update user succeed", 200, "success", user)
+	c.JSON(200, response)
 }
 
 func (h *userHandler) DeleteByUserIDHandler(c *gin.Context) {

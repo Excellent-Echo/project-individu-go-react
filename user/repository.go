@@ -55,11 +55,11 @@ func (r *repository) UpdateUser(id string, dataUpdate map[string]interface{}) (e
 
 	var user entity.User
 
-	if err := r.db.Model(&user).Where("id = ?", id).Updates(dataUpdate).Error; err != nil {
+	if err := r.db.Model(&user).Where("user_id = ?", id).Updates(dataUpdate).Error; err != nil {
 		return user, err
 	}
 
-	if err := r.db.Where("id = ?", id).Find(&user).Error; err != nil {
+	if err := r.db.Where("user_id = ?", id).Find(&user).Error; err != nil {
 		return user, err
 	}
 

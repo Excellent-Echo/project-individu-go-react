@@ -117,7 +117,7 @@ func (s *service) UpdateUserByID(id string, dataInput entity.UpdateUserInput) (U
 		dataUpdate["last_name"] = dataInput.LastName
 	}
 	if dataInput.UserName != "" || len(dataInput.UserName) != 0 {
-		dataUpdate["username"] = dataInput.UserName
+		dataUpdate["user_name"] = dataInput.UserName
 	}
 	if dataInput.Email != "" || len(dataInput.Email) != 0 {
 		dataUpdate["email"] = dataInput.Email

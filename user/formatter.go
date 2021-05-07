@@ -15,7 +15,7 @@ type UserFormat struct {
 
 type DeleteFormat struct {
 	Message    string    `json:"message"`
-	TimeDelete time.Time `json:"time_delete"`
+	TimeDelete time.Time `json:"delete_time"`
 }
 
 func FormattingUser(user entity.User) UserFormat {
