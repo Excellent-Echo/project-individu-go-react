@@ -19,8 +19,8 @@ var (
 func main() {
 	r := gin.Default()
 
-	r.GET("/users", userHandler.ShowAllUsers)
-	// r.POST("/users", handler.CreateNewUser)
+	r.GET("/users", userHandler.ShowAllUsersHandler)
+	r.POST("/users", userHandler.CreateUserHandler)
 	// r.GET("/users/:user_id", handler.GetUserByID)
 	// r.PUT("/users/:user_id", handler.UpdateUserByID)
 	// r.DELETE("/users/:user_id", handler.DeleteByUserID)
