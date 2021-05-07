@@ -19,6 +19,8 @@ func CreateNewBooking(c *gin.Context) {
 	}
 
 	var newBooking = entity.Booking{
+		UserID:      getBooking.UserID,
+		PsikologID:  getBooking.PsikologID,
 		BookingTime: getBooking.BookingTime,
 		BookingDate: getBooking.BookingDate,
 		CreateAt:    time.Now(),

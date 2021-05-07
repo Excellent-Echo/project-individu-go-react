@@ -9,6 +9,8 @@ type UserInput struct {
 }
 
 type BookingInput struct {
+	UserID      int `json:"user_id"`
+	PsikologID  int `json:"psikolog_id"`
 	BookingDate int `json:"booking_date"`
 	BookingTime int `json:"booking_time"`
 }

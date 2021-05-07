@@ -46,7 +46,7 @@ func CreateNewUser(c *gin.Context) {
 func GetAllUser(c *gin.Context) {
 	var users []entity.User
 
-	if err := DB.Find(&users).Error; err != nil {
+	if err := DB.Find(&users).Preload("Booking").Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"status":        "error in internal server",
 			"message_error": err.Error(),

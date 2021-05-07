@@ -55,7 +55,7 @@ func GetRoleByID(c *gin.Context) {
 
 	id := c.Param("role_id")
 
-	if err := DB.Where("id = ?", id).Preload("Role").Find(&GetRoleID).Error; err != nil {
+	if err := DB.Where("id = ?", id).Preload("Users").Find(&GetRoleID).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":        "error bad request",
 			"message_error": err.Error(),
@@ -77,9 +77,9 @@ func GetRoleByID(c *gin.Context) {
 func UpdateRoleByID(c *gin.Context) {
 	var updateRole entity.Role
 
-	id := c.Params.ByName("user_id")
+	id := c.Params.ByName("role_id")
 
-	if err := DB.Where("id = ?", id).Find(&updateRole).Error; err != nil {
+	if err := DB.Where("id = ?", id).Preload("Users").Find(&updateRole).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"status":        "error in internal server",
 			"message_error": err.Error(),
@@ -102,10 +102,6 @@ func UpdateRoleByID(c *gin.Context) {
 		})
 		return
 	}
-
-	//updateRole.Admin = updateRole.Admin
-	//updateRole.User = updateRole.User
-	//updateRole.Psikolog = updateRole.Psikolog
 
 	var newRole = entity.Role{
 		Admin:    updateRole.Admin,
