@@ -14,7 +14,7 @@ type Service interface {
 	GetAllUsers() ([]UserFormat, error)
 	SaveNewUser(user entity.UserInput) (UserFormat, error)
 	GetUserByID(id string) (UserFormat, error)
-	// UpdateUserByID(userID string, dataInput entity.UpdateUserInput) (UserFormat, error)
+	UpdateUserByID(id string, dataInput entity.UpdateUserInput) (UserFormat, error)
 	// DeleteByUserID(id int) (UserFormat, error)
 }
 
@@ -92,25 +92,51 @@ func (s *service) GetUserByID(id string) (UserFormat, error) {
 
 }
 
-// func (s *service) UpdateUserByID(userID string, dataInput entity.UpdateUserInput) (UserFormat, error) {
-// 	var dataUpdate = map[string]interface{}{}
+func (s *service) UpdateUserByID(id string, dataInput entity.UpdateUserInput) (UserFormat, error) {
+	var dataUpdate = map[string]interface{}{}
 
-// 	if err := helper.ValidateIDNumber(userID); err != nil {
-// 		return UserFormat{}, err
-// 	}
+	if err := helper.ValidateIDNumber(id); err != nil {
+		return UserFormat{}, err
+	}
 
-// 	user, err := s.repository.GetOneUser(userID)
+	user, err := s.repository.GetOneUser(id)
 
-// 	if err != nil {
-// 		return UserFormat{}, err
-// 	}
+	if err != nil {
+		return UserFormat{}, err
+	}
 
-// 	if user.UserID == 0 {
-// 		newError := fmt.Sprintf("user id %s is not found", userID)
-// 		return UserFormat{}, errors.New(newError)
-// 	}
+	if user.UserID == 0 {
+		newError := fmt.Sprintf("user id %s is not found", id)
+		return UserFormat{}, errors.New(newError)
+	}
 
-// }
+	if dataInput.FirstName != "" || len(dataInput.FirstName) != 0 {
+		dataUpdate["first_name"] = dataInput.FirstName
+	}
+	if dataInput.LastName != "" || len(dataInput.LastName) != 0 {
+		dataUpdate["last_name"] = dataInput.LastName
+	}
+	if dataInput.UserName != "" || len(dataInput.UserName) != 0 {
+		dataUpdate["username"] = dataInput.UserName
+	}
+	if dataInput.Email != "" || len(dataInput.Email) != 0 {
+		dataUpdate["email"] = dataInput.Email
+	}
+
+	dataUpdate["updated_at"] = time.Now()
+
+	fmt.Println(dataUpdate)
+
+	userUpdated, err := s.repository.UpdateUser(id, dataUpdate)
+
+	if err != nil {
+		return UserFormat{}, err
+	}
+
+	formatUser := FormattingUser(userUpdated)
+
+	return formatUser, nil
+}
 
 // func (s *service) DeleteByUserID(id int) (UserFormat, error) {
 // 	user, err := s.repository.DeleteUser(id)

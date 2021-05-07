@@ -10,7 +10,7 @@ type Repository interface {
 	GetAll() ([]entity.User, error)
 	CreateUser(user entity.User) (entity.User, error)
 	GetOneUser(id string) (entity.User, error)
-	// UpdateUser(id string, dataUpdate map[string]interface{}) (entity.User, error)
+	UpdateUser(id string, dataUpdate map[string]interface{}) (entity.User, error)
 	// DeleteUser(id int) (entity.User, error)
 }
 
@@ -51,20 +51,20 @@ func (r *repository) GetOneUser(id string) (entity.User, error) {
 	return user, nil
 }
 
-// func (r *repository) UpdateUser(ID string, dataUpdate map[string]interface{}) (entity.User, error) {
+func (r *repository) UpdateUser(id string, dataUpdate map[string]interface{}) (entity.User, error) {
 
-// 	var user entity.User
+	var user entity.User
 
-// 	if err := r.db.Model(&user).Where("id = ?", ID).Updates(dataUpdate).Error; err != nil {
-// 		return user, err
-// 	}
+	if err := r.db.Model(&user).Where("id = ?", id).Updates(dataUpdate).Error; err != nil {
+		return user, err
+	}
 
-// 	if err := r.db.Where("id = ?", ID).Find(&user).Error; err != nil {
-// 		return user, err
-// 	}
+	if err := r.db.Where("id = ?", id).Find(&user).Error; err != nil {
+		return user, err
+	}
 
-// 	return user, nil
-// }
+	return user, nil
+}
 
 // func (r *repository) DeleteUser(id int) (entity.User, error) {
 // 	var user entity.User

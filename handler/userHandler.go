@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"net/http"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
 	"project-individu-go-react/user"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -68,52 +70,67 @@ func (h *userHandler) ShowUserByIdHandler(c *gin.Context) {
 	c.JSON(200, userResponse)
 }
 
-// func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
-// 	var userInput entity.UserInput
+func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
+	var user entity.User
+	var userInput entity.UserInput
 
-// 	id := c.Params.ByName("user_id")
-// 	idNumber, err := strconv.Atoi(id)
+	id := c.Params.ByName("user_id")
 
-// 	if err != nil || idNumber == 0 {
-// 		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
+	if err := db.Where("user_id = ?", id).Find(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status":        "error in internal server",
+			"message_error": err.Error(),
+		})
+		return
+	}
 
-// 		c.JSON(400, responseError)
-// 		return
-// 	}
+	if user.UserID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":        "error not found",
+			"message_error": "user id " + id + " not found in database",
+		})
+		return
+	}
 
-// 	if err := c.ShouldBindJSON(&userInput); err != nil {
-// 		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
+	if err := c.ShouldBindJSON(&userInput); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":        "error bad request",
+			"message_error": err.Error(),
+		})
+		return
+	}
 
-// 		c.JSON(400, responseError)
-// 		return
-// 	}
+	user.FirstName = userInput.FirstName
+	user.LastName = userInput.LastName
+	user.UserName = userInput.UserName
+	user.Email = userInput.Email
+	user.Password = userInput.Password
+	user.UpdatedAt = time.Now()
 
-// 	user, err := h.userService.UpdateUserByID(idNumber)
+	if err := db.Where("user_id = ?", id).Save(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"status":        "error in internal server",
+			"message_error": err.Error(),
+		})
+		return
+	}
 
-// 	if err != nil {
-// 		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
+	c.JSON(http.StatusOK, user)
 
-// 		c.JSON(500, responseError)
-// 		return
-// 	}
-
-// 	userResponse := helper.APIResponse("update user succeed", 200, "success", user)
-// 	c.JSON(200, userResponse)
-
-// }
+}
 
 // func (h *userHandler) DeleteByUserIDHandler(c *gin.Context) {
 // 	id := c.Param("user_id")
-// 	idNumber, err := strconv.Atoi(id)
+// 	id, err := strconv.Atoi(id)
 
-// 	if err != nil || idNumber == 0 {
+// 	if err != nil || id == 0 {
 // 		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
 
 // 		c.JSON(400, responseError)
 // 		return
 // 	}
 
-// 	user, err := h.userService.DeleteByUserID(idNumber)
+// 	user, err := h.userService.DeleteByUserID(id)
 
 // 	if err != nil {
 // 		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
