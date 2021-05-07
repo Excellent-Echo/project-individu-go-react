@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"net/http"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
 	"project-individu-go-react/user"
@@ -21,34 +20,35 @@ func (h *userHandler) ShowAllUsersHandler(c *gin.Context) {
 	users, err := h.userService.GetAllUsers()
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "error in internal server",
-		})
+		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
+
+		c.JSON(500, responseError)
 		return
 	}
 
 	userResponse := helper.APIResponse("get all users succeed", 200, "success", users)
-	c.JSON(http.StatusOK, userResponse)
+	c.JSON(200, userResponse)
 }
 
 func (h *userHandler) CreateUserHandler(c *gin.Context) {
 	var inputUser entity.UserInput
 
 	if err := c.ShouldBindJSON(&inputUser); err != nil {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{
-			"message": "error input data",
-		})
+		splitError := helper.SplitErrorInformation(err)
+		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"errors": splitError})
+
+		c.JSON(400, responseError)
 		return
 	}
 
 	response, err := h.userService.SaveNewUser(inputUser)
 	if err != nil {
-		c.JSON(http.StatusUnprocessableEntity, gin.H{
-			"message": "error input data",
-		})
+		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
+
+		c.JSON(500, responseError)
 		return
 	}
 
 	userResponse := helper.APIResponse("insert user succeed", 201, "success", response)
-	c.JSON(http.StatusOK, userResponse)
+	c.JSON(201, userResponse)
 }
