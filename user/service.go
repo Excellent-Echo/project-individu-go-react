@@ -15,7 +15,7 @@ type Service interface {
 	SaveNewUser(user entity.UserInput) (UserFormat, error)
 	GetUserByID(id string) (UserFormat, error)
 	UpdateUserByID(id string, dataInput entity.UpdateUserInput) (UserFormat, error)
-	// DeleteByUserID(id int) (UserFormat, error)
+	DeleteByUserID(id string) (interface{}, error)
 }
 
 type service struct {
@@ -138,20 +138,31 @@ func (s *service) UpdateUserByID(id string, dataInput entity.UpdateUserInput) (U
 	return formatUser, nil
 }
 
-// func (s *service) DeleteByUserID(id int) (UserFormat, error) {
-// 	user, err := s.repository.DeleteUser(id)
+func (s *service) DeleteByUserID(id string) (interface{}, error) {
+	if err := helper.ValidateIDNumber(id); err != nil {
+		return nil, err
+	}
 
-// 	if err != nil {
-// 		return UserFormat{}, err
-// 	}
+	user, err := s.repository.GetOneUser(id)
 
-// 	if user.UserID == 0 {
-// 		newError := fmt.Sprintf("user_id %d not found", id)
-// 		return UserFormat{}, errors.New(newError)
-// 	}
+	if err != nil {
+		return nil, err
+	}
 
-// 	userFormat := FormattingUser(user)
+	if user.UserID == 0 {
+		newError := fmt.Sprintf("user id %s is not found", id)
+		return nil, errors.New(newError)
+	}
 
-// 	return userFormat, nil
+	status, err := s.repository.DeleteUser(id)
 
-// }
+	if status == "error" {
+		return nil, errors.New("error delete in internal server")
+	}
+
+	msg := fmt.Sprintf("delete user id %s succeed", id)
+
+	formatDelete := FormatDeleteUser(msg)
+
+	return formatDelete, nil
+}

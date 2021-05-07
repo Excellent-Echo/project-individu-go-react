@@ -11,7 +11,7 @@ type Repository interface {
 	CreateUser(user entity.User) (entity.User, error)
 	GetOneUser(id string) (entity.User, error)
 	UpdateUser(id string, dataUpdate map[string]interface{}) (entity.User, error)
-	// DeleteUser(id int) (entity.User, error)
+	DeleteUser(id string) (string, error)
 }
 
 type repository struct {
@@ -66,14 +66,10 @@ func (r *repository) UpdateUser(id string, dataUpdate map[string]interface{}) (e
 	return user, nil
 }
 
-// func (r *repository) DeleteUser(id int) (entity.User, error) {
-// 	var user entity.User
+func (r *repository) DeleteUser(id string) (string, error) {
+	if err := r.db.Where("user_id = ?", id).Delete(&entity.User{}).Error; err != nil {
+		return "error", err
+	}
 
-// 	r.db.Where("user_id = ?", id).Find(&user)
-
-// 	if err := r.db.Where("user_id = ?", id).Delete(&entity.User{}).Error; err != nil {
-// 		return user, err
-// 	}
-
-// 	return user, nil
-// }
+	return "success", nil
+}
