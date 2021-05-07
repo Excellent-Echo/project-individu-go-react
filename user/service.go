@@ -1,6 +1,8 @@
 package user
 
 import (
+	"errors"
+	"fmt"
 	"project-individu-go-react/entity"
 	"time"
 
@@ -10,7 +12,7 @@ import (
 type Service interface {
 	GetAllUsers() ([]UserFormat, error)
 	SaveNewUser(user entity.UserInput) (UserFormat, error)
-	GetUserByID(id string) (UserFormat, error)
+	GetUserByID(id int) (UserFormat, error)
 }
 
 type service struct {
@@ -65,14 +67,19 @@ func (s *service) SaveNewUser(user entity.UserInput) (UserFormat, error) {
 	return formatUser, nil
 }
 
-func (s *service) GetUserByID(id string) (UserFormat, error) {
+func (s *service) GetUserByID(id int) (UserFormat, error) {
 	user, err := s.repository.GetOneUser(id)
 
-	userFormat := FormattingUser(user)
-
 	if err != nil {
-		return userFormat, err
+		return UserFormat{}, err
 	}
+
+	if user.UserID == 0 {
+		newError := fmt.Sprintf("user_id %d not found", id)
+		return UserFormat{}, errors.New(newError)
+	}
+
+	userFormat := FormattingUser(user)
 
 	return userFormat, nil
 

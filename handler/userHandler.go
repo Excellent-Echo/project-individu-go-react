@@ -1,10 +1,10 @@
 package handler
 
 import (
-	"net/http"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
 	"project-individu-go-react/user"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -56,23 +56,21 @@ func (h *userHandler) CreateUserHandler(c *gin.Context) {
 
 func (h *userHandler) ShowUserByIdHandler(c *gin.Context) {
 	id := c.Param("user_id")
+	idNumber, err := strconv.Atoi(id)
 
-	user, err := h.userService.GetUserByID(id)
+	if err != nil || idNumber == 0 {
+		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	user, err := h.userService.GetUserByID(idNumber)
 
 	if err != nil {
 		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
 
 		c.JSON(500, responseError)
-		return
-	}
-
-	if user.UserID == 0 {
-		// responseError := helper.APIResponse("data not found", 404, "error", gin.H{"error": err.Error()})
-		c.JSON(http.StatusNotFound, gin.H{
-			"status":        "error not found",
-			"error_message": "user id " + id + " not found in database",
-		})
-		// c.JSON(404, responseError)
 		return
 	}
 
