@@ -4,7 +4,6 @@ import (
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
 	"project-individu-go-react/user"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -50,27 +49,18 @@ func (h *userHandler) CreateUserHandler(c *gin.Context) {
 		return
 	}
 
-	userResponse := helper.APIResponse("insert user succeed", 201, "success", response)
+	userResponse := helper.APIResponse("insert user data succeed", 201, "success", response)
 	c.JSON(201, userResponse)
 }
 
 func (h *userHandler) ShowUserByIdHandler(c *gin.Context) {
 	id := c.Param("user_id")
-	idNumber, err := strconv.Atoi(id)
 
-	if err != nil || idNumber == 0 {
+	user, err := h.userService.GetUserByID(id)
+	if err != nil {
 		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
 
 		c.JSON(400, responseError)
-		return
-	}
-
-	user, err := h.userService.GetUserByID(idNumber)
-
-	if err != nil {
-		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
-
-		c.JSON(500, responseError)
 		return
 	}
 
@@ -78,61 +68,61 @@ func (h *userHandler) ShowUserByIdHandler(c *gin.Context) {
 	c.JSON(200, userResponse)
 }
 
-func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
-	var userInput entity.UserInput
+// func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
+// 	var userInput entity.UserInput
 
-	id := c.Params.ByName("user_id")
-	idNumber, err := strconv.Atoi(id)
+// 	id := c.Params.ByName("user_id")
+// 	idNumber, err := strconv.Atoi(id)
 
-	if err != nil || idNumber == 0 {
-		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
+// 	if err != nil || idNumber == 0 {
+// 		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
 
-		c.JSON(400, responseError)
-		return
-	}
+// 		c.JSON(400, responseError)
+// 		return
+// 	}
 
-	if err := c.ShouldBindJSON(&userInput); err != nil {
-		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
+// 	if err := c.ShouldBindJSON(&userInput); err != nil {
+// 		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
 
-		c.JSON(400, responseError)
-		return
-	}
+// 		c.JSON(400, responseError)
+// 		return
+// 	}
 
-	user, err := h.userService.UpdateUserByID(idNumber)
+// 	user, err := h.userService.UpdateUserByID(idNumber)
 
-	if err != nil {
-		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
+// 	if err != nil {
+// 		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
 
-		c.JSON(500, responseError)
-		return
-	}
+// 		c.JSON(500, responseError)
+// 		return
+// 	}
 
-	userResponse := helper.APIResponse("update user succeed", 200, "success", user)
-	c.JSON(200, userResponse)
+// 	userResponse := helper.APIResponse("update user succeed", 200, "success", user)
+// 	c.JSON(200, userResponse)
 
-}
+// }
 
-func (h *userHandler) DeleteByUserIDHandler(c *gin.Context) {
-	id := c.Param("user_id")
-	idNumber, err := strconv.Atoi(id)
+// func (h *userHandler) DeleteByUserIDHandler(c *gin.Context) {
+// 	id := c.Param("user_id")
+// 	idNumber, err := strconv.Atoi(id)
 
-	if err != nil || idNumber == 0 {
-		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
+// 	if err != nil || idNumber == 0 {
+// 		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
 
-		c.JSON(400, responseError)
-		return
-	}
+// 		c.JSON(400, responseError)
+// 		return
+// 	}
 
-	user, err := h.userService.DeleteByUserID(idNumber)
+// 	user, err := h.userService.DeleteByUserID(idNumber)
 
-	if err != nil {
-		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
+// 	if err != nil {
+// 		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
 
-		c.JSON(500, responseError)
-		return
-	}
+// 		c.JSON(500, responseError)
+// 		return
+// 	}
 
-	userResponse := helper.APIResponse("user was deleted successfully", 200, "success", user)
-	c.JSON(200, userResponse)
+// 	userResponse := helper.APIResponse("user was deleted successfully", 200, "success", user)
+// 	c.JSON(200, userResponse)
 
-}
+// }

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"project-individu-go-react/entity"
+	"project-individu-go-react/helper"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -12,9 +13,9 @@ import (
 type Service interface {
 	GetAllUsers() ([]UserFormat, error)
 	SaveNewUser(user entity.UserInput) (UserFormat, error)
-	GetUserByID(id int) (UserFormat, error)
-	UpdateUserByID(id int) (UserFormat, error)
-	DeleteByUserID(id int) (UserFormat, error)
+	GetUserByID(id string) (UserFormat, error)
+	// UpdateUserByID(userID string, dataInput entity.UpdateUserInput) (UserFormat, error)
+	// DeleteByUserID(id int) (UserFormat, error)
 }
 
 type service struct {
@@ -69,7 +70,11 @@ func (s *service) SaveNewUser(user entity.UserInput) (UserFormat, error) {
 	return formatUser, nil
 }
 
-func (s *service) GetUserByID(id int) (UserFormat, error) {
+func (s *service) GetUserByID(id string) (UserFormat, error) {
+	if err := helper.ValidateIDNumber(id); err != nil {
+		return UserFormat{}, err
+	}
+
 	user, err := s.repository.GetOneUser(id)
 
 	if err != nil {
@@ -77,7 +82,7 @@ func (s *service) GetUserByID(id int) (UserFormat, error) {
 	}
 
 	if user.UserID == 0 {
-		newError := fmt.Sprintf("user_id %d not found", id)
+		newError := fmt.Sprintf("user id %s is not found", id)
 		return UserFormat{}, errors.New(newError)
 	}
 
@@ -87,38 +92,40 @@ func (s *service) GetUserByID(id int) (UserFormat, error) {
 
 }
 
-func (s *service) UpdateUserByID(id int) (UserFormat, error) {
-	user, err := s.repository.UpdateUser(id)
+// func (s *service) UpdateUserByID(userID string, dataInput entity.UpdateUserInput) (UserFormat, error) {
+// 	var dataUpdate = map[string]interface{}{}
 
-	if err != nil {
-		return UserFormat{}, err
-	}
+// 	if err := helper.ValidateIDNumber(userID); err != nil {
+// 		return UserFormat{}, err
+// 	}
 
-	if user.UserID == 0 {
-		newError := fmt.Sprintf("user_id %d not found", id)
-		return UserFormat{}, errors.New(newError)
-	}
+// 	user, err := s.repository.GetOneUser(userID)
 
-	userFormat := FormattingUser(user)
+// 	if err != nil {
+// 		return UserFormat{}, err
+// 	}
 
-	return userFormat, nil
+// 	if user.UserID == 0 {
+// 		newError := fmt.Sprintf("user id %s is not found", userID)
+// 		return UserFormat{}, errors.New(newError)
+// 	}
 
-}
+// }
 
-func (s *service) DeleteByUserID(id int) (UserFormat, error) {
-	user, err := s.repository.DeleteUser(id)
+// func (s *service) DeleteByUserID(id int) (UserFormat, error) {
+// 	user, err := s.repository.DeleteUser(id)
 
-	if err != nil {
-		return UserFormat{}, err
-	}
+// 	if err != nil {
+// 		return UserFormat{}, err
+// 	}
 
-	if user.UserID == 0 {
-		newError := fmt.Sprintf("user_id %d not found", id)
-		return UserFormat{}, errors.New(newError)
-	}
+// 	if user.UserID == 0 {
+// 		newError := fmt.Sprintf("user_id %d not found", id)
+// 		return UserFormat{}, errors.New(newError)
+// 	}
 
-	userFormat := FormattingUser(user)
+// 	userFormat := FormattingUser(user)
 
-	return userFormat, nil
+// 	return userFormat, nil
 
-}
+// }
