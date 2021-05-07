@@ -12,6 +12,7 @@ type Repository interface {
 	CreateUser(user entity.User) (entity.User, error)
 	GetOneUser(id int) (entity.User, error)
 	UpdateUser(id int) (entity.User, error)
+	DeleteUser(id int) (entity.User, error)
 }
 
 type repository struct {
@@ -67,6 +68,18 @@ func (r *repository) UpdateUser(id int) (entity.User, error) {
 	user.UpdatedAt = time.Now()
 
 	if err := r.db.Where("user_id = ?", id).Save(&user).Error; err != nil {
+		return user, err
+	}
+
+	return user, nil
+}
+
+func (r *repository) DeleteUser(id int) (entity.User, error) {
+	var user entity.User
+
+	r.db.Where("user_id = ?", id).Find(&user)
+
+	if err := r.db.Where("user_id = ?", id).Delete(&entity.User{}).Error; err != nil {
 		return user, err
 	}
 

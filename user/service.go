@@ -14,6 +14,7 @@ type Service interface {
 	SaveNewUser(user entity.UserInput) (UserFormat, error)
 	GetUserByID(id int) (UserFormat, error)
 	UpdateUserByID(id int) (UserFormat, error)
+	DeleteByUserID(id int) (UserFormat, error)
 }
 
 type service struct {
@@ -88,6 +89,24 @@ func (s *service) GetUserByID(id int) (UserFormat, error) {
 
 func (s *service) UpdateUserByID(id int) (UserFormat, error) {
 	user, err := s.repository.UpdateUser(id)
+
+	if err != nil {
+		return UserFormat{}, err
+	}
+
+	if user.UserID == 0 {
+		newError := fmt.Sprintf("user_id %d not found", id)
+		return UserFormat{}, errors.New(newError)
+	}
+
+	userFormat := FormattingUser(user)
+
+	return userFormat, nil
+
+}
+
+func (s *service) DeleteByUserID(id int) (UserFormat, error) {
+	user, err := s.repository.DeleteUser(id)
 
 	if err != nil {
 		return UserFormat{}, err

@@ -91,6 +91,13 @@ func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
 		return
 	}
 
+	if err := c.ShouldBindJSON(&userInput); err != nil {
+		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
 	user, err := h.userService.UpdateUserByID(idNumber)
 
 	if err != nil {
@@ -100,14 +107,32 @@ func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
 		return
 	}
 
-	if err := c.ShouldBindJSON(&userInput); err != nil {
+	userResponse := helper.APIResponse("update user succeed", 200, "success", user)
+	c.JSON(200, userResponse)
+
+}
+
+func (h *userHandler) DeleteByUserIDHandler(c *gin.Context) {
+	id := c.Param("user_id")
+	idNumber, err := strconv.Atoi(id)
+
+	if err != nil || idNumber == 0 {
 		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
 
 		c.JSON(400, responseError)
 		return
 	}
 
-	userResponse := helper.APIResponse("update user succeed", 200, "success", user)
+	user, err := h.userService.DeleteByUserID(idNumber)
+
+	if err != nil {
+		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
+
+		c.JSON(500, responseError)
+		return
+	}
+
+	userResponse := helper.APIResponse("user was deleted successfully", 200, "success", user)
 	c.JSON(200, userResponse)
 
 }
