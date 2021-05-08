@@ -1,7 +1,10 @@
 package user
 
 import (
+	"errors"
+	"fmt"
 	"projectpenyewaanlapangan/entity"
+	"projectpenyewaanlapangan/helper"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -10,6 +13,7 @@ import (
 type Service interface {
 	GetAllUser() ([]UserFormat, error)
 	SaveNewUser(user entity.UserInput) (UserFormat, error)
+	GetUserByID(userID string) (UserFormat, error)
 }
 
 type service struct {
@@ -60,6 +64,27 @@ func (s *service) SaveNewUser(user entity.UserInput) (UserFormat, error) {
 	if err != nil {
 		return formatUser, err
 	}
+
+	return formatUser, nil
+}
+
+func (s *service) GetUserByID(userID string) (UserFormat, error) {
+	if err := helper.ValidateIDNumber(userID); err != nil {
+		return UserFormat{}, err
+	}
+
+	user, err := s.repository.FindByID(userID)
+
+	if err != nil {
+		return UserFormat{}, err
+	}
+
+	if user.ID == 0 {
+		newError := fmt.Sprintf("user id %s not found", userID)
+		return UserFormat{}, errors.New(newError)
+	}
+
+	formatUser := FormatUser(user)
 
 	return formatUser, nil
 }

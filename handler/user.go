@@ -53,3 +53,23 @@ func (h *userHandler) CreateUserHandler(c *gin.Context) {
 	response := helper.APIResponse("success create new User", 201, "status Created", newUser)
 	c.JSON(201, response)
 }
+
+// get user by 1
+// 1. get by id sesuai dengan paramter yg dikasih (repository)
+// 2. service akan menampikan hasil user by id dengan format yang sudah ditentukan
+// 3. handler kita tangkap id dengan c.Param kemudian kita kirim ke service, terus kita tangkap responsenya
+
+func (h *userHandler) GetUserByIDHandler(c *gin.Context) {
+	id := c.Params.ByName("user_id")
+
+	user, err := h.userService.GetUserByID(id)
+	if err != nil {
+		responseError := helper.APIResponse("error bad request user ID", 400, "error", gin.H{"error": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success get user by ID", 200, "success", user)
+	c.JSON(200, response)
+}

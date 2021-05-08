@@ -22,7 +22,7 @@ func main() {
 	// endpoint user
 	r.GET("/users", userHandler.ShowUserHandler)
 	r.POST("/users/register", userHandler.CreateUserHandler)
-	// r.GET("/users/:user_id", handler.GetUserByID)
+	r.GET("/users/:user_id", userHandler.GetUserByIDHandler)
 	// r.POST("/users", handler.CreateNewUser)
 	// r.PUT("/users/:user_id", handler.UpdateUserByID)
 	// r.DELETE("/users/:user_id", handler.DeleteByUserID)
