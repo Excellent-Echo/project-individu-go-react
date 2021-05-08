@@ -8,6 +8,7 @@ import (
 
 type Repository interface {
 	FindAll() ([]entity.User, error)
+	Create(user entity.User) (entity.User, error)
 }
 
 type repository struct {
@@ -26,4 +27,12 @@ func (r *repository) FindAll() ([]entity.User, error) {
 	}
 
 	return users, nil
+}
+
+func (r *repository) Create(user entity.User) (entity.User, error) {
+	if err := r.db.Create(&user).Error; err != nil {
+		return user, err
+	}
+
+	return user, nil
 }
