@@ -2,7 +2,7 @@ package entity
 
 import "time"
 
-// User struct tabel users
+// User struct untuk tabel users
 type User struct {
 	ID        int       `gorm:"primaryKey"`
 	RoleID    int       `json:"role"`

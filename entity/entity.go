@@ -31,7 +31,7 @@ type BookingDetail struct {
 	PsikologID int `json:"psikolog_id"`
 }
 
-// Psikologi struct tabel psychologists
+// Psikologi struct tabel psikolog
 type Psikologi struct {
 	ID              int             `gorm:"primaryKey"`
 	Firstname       string          `json:"firstname"`

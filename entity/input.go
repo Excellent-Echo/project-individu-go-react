@@ -1,5 +1,6 @@
 package entity
 
+// UserInput untuk inputan yang diperlukan dari model users
 type UserInput struct {
 	RoleID    int    `json:"role" binding:"required"`
 	Firstname string `json:"first_name" binding:"required"`

@@ -15,6 +15,7 @@ func NewUserHander(userService user.Service) *userHandler {
 	return &userHandler{userService}
 }
 
+// ShowUserHandler untuk mengambil semua data user, jika user mengakses dari endpoint "/users"
 func (h *userHandler) ShowUserHandler(c *gin.Context) {
 	users, err := h.userService.GetAllUser()
 
@@ -36,6 +37,7 @@ func (h *userHandler) ShowUserHandler(c *gin.Context) {
 	c.JSON(200, response)
 }
 
+// CreateUserHandler untuk membuat data user baru, jika user menginput dari endpoint "/users/register"
 func (h *userHandler) CreateUserHandler(c *gin.Context) {
 	var NewUserInput entity.UserInput
 
@@ -79,4 +81,37 @@ func (h *userHandler) CreateUserHandler(c *gin.Context) {
 	)
 
 	c.JSON(201, response)
+}
+
+// GetUserByIDHandler untuk mencari data user berdasarkan id nya, jika user menginput dari endpoint "/users/user_id"
+func (h *userHandler) GetUserByIDHandler(c *gin.Context) {
+	id := c.Params.ByName("user_id")
+
+	userByID, err := h.userService.GetUserByID(id)
+
+	if err != nil {
+		responseError := helper.APIResponse("Error bad request get user id", 400, "error", gin.H{"error": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	response := helper.APIResponse("Success get user by id", 200, "success", userByID)
+	c.JSON(200, response)
+}
+
+func (h *userHandler) GetandDeleteUserByIDHandler(c *gin.Context) {
+	id := c.Params.ByName("user_id")
+
+	userDelete, err := h.userService.GetandDeleteUserByID(id)
+
+	if err != nil {
+		responseError := helper.APIResponse("Error delete user id", 400, "error", gin.H{"error": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	responseSuccess := helper.APIResponse("Success delete user id", 200, "Delete OK", userDelete)
+	c.JSON(200, responseSuccess)
 }

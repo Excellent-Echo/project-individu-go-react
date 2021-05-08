@@ -6,6 +6,7 @@ import (
 	"project-individu-go-react/entity"
 )
 
+// ConnectToDatabase untuk koneksi dari database MySQL
 func ConnectToDatabase() *gorm.DB {
 	dsn := "root:root@tcp(localhost)/konsultasi_psikolog?charset=utf8mb4&parseTime=True&loc=Local"
 
@@ -15,6 +16,7 @@ func ConnectToDatabase() *gorm.DB {
 		panic(err.Error())
 	}
 
+	// Untuk membuat tabel baru ke database MySQL
 	db.AutoMigrate(&entity.User{})
 	db.AutoMigrate(&entity.Role{})
 	db.AutoMigrate(&entity.Booking{})
