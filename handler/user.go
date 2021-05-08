@@ -10,53 +10,6 @@ import (
 
 var DB = config.ConnectToDatabase()
 
-func CreateNewUser(c *gin.Context) {
-	var getUser entity.UserInput
-
-	if err := c.ShouldBindJSON(&getUser); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status":        "error bad request",
-			"message_error": err.Error(),
-		})
-		return
-	}
-
-	var newUser = entity.User{
-		RoleID:    getUser.RoleID,
-		Firstname: getUser.Firstname,
-		Lastname:  getUser.Lastname,
-		Email:     getUser.Email,
-		Password:  getUser.Password,
-		CreateAt:  time.Now(),
-		UpdatedAt: time.Now(),
-	}
-
-	if err := DB.Create(&newUser).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status":        "error in internal server",
-			"message_error": err.Error(),
-		})
-		return
-	}
-
-	c.JSON(http.StatusCreated, newUser)
-
-}
-
-func GetAllUser(c *gin.Context) {
-	var users []entity.User
-
-	if err := DB.Find(&users).Preload("Booking").Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status":        "error in internal server",
-			"message_error": err.Error(),
-		})
-		return
-	}
-
-	c.JSON(http.StatusOK, users)
-}
-
 func GetUserByID(c *gin.Context) {
 	var GetUserID entity.User
 

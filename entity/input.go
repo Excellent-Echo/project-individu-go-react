@@ -1,11 +1,11 @@
 package entity
 
 type UserInput struct {
-	RoleID    int    `json:"role"`
-	Firstname string `json:"first_name"`
-	Lastname  string `json:"last_name"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
+	RoleID    int    `json:"role" binding:"required"`
+	Firstname string `json:"first_name" binding:"required"`
+	Lastname  string `json:"last_name" binding:"required"`
+	Email     string `json:"email" binding:"required,email"`
+	Password  string `json:"password" binding:"required"`
 }
 
 type BookingInput struct {

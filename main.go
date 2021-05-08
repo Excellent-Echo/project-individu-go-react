@@ -2,10 +2,17 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"project-individu-go-react/config"
 	"project-individu-go-react/handler"
+	"project-individu-go-react/user"
 )
 
-//var DB = config.ConnectToDatabase()
+var (
+	DB             = config.ConnectToDatabase()
+	userRepository = user.NewRepository(DB)
+	userService    = user.NewService(userRepository)
+	userHandler    = handler.NewUserHander(userService)
+)
 
 func main() {
 	//var booking []entity.Booking
@@ -19,8 +26,8 @@ func main() {
 	r := gin.Default()
 
 	// Endpoint users
-	r.GET("/users", handler.GetAllUser)
-	r.POST("/users", handler.CreateNewUser)
+	r.GET("/users", userHandler.ShowUserHandler)
+	r.POST("/users/register", userHandler.CreateUserHandler)
 	r.GET("users/:user_id", handler.GetUserByID)
 	r.PUT("users/:user_id", handler.UpdateUserByID)
 	r.DELETE("users/:user_id", handler.DeleteByUserID)
