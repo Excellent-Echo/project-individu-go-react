@@ -13,6 +13,7 @@ type Service interface {
 	SaveNewUser(user entity.UserInput) (UserFormat, error)
 	GetUserByID(userID string) (UserFormat, error)
 	GetandDeleteUserByID(userID string) (interface{}, error)
+	GetandUpdateUserByID(userID string, dataUserInput entity.UserInputUpdate) (UserFormat, error)
 }
 
 type service struct {
@@ -112,4 +113,51 @@ func (s *service) GetandDeleteUserByID(userID string) (interface{}, error) {
 	formatDelete := FormatDeleteUser(message)
 
 	return formatDelete, nil
+}
+
+// GetandUpdateUserByID business logic untuk mengupdate data user berdasarkan "id" dari model users
+func (s *service) GetandUpdateUserByID(userID string, dataUserInput entity.UserInputUpdate) (UserFormat, error) {
+
+	var dataUserUpdate = map[string]interface{}{}
+
+	if err := helper.ValidateIDNumber(userID); err != nil {
+		return UserFormat{}, err
+	}
+
+	user, err := s.repository.FindUserByID(userID)
+
+	if err != nil {
+		return UserFormat{}, err
+	}
+
+	if user.ID == 0 {
+		newError := fmt.Sprintf("user id not found : %s", userID)
+		return UserFormat{}, errors.New(newError)
+	}
+
+	if dataUserInput.RoleID != 0 {
+		dataUserUpdate["role"] = dataUserInput.RoleID
+	}
+	if dataUserInput.FirstName != "" || len(dataUserInput.FirstName) != 0 {
+		dataUserUpdate["first_name"] = dataUserInput.FirstName
+	}
+	if dataUserInput.Lastname != "" || len(dataUserInput.Lastname) != 0 {
+		dataUserUpdate["last_name"] = dataUserInput.Lastname
+	}
+	if dataUserInput.Email != "" || len(dataUserInput.Email) != 0 {
+		dataUserUpdate["email"] = dataUserInput.Email
+	}
+	dataUserUpdate["updated_at"] = time.Now()
+
+	fmt.Println(dataUserUpdate)
+
+	userUpdated, err := s.repository.FindAndUpdateUserByID(userID, dataUserUpdate)
+
+	if err != nil {
+		return UserFormat{}, err
+	}
+
+	formatUser := FormatUser(userUpdated)
+
+	return formatUser, nil
 }

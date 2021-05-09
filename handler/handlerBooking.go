@@ -3,9 +3,12 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"project-individu-go-react/config"
 	"project-individu-go-react/entity"
 	"time"
 )
+
+var DB = config.ConnectToDatabase()
 
 func CreateNewBooking(c *gin.Context) {
 	var getBooking entity.BookingInput

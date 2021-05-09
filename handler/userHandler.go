@@ -100,6 +100,7 @@ func (h *userHandler) GetUserByIDHandler(c *gin.Context) {
 	c.JSON(200, response)
 }
 
+// GetandDeleteUserByIDHandler untuk menghapus data user berdasarkan id, jika user menginput dari endpoint "/users/user_id"
 func (h *userHandler) GetandDeleteUserByIDHandler(c *gin.Context) {
 	id := c.Params.ByName("user_id")
 
@@ -114,4 +115,31 @@ func (h *userHandler) GetandDeleteUserByIDHandler(c *gin.Context) {
 
 	responseSuccess := helper.APIResponse("Success delete user id", 200, "Delete OK", userDelete)
 	c.JSON(200, responseSuccess)
+}
+
+// GetandUpdateUserByIDHandler untuk menghapus data user berdasarkan id, jika user menginput dari endpoint "/users/user_id"
+func (h *userHandler) GetandUpdateUserByIDHandler(c *gin.Context) {
+	id := c.Params.ByName("user_id")
+
+	var userUpdate entity.UserInputUpdate
+
+	if err := c.ShouldBindJSON(&userUpdate); err != nil {
+		splitError := helper.SplitErrorInformation(err)
+		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"error": splitError})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	users, err := h.userService.GetandUpdateUserByID(id, userUpdate)
+
+	if err != nil {
+		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
+
+		c.JSON(500, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success update user by id", 200, "success", users)
+	c.JSON(200, response)
 }

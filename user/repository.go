@@ -10,6 +10,7 @@ type Repository interface {
 	CreateUser(user entity.User) (entity.User, error)
 	FindUserByID(ID string) (entity.User, error)
 	FindandDeleteUserByID(ID string) (string, error)
+	FindAndUpdateUserByID(ID string, userUpdate map[string]interface{}) (entity.User, error)
 }
 
 type repository struct {
@@ -52,4 +53,19 @@ func (r *repository) FindandDeleteUserByID(ID string) (string, error) {
 		return "error", err
 	}
 	return "success", nil
+}
+
+// FindAndUpdateUserByID fungsi untuk mengupdate data user berdasarkan "id" di model users menggunakan Model, Where, Find dan Update
+func (r *repository) FindAndUpdateUserByID(ID string, userUpdate map[string]interface{}) (entity.User, error) {
+	var userWillUpdate entity.User
+
+	if err := r.db.Model(&userWillUpdate).Where("id = ?", ID).Updates(userUpdate).Error; err != nil {
+		return userWillUpdate, err
+	}
+
+	if err := r.db.Where("id = ?", ID).Find(&userWillUpdate).Error; err != nil {
+		return userWillUpdate, err
+	}
+
+	return userWillUpdate, nil
 }

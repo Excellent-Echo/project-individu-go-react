@@ -24,44 +24,45 @@ func main() {
 	//
 	//fmt.Println(booking)
 
-	r := gin.Default()
+	router := gin.Default()
 
 	// Endpoint untuk model users
-	r.GET("/users", userHandler.ShowUserHandler)
-	r.POST("/users/register", userHandler.CreateUserHandler)
-	r.GET("users/:user_id", userHandler.GetUserByIDHandler)
-	r.PUT("users/:user_id", handler.UpdateUserByID)
-	r.DELETE("users/:user_id", userHandler.GetandDeleteUserByIDHandler)
+	router.GET("/users", userHandler.ShowUserHandler)
+	router.POST("/users/register", userHandler.CreateUserHandler)
+	router.GET("users/:user_id", userHandler.GetUserByIDHandler)
+	router.PUT("users/:user_id", userHandler.GetandUpdateUserByIDHandler)
+	//router.PUT("users/:user_id", handler.UpdateUserByID)
+	router.DELETE("users/:user_id", userHandler.GetandDeleteUserByIDHandler)
 
 	// Endpoint untuk model role
-	r.GET("/roles", handler.GetAllRole)
-	r.POST("/roles", handler.CreateNewRole)
-	r.GET("roles/:role_id", handler.GetRoleByID)
-	r.PUT("roles/:role_id", handler.UpdateRoleByID)
-	r.DELETE("roles/:role_id", handler.DeleteByRoleID)
+	router.GET("/roles", handler.GetAllRole)
+	router.POST("/roles", handler.CreateNewRole)
+	router.GET("roles/:role_id", handler.GetRoleByID)
+	router.PUT("roles/:role_id", handler.UpdateRoleByID)
+	router.DELETE("roles/:role_id", handler.DeleteByRoleID)
 
 	// Endpoint untuk model booking
-	r.GET("/booking", handler.GetAllBooking)
-	r.POST("/booking", handler.CreateNewBooking)
-	r.GET("booking/:booking_id", handler.GetBookingByID)
-	r.PUT("booking/:booking_id", handler.UpdateBookingByID)
-	r.DELETE("booking/:booking_id", handler.DeleteByBookingID)
+	router.GET("/booking", handler.GetAllBooking)
+	router.POST("/booking", handler.CreateNewBooking)
+	router.GET("booking/:booking_id", handler.GetBookingByID)
+	router.PUT("booking/:booking_id", handler.UpdateBookingByID)
+	router.DELETE("booking/:booking_id", handler.DeleteByBookingID)
 
 	// Endpoint untuk model booking detail
-	r.GET("/booking-detail", handler.GetAllBookingDetail)
-	r.POST("/booking-detail", handler.CreateNewBookingDetail)
-	r.GET("booking-detail/:booking_detail_id", handler.GetBookingDetailByID)
-	r.PUT("booking-detail/:booking-detail_id", handler.UpdateBookingDetailByID)
-	r.DELETE("booking-detail/:booking_detail_id", handler.DeleteByBookingDetailID)
+	router.GET("/booking-detail", handler.GetAllBookingDetail)
+	router.POST("/booking-detail", handler.CreateNewBookingDetail)
+	router.GET("booking-detail/:booking_detail_id", handler.GetBookingDetailByID)
+	router.PUT("booking-detail/:booking-detail_id", handler.UpdateBookingDetailByID)
+	router.DELETE("booking-detail/:booking_detail_id", handler.DeleteByBookingDetailID)
 
 	// Endpoint untuk model psikolog
-	r.GET("/psikolog", handler.GetAllPsikolog)
-	r.POST("/psikolog", handler.CreateNewPsikolog)
-	r.GET("psikolog/:psikolog_id", handler.GetPsikologByID)
-	r.PUT("psikolog/:psikolog_id", handler.UpdatePsikologByID)
-	r.DELETE("psikolog/:psikolog_id", handler.DeleteByPsikologID)
+	router.GET("/psikolog", handler.GetAllPsikolog)
+	router.POST("/psikolog", handler.CreateNewPsikolog)
+	router.GET("psikolog/:psikolog_id", handler.GetPsikologByID)
+	router.PUT("psikolog/:psikolog_id", handler.UpdatePsikologByID)
+	router.DELETE("psikolog/:psikolog_id", handler.DeleteByPsikologID)
 
 	// Untuk menjalanakan server ke localhost komputer
-	r.Run(":3000")
+	router.Run(":3000")
 
 }
