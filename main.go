@@ -23,9 +23,8 @@ func main() {
 	r.GET("/users", userHandler.ShowUserHandler)
 	r.POST("/users/register", userHandler.CreateUserHandler)
 	r.GET("/users/:user_id", userHandler.GetUserByIDHandler)
-	// r.POST("/users", handler.CreateNewUser)
-	// r.PUT("/users/:user_id", handler.UpdateUserByID)
-	// r.DELETE("/users/:user_id", handler.DeleteByUserID)
+	r.DELETE("/users/:user_id", userHandler.DeleteUserByIDHandler)
+	r.PUT("/users/:user_id", userHandler.UpdateUserByIDHandler)
 
 	// // endpoint sportlist
 	// r.GET("/sportlist", handler.GetAllSportList)
