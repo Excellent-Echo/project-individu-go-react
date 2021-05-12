@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type Repository interface {
+type UserRepository interface {
 	GetAll() ([]entity.User, error)
 	CreateUser(user entity.User) (entity.User, error)
 	GetOneUser(id string) (entity.User, error)

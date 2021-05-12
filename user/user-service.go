@@ -19,10 +19,10 @@ type Service interface {
 }
 
 type service struct {
-	repository Repository
+	repository UserRepository
 }
 
-func NewService(repository Repository) *service {
+func NewService(repository UserRepository) *service {
 	return &service{repository}
 }
 
@@ -155,6 +155,10 @@ func (s *service) DeleteByUserID(id string) (interface{}, error) {
 	}
 
 	status, err := s.repository.DeleteUser(id)
+
+	if err != nil {
+		panic(err)
+	}
 
 	if status == "error" {
 		return nil, errors.New("error delete in internal server")
