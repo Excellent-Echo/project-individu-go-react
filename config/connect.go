@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"project-individu-go-react/entity"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
@@ -24,11 +25,11 @@ func Connect() *gorm.DB {
 		panic(err.Error())
 	}
 
-	// db.AutoMigrate(&entity.User{})
-	// db.AutoMigrate(&entity.Post{})
-	// db.AutoMigrate(&entity.Category{})
-	// db.AutoMigrate(&entity.Comment{})
-	// db.AutoMigrate(&entity.Like{})
+	db.AutoMigrate(&entity.User{})
+	db.AutoMigrate(&entity.Questions{})
+	db.AutoMigrate(&entity.Tags{})
+	db.AutoMigrate(&entity.Answers{})
+	db.AutoMigrate(&entity.Likes{})
 
 	return db
 }
