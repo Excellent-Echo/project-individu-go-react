@@ -3,6 +3,7 @@ package main
 import (
 	"projectpenyewaanlapangan/config"
 	"projectpenyewaanlapangan/handler"
+	"projectpenyewaanlapangan/sportlist"
 	"projectpenyewaanlapangan/user"
 
 	"github.com/gin-gonic/gin"
@@ -10,10 +11,17 @@ import (
 )
 
 var (
-	DB             *gorm.DB = config.Connect()
-	userRepository          = user.NewRepository(DB)
-	userService             = user.NewService(userRepository)
-	userHandler             = handler.NewUserHandler(userService)
+	DB *gorm.DB = config.Connect()
+
+	// user entity
+	userRepository = user.NewRepository(DB)
+	userService    = user.NewService(userRepository)
+	userHandler    = handler.NewUserHandler(userService)
+
+	//sportlsit entity
+	sportlistRepository = sportlist.NewRepository(DB)
+	sportlistService    = sportlist.NewService(sportlistRepository)
+	sportlistHandler    = handler.NewSportListHandler(sportlistService)
 )
 
 func main() {
@@ -27,8 +35,9 @@ func main() {
 	r.PUT("/users/:user_id", userHandler.UpdateUserByIDHandler)
 
 	// // endpoint sportlist
-	// r.GET("/sportlist", handler.GetAllSportList)
-	// r.GET("/users/:sportlist_id", handler.GetSportListByID)
+	r.GET("/sportlist", sportlistHandler.ShowUserHandler)
+	r.POST("/sportlist/register", sportlistHandler.CreateSportlistHandler)
+	r.GET("/users/:sportlist_id", sportlistHandler.GetSportListByIDHandler)
 
 	r.Run(":4444")
 }

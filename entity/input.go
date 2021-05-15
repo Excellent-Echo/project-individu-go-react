@@ -12,3 +12,7 @@ type UpdateUserInput struct {
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
 }
+
+type SportListInput struct {
+	SportName string `json:"sport_name" binding:"required"`
+}
