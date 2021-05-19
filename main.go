@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"project-individu-go-react/config"
 	"project-individu-go-react/handler"
-	"project-individu-go-react/user"
+	"project-individu-go-react/layer/user"
 )
 
 // Database, Repository, Service dan Handler
@@ -29,6 +29,7 @@ func main() {
 	// Endpoint untuk model users
 	router.GET("/users", userHandler.ShowUserHandler)
 	router.POST("/users/register", userHandler.CreateUserHandler)
+	//router.POST("/users/login", userHandler.CreateUserHandler)
 	router.GET("users/:user_id", userHandler.GetUserByIDHandler)
 	router.PUT("users/:user_id", userHandler.GetandUpdateUserByIDHandler)
 	//router.PUT("users/:user_id", handler.UpdateUserByID)

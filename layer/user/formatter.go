@@ -12,6 +12,7 @@ type UserFormat struct {
 	FIrstname string `json:"first_name"`
 	Lastname  string `json:"last_name"`
 	Email     string `json:"email"`
+	Password  string `json:"password"`
 }
 
 type DeleteFormat struct {
@@ -26,6 +27,7 @@ func FormatUser(user entity.User) UserFormat {
 		FIrstname: user.Firstname,
 		Lastname:  user.Lastname,
 		Email:     user.Email,
+		Password:  user.Password,
 	}
 	return formatUser
 }

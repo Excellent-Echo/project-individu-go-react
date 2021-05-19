@@ -3,6 +3,7 @@ package user
 import (
 	"errors"
 	"fmt"
+	"golang.org/x/crypto/bcrypt"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
 	"time"
@@ -43,12 +44,18 @@ func (s *service) GetAllUser() ([]UserFormat, error) {
 // SaveNewUser business logic untuk membuat data baru ke model users
 func (s *service) SaveNewUser(user entity.UserInput) (UserFormat, error) {
 
+	genPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+
+	if err != nil {
+		return UserFormat{}, err
+	}
+
 	var newUser = entity.User{
 		RoleID:    user.RoleID,
 		Firstname: user.Firstname,
 		Lastname:  user.Lastname,
 		Email:     user.Email,
-		Password:  user.Password,
+		Password:  string(genPassword),
 		CreateAt:  time.Now(),
 		UpdatedAt: time.Now(),
 	}
