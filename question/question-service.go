@@ -6,7 +6,7 @@ import (
 )
 
 type QuestionService interface {
-	// FindAllQuestions() ([]entity.Questions, error)
+	FindAllQuestions() ([]entity.Questions, error)
 	SaveNewQuestion(question entity.QuestionInput) (entity.Questions, error)
 	// FindQuestionById(id string) (entity.Questions, error)
 	// UpdateQuestionById(id string, dataInput entity.QuestionInput) (entity.Questions, error)
@@ -19,6 +19,16 @@ type questionService struct {
 
 func QuestionNewService(repository QuestionRepository) *questionService {
 	return &questionService{repository}
+}
+
+func (s *questionService) FindAllQuestions() ([]entity.Questions, error) {
+	questions, err := s.repository.FindAllQuestions()
+
+	if err != nil {
+		return questions, err
+	}
+
+	return questions, nil
 }
 
 func (s *questionService) SaveNewQuestion(question entity.QuestionInput) (entity.Questions, error) {

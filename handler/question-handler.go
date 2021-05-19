@@ -16,6 +16,21 @@ func NewQuestionHandler(questionService question.QuestionService) *questionHandl
 	return &questionHandler{questionService}
 }
 
+func (h *questionHandler) ShowAllQuestions(c *gin.Context) {
+	questions, err := h.questionService.FindAllQuestions()
+
+	if err != nil {
+		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
+
+		c.JSON(500, responseError)
+		return
+	}
+
+	userResponse := helper.APIResponse("get all questions succeed", 200, "success", questions)
+	c.JSON(200, userResponse)
+
+}
+
 func (h *questionHandler) CreateQuestionHandler(c *gin.Context) {
 	var inputQuestion entity.QuestionInput
 

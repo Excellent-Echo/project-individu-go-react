@@ -7,7 +7,7 @@ import (
 )
 
 type QuestionRepository interface {
-	// FindAll() ([]entity.Questions, error)
+	FindAllQuestions() ([]entity.Questions, error)
 	PostQuestion(question entity.Questions) (entity.Questions, error)
 	// FindQuestion(id string) (entity.User, error)
 	// UpdateQuestion(id string, dataUpdate map[string]interface{}) (entity.User, error)
@@ -20,6 +20,17 @@ type Repository struct {
 
 func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{db}
+}
+
+func (r *Repository) FindAllQuestions() ([]entity.Questions, error) {
+	var Questions []entity.Questions
+
+	err := r.db.Find(&Questions).Error
+	if err != nil {
+		return Questions, err
+	}
+
+	return Questions, nil
 }
 
 func (r *Repository) PostQuestion(question entity.Questions) (entity.Questions, error) {

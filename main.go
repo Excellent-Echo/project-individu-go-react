@@ -30,6 +30,7 @@ func main() {
 	r.PUT("/users/:user_id", userHandler.UpdateUserByIDHandler)
 	r.DELETE("/users/:user_id", userHandler.DeleteByUserIDHandler)
 
+	r.GET("/questions", questionHandler.ShowAllQuestions)
 	r.POST("/questions/ask", questionHandler.CreateQuestionHandler)
 
 	r.Run(":4444")
