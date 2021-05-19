@@ -3,7 +3,6 @@ package config
 import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"project-individu-go-react/entity"
 )
 
 // ConnectToDatabase untuk koneksi dari database MySQL
@@ -17,11 +16,11 @@ func ConnectToDatabase() *gorm.DB {
 	}
 
 	// Untuk membuat tabel baru ke database MySQL
-	db.AutoMigrate(&entity.User{})
-	db.AutoMigrate(&entity.Role{})
-	db.AutoMigrate(&entity.Booking{})
-	db.AutoMigrate(&entity.BookingDetail{})
-	db.AutoMigrate(&entity.Psikologi{})
+	//db.AutoMigrate(&entity.User{})
+	//db.AutoMigrate(&entity.Role{})
+	//db.AutoMigrate(&entity.Booking{})
+	//db.AutoMigrate(&entity.BookingDetail{})
+	//db.AutoMigrate(&entity.Psikologi{})
 
 	return db
 }

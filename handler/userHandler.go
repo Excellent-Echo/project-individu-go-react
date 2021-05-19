@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
-	"project-individu-go-react/user"
+	"project-individu-go-react/layer/user"
 )
 
 type userHandler struct {
