@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"project-individu-go-react/config"
 	"project-individu-go-react/handler"
+	"project-individu-go-react/layer/psikolog"
 	"project-individu-go-react/layer/user"
 )
 
@@ -13,6 +14,10 @@ var (
 	userRepository = user.NewRepository(DB)
 	userService    = user.NewService(userRepository)
 	userHandler    = handler.NewUserHander(userService)
+
+	psikologRepository = psikolog.NewRepository(DB)
+	psikologService    = psikolog.NewService(psikologRepository)
+	psikologHandler    = handler.NewPsikologHandler(psikologService)
 )
 
 func main() {
@@ -29,11 +34,17 @@ func main() {
 	// Endpoint untuk model users
 	router.GET("/users", userHandler.ShowUserHandler)
 	router.POST("/users/register", userHandler.CreateUserHandler)
-	//router.POST("/users/login", userHandler.CreateUserHandler)
 	router.GET("users/:user_id", userHandler.GetUserByIDHandler)
 	router.PUT("users/:user_id", userHandler.GetandUpdateUserByIDHandler)
-	//router.PUT("users/:user_id", handler.UpdateUserByID)
 	router.DELETE("users/:user_id", userHandler.GetandDeleteUserByIDHandler)
+	//router.POST("/users/login", userHandler.CreateUserHandler)
+
+	// Endpoint untuk model psikolog
+	router.GET("/psikologs", psikologHandler.ShowPsikologHandler)
+	router.POST("/psikologs", psikologHandler.CreatePsikologHandler)
+	router.GET("psikologs/:psikolog_id", psikologHandler.GetPsikologByIDHandler)
+	router.PUT("psikologs/:psikolog_id", psikologHandler.UpdatePsikologByIDHandler)
+	router.DELETE("psikologs/:psikolog_id", psikologHandler.DeletePsikologByIDHandler)
 
 	// Endpoint untuk model role
 	router.GET("/roles", handler.GetAllRole)
@@ -55,13 +66,6 @@ func main() {
 	router.GET("booking-detail/:booking_detail_id", handler.GetBookingDetailByID)
 	router.PUT("booking-detail/:booking-detail_id", handler.UpdateBookingDetailByID)
 	router.DELETE("booking-detail/:booking_detail_id", handler.DeleteByBookingDetailID)
-
-	// Endpoint untuk model psikolog
-	router.GET("/psikolog", handler.GetAllPsikolog)
-	router.POST("/psikolog", handler.CreateNewPsikolog)
-	router.GET("psikolog/:psikolog_id", handler.GetPsikologByID)
-	router.PUT("psikolog/:psikolog_id", handler.UpdatePsikologByID)
-	router.DELETE("psikolog/:psikolog_id", handler.DeleteByPsikologID)
 
 	// Untuk menjalanakan server ke localhost komputer
 	router.Run(":3000")

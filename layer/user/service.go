@@ -143,13 +143,13 @@ func (s *service) GetandUpdateUserByID(userID string, dataUserInput entity.UserI
 	}
 
 	if dataUserInput.RoleID != 0 {
-		dataUserUpdate["role"] = dataUserInput.RoleID
+		dataUserUpdate["role_id"] = dataUserInput.RoleID
 	}
 	if dataUserInput.FirstName != "" || len(dataUserInput.FirstName) != 0 {
-		dataUserUpdate["first_name"] = dataUserInput.FirstName
+		dataUserUpdate["firstname"] = dataUserInput.FirstName
 	}
 	if dataUserInput.Lastname != "" || len(dataUserInput.Lastname) != 0 {
-		dataUserUpdate["last_name"] = dataUserInput.Lastname
+		dataUserUpdate["lastname"] = dataUserInput.Lastname
 	}
 	if dataUserInput.Email != "" || len(dataUserInput.Email) != 0 {
 		dataUserUpdate["email"] = dataUserInput.Email

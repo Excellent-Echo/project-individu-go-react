@@ -8,9 +8,9 @@ import (
 // UserFormat untuk formatting yang ada di model user
 type UserFormat struct {
 	ID        int    `json:"id"`
-	RoleID    int    `json:"role"`
-	FIrstname string `json:"first_name"`
-	Lastname  string `json:"last_name"`
+	RoleID    int    `json:"role_id"`
+	FIrstname string `json:"firstname"`
+	Lastname  string `json:"lastname"`
 	Email     string `json:"email"`
 	Password  string `json:"password"`
 }
