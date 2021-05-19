@@ -20,7 +20,7 @@ type DeleteFormat struct {
 
 func FormattingUser(user entity.User) UserFormat {
 	userFormat := UserFormat{
-		UserID:    user.UserID,
+		UserID:    user.ID,
 		UserName:  user.UserName,
 		FirstName: user.FirstName,
 		LastName:  user.LastName,

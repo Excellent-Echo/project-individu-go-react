@@ -3,6 +3,7 @@ package main
 import (
 	"project-individu-go-react/config"
 	"project-individu-go-react/handler"
+	"project-individu-go-react/question"
 	"project-individu-go-react/user"
 
 	"github.com/gin-gonic/gin"
@@ -10,10 +11,13 @@ import (
 )
 
 var (
-	DB             *gorm.DB = config.Connect()
-	userRepository          = user.NewRepository(DB)
-	userService             = user.NewService(userRepository)
-	userHandler             = handler.NewUserHandler(userService)
+	DB                 *gorm.DB = config.Connect()
+	userRepository              = user.NewRepository(DB)
+	userService                 = user.UserNewService(userRepository)
+	userHandler                 = handler.NewUserHandler(userService)
+	questionRepository          = question.NewRepository(DB)
+	questionService             = question.QuestionNewService(questionRepository)
+	questionHandler             = handler.NewQuestionHandler(questionService)
 )
 
 func main() {
@@ -25,6 +29,8 @@ func main() {
 	r.GET("/users/:user_id", userHandler.ShowUserByIdHandler)
 	r.PUT("/users/:user_id", userHandler.UpdateUserByIDHandler)
 	r.DELETE("/users/:user_id", userHandler.DeleteByUserIDHandler)
+
+	r.POST("/questions/ask", questionHandler.CreateQuestionHandler)
 
 	r.Run(":4444")
 }

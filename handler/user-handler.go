@@ -9,10 +9,10 @@ import (
 )
 
 type userHandler struct {
-	userService user.Service
+	userService user.UserService
 }
 
-func NewUserHandler(userService user.Service) *userHandler {
+func NewUserHandler(userService user.UserService) *userHandler {
 	return &userHandler{userService}
 }
 
@@ -54,7 +54,7 @@ func (h *userHandler) CreateUserHandler(c *gin.Context) {
 }
 
 func (h *userHandler) ShowUserByIdHandler(c *gin.Context) {
-	id := c.Param("user_id")
+	id := c.Param("id")
 
 	user, err := h.userService.GetUserByID(id)
 	if err != nil {
@@ -69,7 +69,7 @@ func (h *userHandler) ShowUserByIdHandler(c *gin.Context) {
 }
 
 func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
-	id := c.Params.ByName("user_id")
+	id := c.Params.ByName("id")
 
 	var updateUserInput entity.UpdateUserInput
 
@@ -94,7 +94,7 @@ func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
 }
 
 func (h *userHandler) DeleteByUserIDHandler(c *gin.Context) {
-	id := c.Param("user_id")
+	id := c.Param("id")
 
 	user, err := h.userService.DeleteByUserID(id)
 

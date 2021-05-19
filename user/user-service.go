@@ -10,7 +10,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type Service interface {
+type UserService interface {
 	GetAllUsers() ([]UserFormat, error)
 	SaveNewUser(user entity.UserInput) (UserFormat, error)
 	GetUserByID(id string) (UserFormat, error)
@@ -18,15 +18,15 @@ type Service interface {
 	DeleteByUserID(id string) (interface{}, error)
 }
 
-type service struct {
+type userService struct {
 	repository UserRepository
 }
 
-func NewService(repository UserRepository) *service {
-	return &service{repository}
+func UserNewService(repository UserRepository) *userService {
+	return &userService{repository}
 }
 
-func (s *service) GetAllUsers() ([]UserFormat, error) {
+func (s *userService) GetAllUsers() ([]UserFormat, error) {
 	users, err := s.repository.GetAll()
 
 	var usersFormat []UserFormat
@@ -43,7 +43,7 @@ func (s *service) GetAllUsers() ([]UserFormat, error) {
 	return usersFormat, nil
 }
 
-func (s *service) SaveNewUser(user entity.UserInput) (UserFormat, error) {
+func (s *userService) SaveNewUser(user entity.UserInput) (UserFormat, error) {
 	genPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.MinCost)
 
 	if err != nil {
@@ -70,7 +70,7 @@ func (s *service) SaveNewUser(user entity.UserInput) (UserFormat, error) {
 	return formatUser, nil
 }
 
-func (s *service) GetUserByID(id string) (UserFormat, error) {
+func (s *userService) GetUserByID(id string) (UserFormat, error) {
 	if err := helper.ValidateIDNumber(id); err != nil {
 		return UserFormat{}, err
 	}
@@ -81,7 +81,7 @@ func (s *service) GetUserByID(id string) (UserFormat, error) {
 		return UserFormat{}, err
 	}
 
-	if user.UserID == 0 {
+	if user.ID == 0 {
 		newError := fmt.Sprintf("user id %s is not found", id)
 		return UserFormat{}, errors.New(newError)
 	}
@@ -92,7 +92,7 @@ func (s *service) GetUserByID(id string) (UserFormat, error) {
 
 }
 
-func (s *service) UpdateUserByID(id string, dataInput entity.UpdateUserInput) (UserFormat, error) {
+func (s *userService) UpdateUserByID(id string, dataInput entity.UpdateUserInput) (UserFormat, error) {
 	var dataUpdate = map[string]interface{}{}
 
 	if err := helper.ValidateIDNumber(id); err != nil {
@@ -105,7 +105,7 @@ func (s *service) UpdateUserByID(id string, dataInput entity.UpdateUserInput) (U
 		return UserFormat{}, err
 	}
 
-	if user.UserID == 0 {
+	if user.ID == 0 {
 		newError := fmt.Sprintf("user id %s is not found", id)
 		return UserFormat{}, errors.New(newError)
 	}
@@ -138,7 +138,7 @@ func (s *service) UpdateUserByID(id string, dataInput entity.UpdateUserInput) (U
 	return formatUser, nil
 }
 
-func (s *service) DeleteByUserID(id string) (interface{}, error) {
+func (s *userService) DeleteByUserID(id string) (interface{}, error) {
 	if err := helper.ValidateIDNumber(id); err != nil {
 		return nil, err
 	}
@@ -149,7 +149,7 @@ func (s *service) DeleteByUserID(id string) (interface{}, error) {
 		return nil, err
 	}
 
-	if user.UserID == 0 {
+	if user.ID == 0 {
 		newError := fmt.Sprintf("user id %s is not found", id)
 		return nil, errors.New(newError)
 	}
