@@ -16,7 +16,7 @@ func NewQuestionHandler(questionService question.QuestionService) *questionHandl
 	return &questionHandler{questionService}
 }
 
-func (h *questionHandler) ShowAllQuestions(c *gin.Context) {
+func (h *questionHandler) ShowAllQuestionsHandler(c *gin.Context) {
 	questions, err := h.questionService.FindAllQuestions()
 
 	if err != nil {
@@ -52,4 +52,19 @@ func (h *questionHandler) CreateQuestionHandler(c *gin.Context) {
 
 	userResponse := helper.APIResponse("insert new question succeed", 201, "success", response)
 	c.JSON(201, userResponse)
+}
+
+func (h *questionHandler) ShowQuestionByIdHandler(c *gin.Context) {
+	id := c.Param("id")
+
+	question, err := h.questionService.FindQuestionById(id)
+	if err != nil {
+		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	response := helper.APIResponse("get question succeed", 200, "success", question)
+	c.JSON(200, response)
 }

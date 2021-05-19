@@ -1,14 +1,17 @@
 package question
 
 import (
+	"errors"
+	"fmt"
 	"project-individu-go-react/entity"
+	"project-individu-go-react/helper"
 	"time"
 )
 
 type QuestionService interface {
 	FindAllQuestions() ([]entity.Questions, error)
 	SaveNewQuestion(question entity.QuestionInput) (entity.Questions, error)
-	// FindQuestionById(id string) (entity.Questions, error)
+	FindQuestionById(id string) (entity.Questions, error)
 	// UpdateQuestionById(id string, dataInput entity.QuestionInput) (entity.Questions, error)
 	// DeleteQuestionById(id string) (interface{}, error)
 }
@@ -47,4 +50,24 @@ func (s *questionService) SaveNewQuestion(question entity.QuestionInput) (entity
 	}
 
 	return createQuestion, nil
+}
+
+func (s *questionService) FindQuestionById(id string) (entity.Questions, error) {
+	if err := helper.ValidateIDNumber(id); err != nil {
+		return entity.Questions{}, err
+	}
+
+	question, err := s.repository.FindQuestionById(id)
+
+	if err != nil {
+		return entity.Questions{}, err
+	}
+
+	if question.ID == 0 {
+		newError := fmt.Sprintf("question id %s is not found", id)
+		return entity.Questions{}, errors.New(newError)
+	}
+
+	return question, nil
+
 }
