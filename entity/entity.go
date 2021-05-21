@@ -1,3 +1,5 @@
+package entity
+
 import "time"
 
 type User struct {
@@ -9,10 +11,13 @@ type User struct {
 	CreateAt  time.Time
 	UpdateAt  time.Time
 	DeleteAt  time.Time `gorm:"index"`
+	// Booking   []Booking `gorm:"foreignKey:UserID"`
+	// Mentor    []Mentor  `gorm:"foreignKey:UserID"`
+	// Role      []Role    `gorm:"foreignKey:UserID"`
 }
 
 type Mentor struct {
-	ID int `gorm:"primaryKey"`
+	ID        int `gorm:"primaryKey"`
 	FirstName string
 	LastName  string
 	Email     string
@@ -23,15 +28,14 @@ type Mentor struct {
 }
 
 type Booking struct {
-	ID int `gorm:"primaryKey"`
+	ID           int `gorm:"primaryKey"`
 	ClassProgram string
-	BookingDate time.Time
-	DurasiJam int 
-
+	BookingDate  time.Time
+	DurasiJam    int
 }
 
 type Role struct {
-	ID int `gorm:"primarykey"`
-	LoginAs string
-	LoginDate time.Time
+	ID        int `gorm:"primarykey"`
+	LoginAs   string
+	LoginDate time.Time `gorm:"index"`
 }
