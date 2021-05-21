@@ -44,6 +44,15 @@ func (r *repository) FindByID(ID string) (entities.User, error) {
 	return user, nil
 }
 
+//Create
+func (r *repository) Create(user entities.User) (entities.User, error) {
+	if err := r.db.Create(&user).Error; err != nil {
+		return user, err
+	}
+
+	return user, nil
+}
+
 //Update
 func (r *repository) UpdateByID(ID string, dataUpdate map[string]interface{}) (entities.User, error) {
 	var user entities.User

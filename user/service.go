@@ -12,6 +12,10 @@ import (
 
 type Service interface {
 	GetAllUser() ([]UserFormat, error)
+	SaveNewUser(user entities.UserInput) (UserFormat, error)
+	GetUserByID(userID string) (UserFormat, error)
+	UpdateUserByID(userID string, dataInput entities.UpdateUserInput) (UserFormat, error)
+	DeleteUserByID(userID string) (interface{}, error)
 }
 
 type service struct {
