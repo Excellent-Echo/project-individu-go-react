@@ -19,3 +19,15 @@ func FormatUser(user entities.User) UserFormat {
 
 	return formatUser
 }
+
+type DeleteFormat struct {
+	Message string `json:"message"`
+}
+
+func FormatDeleteUser(msg string) DeleteFormat {
+	var deleteFormat = DeleteFormat{
+		Message: msg,
+	}
+
+	return deleteFormat
+}
