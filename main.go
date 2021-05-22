@@ -1,10 +1,8 @@
 package main
 
 import (
-	"PROJECT-INDIVIDU-GO-REACT/entity"
-	// "PROJECT-INDIVIDU-GO-REACT/handler"
-	// "PROJECT-INDIVIDU-GO-REACT/user"
 	"PROJECT-INDIVIDU-GO-REACT/config"
+	"PROJECT-INDIVIDU-GO-REACT/entity"
 	"fmt"
 )
 
