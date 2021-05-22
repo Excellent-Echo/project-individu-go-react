@@ -74,8 +74,8 @@ func (d *userDeliver) UpdateUserByIDDeliver(c *gin.Context) {
 	var updateUserInput entities.UpdateUserInput
 
 	if err := c.ShouldBindJSON(&updateUserInput); err != nil {
-		splitError := helper.SplitErrorInformation(err)
-		responseError := helper.APIResponse("Input data required", 400, "bad request", gin.H{"errors": splitError})
+		//splitError := helper.SplitErrorInformation(err)
+		responseError := helper.APIResponse("Input data required", 400, "bad request", gin.H{"errors": err.Error()})
 
 		c.JSON(400, responseError)
 		return

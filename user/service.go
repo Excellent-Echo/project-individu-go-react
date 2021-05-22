@@ -93,9 +93,9 @@ func (s *service) GetUserByID(userID string) (UserFormat, error) {
 func (s *service) UpdateUserByID(userID string, dataInput entities.UpdateUserInput) (UserFormat, error) {
 	var dataUpdate = map[string]interface{}{}
 
-	if err := helper.ValidateIDNumber(userID); err != nil {
-		return UserFormat{}, err
-	}
+	// if err := helper.ValidateIDNumber(userID); err != nil {
+	// 	return UserFormat{}, err
+	// }
 
 	user, err := s.repository.FindByID(userID)
 
@@ -120,7 +120,7 @@ func (s *service) UpdateUserByID(userID string, dataInput entities.UpdateUserInp
 		dataUpdate["email"] = dataInput.Email
 	}
 
-	dataUpdate["update_at"] = time.Now()
+	dataUpdate["updated_at"] = time.Now()
 
 	userUpdate, err := s.repository.UpdateByID(userID, dataUpdate)
 
