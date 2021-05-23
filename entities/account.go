@@ -12,3 +12,15 @@ type Account struct {
 	DeletedAt      time.Time `json:" deleted_at"`
 	AccountHistory History   `gorm:"foreignKey:SID"`
 }
+
+type AccountInput struct {
+	SID         int    `json:"sid" binding:"required"`
+	Instrument  string `json:"instrument" binding:"required"`
+	LastBalance int    `json:"last_balance" binding:"required"`
+	CID         int    `json:"cid" binding:"required"`
+}
+
+type AccountUpdateInput struct {
+	Instrument  string `json:"instrument"`
+	LastBalance int    `json:"last_balance"`
+}

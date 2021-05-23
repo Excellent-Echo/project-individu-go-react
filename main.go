@@ -1,6 +1,7 @@
 package main
 
 import (
+	"project-individu-go-react/account"
 	"project-individu-go-react/config"
 	"project-individu-go-react/customer"
 	"project-individu-go-react/user"
@@ -19,6 +20,10 @@ var (
 	customerRepository = customer.NewRepository(DB)
 	customerService    = customer.NewService(customerRepository)
 	customerDelivery   = customer.NewCustomerDeliver(customerService)
+
+	accountRepository = account.NewRepository(DB)
+	accountService    = account.NewService(accountRepository)
+	accountDelivery   = account.NewAccountDeliver(accountService)
 )
 
 func main() {
@@ -37,6 +42,13 @@ func main() {
 	r.POST("customers/register", customerDelivery.CreateCustomerDeliver)
 	r.PUT("/customers/:cid", customerDelivery.UpdateCustomerByCIDDeliver)
 	r.DELETE("/customers/:cid", customerDelivery.DeleteCustomerByCIDDeliver)
+
+	//Account Route
+	r.GET("/accounts", accountDelivery.ShowAccountDeliver)
+	r.GET("/accounts/:sid", accountDelivery.GetAccountBySIDDeliver)
+	r.POST("/accounts/register", accountDelivery.CreateAccountDeliver)
+	r.PUT("/accounts/:sid", accountDelivery.UpdateAccountBYSIDDeliver)
+	r.DELETE("/accounts/:sid", accountDelivery.DeleteAccountBySIDDeliver)
 
 	r.Run(":8888")
 }
