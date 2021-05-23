@@ -25,7 +25,7 @@ func NewRepository(db *gorm.DB) *repository {
 //CUSTOMER
 
 //READ CUSTOMERS
-func (r *repository) FindALL() ([]entities.Costumer, error) {
+func (r *repository) FindAll() ([]entities.Costumer, error) {
 	var customers []entities.Costumer
 
 	if err := r.db.Find(&customers).Error; err != nil {
@@ -39,7 +39,7 @@ func (r *repository) FindALL() ([]entities.Costumer, error) {
 func (r *repository) FindByID(CID string) (entities.Costumer, error) {
 	var costumers entities.Costumer
 
-	if err := r.db.Where("cid = ?", CID).Find(&costumers).Error; err != nil {
+	if err := r.db.Where("c_id = ?", CID).Find(&costumers).Error; err != nil {
 		return costumers, err
 	}
 
@@ -59,11 +59,11 @@ func (r *repository) Create(customer entities.Costumer) (entities.Costumer, erro
 func (r *repository) UpdateByID(CID string, dataUpdate map[string]interface{}) (entities.Costumer, error) {
 	var customer entities.Costumer
 
-	if err := r.db.Model(&customer).Where("cid = ?", CID).Updates(dataUpdate).Error; err != nil {
+	if err := r.db.Model(&customer).Where("c_id = ?", CID).Updates(dataUpdate).Error; err != nil {
 		return customer, err
 	}
 
-	if err := r.db.Where("cid = ?", CID).Find(&customer).Error; err != nil {
+	if err := r.db.Where("c_id = ?", CID).Find(&customer).Error; err != nil {
 		return customer, err
 	}
 
@@ -72,7 +72,7 @@ func (r *repository) UpdateByID(CID string, dataUpdate map[string]interface{}) (
 
 //DELETE
 func (r *repository) DeleteByID(CID string) (string, error) {
-	if err := r.db.Where("cid = ?", CID).Delete(&entities.Costumer{}).Error; err != nil {
+	if err := r.db.Where("c_id = ?", CID).Delete(&entities.Costumer{}).Error; err != nil {
 		return "error", err
 	}
 

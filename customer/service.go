@@ -159,7 +159,7 @@ func (s *service) DeleteCustomerByCID(CID string) (interface{}, error) {
 		return nil, errors.New("error delete in internal server")
 	}
 
-	msg := fmt.Sprintf("success delete user CID: %S", CID)
+	msg := fmt.Sprintf("success delete user CID: %s", CID)
 
 	formatDelete := FormatDeleteCustomer(msg)
 
