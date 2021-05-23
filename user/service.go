@@ -57,6 +57,7 @@ func (s *service) SaveNewUser(user entities.UserInput) (UserFormat, error) {
 		Password:  string(encrypt),
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
+		DeletedAt: time.Now(),
 	}
 
 	createUser, err := s.repository.Create(newUser)
