@@ -18,6 +18,7 @@ var (
 func main() {
 	r := gin.Default()
 
+	//User Route
 	r.GET("/users", userDelivery.ShowUserDeliver)
 	r.GET("/users/:user_id", userDelivery.GetUserByIDDeliver)
 	r.POST("users/register", userDelivery.CreateUserDeliver)

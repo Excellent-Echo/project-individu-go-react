@@ -22,7 +22,8 @@ func NewRepository(db *gorm.DB) *repository {
 	return &repository{db}
 }
 
-//Read
+//USERSS =======
+//Read USER
 func (r *repository) FindAll() ([]entities.User, error) {
 	var users []entities.User
 
