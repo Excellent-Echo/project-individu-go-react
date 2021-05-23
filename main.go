@@ -4,6 +4,7 @@ import (
 	"project-individu-go-react/account"
 	"project-individu-go-react/config"
 	"project-individu-go-react/customer"
+	"project-individu-go-react/history"
 	"project-individu-go-react/user"
 
 	"github.com/gin-gonic/gin"
@@ -24,6 +25,10 @@ var (
 	accountRepository = account.NewRepository(DB)
 	accountService    = account.NewService(accountRepository)
 	accountDelivery   = account.NewAccountDeliver(accountService)
+
+	historyRepository = history.NewRepository(DB)
+	historyService    = history.NewService(historyRepository)
+	historyDelivery   = history.NewHistoryDeliver(historyService)
 )
 
 func main() {
@@ -49,6 +54,12 @@ func main() {
 	r.POST("/accounts/register", accountDelivery.CreateAccountDeliver)
 	r.PUT("/accounts/:sid", accountDelivery.UpdateAccountBYSIDDeliver)
 	r.DELETE("/accounts/:sid", accountDelivery.DeleteAccountBySIDDeliver)
+
+	//History Route
+	r.GET("/histories", historyDelivery.ShowHistoriesDeliver)
+	r.GET("/history/:hid", historyDelivery.GetHistoryByHIDDeliver)
+	r.GET("/histories/account/:sid", historyDelivery.GetHistoriesBySIDDeliver)
+	r.POST("/history/new", historyDelivery.CreateHistoryDeliver)
 
 	r.Run(":8888")
 }
