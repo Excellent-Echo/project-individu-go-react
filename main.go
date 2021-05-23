@@ -1,11 +1,11 @@
 package main
 
 import (
-	"project-individu-go-react/account"
 	"project-individu-go-react/config"
-	"project-individu-go-react/customer"
-	"project-individu-go-react/history"
-	"project-individu-go-react/user"
+	"project-individu-go-react/layer/account"
+	"project-individu-go-react/layer/customer"
+	"project-individu-go-react/layer/history"
+	"project-individu-go-react/layer/user"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
