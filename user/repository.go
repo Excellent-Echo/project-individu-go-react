@@ -75,5 +75,5 @@ func (r *repository) DeleteByID(ID string) (string, error) {
 		return "error", err
 	}
 
-	return "delete success", nil
+	return "success", nil
 }
