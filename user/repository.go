@@ -12,6 +12,7 @@ type Repository interface {
 	FindByID(ID string) (entity.User, error)
 	UpdateByID(ID string, dataUpdate map[string]interface{}) (entity.User, error)
 	DeleteByID(ID string) (string, error)
+	FindByEmail(email string) (entity.User, error)
 }
 
 type repository struct {
@@ -71,4 +72,14 @@ func (r *repository) DeleteByID(ID string) (string, error) {
 	}
 
 	return "success", nil
+}
+
+func (r *repository) FindByEmail(email string) (entity.User, error) {
+	var user entity.User
+
+	if err := r.db.Where("email = ?", email).Find(&user).Error; err != nil {
+		return user, err
+	}
+
+	return user, nil
 }
