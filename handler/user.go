@@ -122,7 +122,7 @@ func (h *userHandler) DeleteUserByIDHandler(c *gin.Context) {
 // pengecekan apakah password di database sama dengan password yang dikirim (bcrypt)
 // kita menggunakan generate token ke handler (response)
 
-func (h *userHandler) LoginUserInput(c *gin.Context) {
+func (h *userHandler) LoginUserHandler(c *gin.Context) {
 	var inputLoginUser entity.LoginUserInput
 
 	if err := c.ShouldBindJSON(&inputLoginUser); err != nil {
