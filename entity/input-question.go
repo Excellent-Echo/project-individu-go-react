@@ -6,3 +6,9 @@ type QuestionInput struct {
 	TagID   uint32 `json:"tag_id" binding:"required"`
 	UserID  uint32 `json:"user_id" binding:"required"`
 }
+
+type UpdateQuestionInput struct {
+	Title   string `json:"title"`
+	Content string `json:"content"`
+	TagID   uint32 `json:"tag_id"`
+}

@@ -16,6 +16,7 @@ type UserService interface {
 	GetUserByID(id string) (UserFormat, error)
 	UpdateUserByID(id string, dataInput entity.UpdateUserInput) (UserFormat, error)
 	DeleteByUserID(id string) (interface{}, error)
+	LoginUser(input entity.LoginUserInput) (entity.User, error)
 }
 
 type userService struct {
@@ -24,6 +25,26 @@ type userService struct {
 
 func UserNewService(repository UserRepository) *userService {
 	return &userService{repository}
+}
+
+func (s *userService) LoginUser(input entity.LoginUserInput) (entity.User, error) {
+	user, err := s.repository.FindByEmail(input.Email)
+
+	if err != nil {
+		return user, err
+	}
+
+	if user.ID == 0 {
+		newError := fmt.Sprintf("user id %v not found", user.ID)
+		return user, errors.New(newError)
+	}
+
+	// check password
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
+		return user, errors.New("invalid password")
+	}
+
+	return user, nil
 }
 
 func (s *userService) GetAllUsers() ([]UserFormat, error) {
