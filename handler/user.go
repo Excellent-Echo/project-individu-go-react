@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"project-individu-go-react/auth"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
 	"project-individu-go-react/user"
@@ -10,10 +11,11 @@ import (
 
 type userHandler struct {
 	userService user.Service
+	authService auth.Service
 }
 
-func NewUserHandler(userService user.Service) *userHandler {
-	return &userHandler{userService}
+func NewUserHandler(userService user.Service, authService auth.Service) *userHandler {
+	return &userHandler{userService, authService}
 }
 
 // function handler for Get All data User
@@ -106,5 +108,37 @@ func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
 	}
 
 	response := helper.APIResponse("success update user by id", 200, "success", user)
+	c.JSON(200, response)
+}
+
+func (h *userHandler) LoginUserHandler(c *gin.Context) {
+	var inputLoginUser entity.LoginUserInput
+
+	if err := c.ShouldBindJSON(&inputLoginUser); err != nil {
+		splitErr := helper.SplitErrorInformation(err)
+		responseErr := helper.APIResponse("input data required", 400, "bad request", gin.H{"error": splitErr})
+
+		c.JSON(400, responseErr)
+		return
+	}
+
+	userData, err := h.userService.LoginUser(inputLoginUser)
+
+	if err != nil {
+		responseErr := helper.APIResponse("input data error", 401, "bad request", gin.H{"error": err})
+
+		c.JSON(400, responseErr)
+		return
+	}
+
+	token, err := h.authService.GenerateToken(userData.ID)
+	if err != nil {
+		responseErr := helper.APIResponse("input data error", 401, "bad request", gin.H{"error": err})
+
+		c.JSON(400, responseErr)
+		return
+	}
+
+	response := helper.APIResponse("success login user", 200, "success", gin.H{"token": token})
 	c.JSON(200, response)
 }

@@ -12,6 +12,7 @@ type Repository interface {
 	FindByID(id string) (entity.User, error)
 	DeleteByID(id string) (string, error)
 	UpdateByID(id string, dataUpdate map[string]interface{}) (entity.User, error)
+	FindByEmail(email string) (entity.User, error)
 }
 
 type repository struct {
@@ -58,6 +59,7 @@ func (r *repository) DeleteByID(id string) (string, error) {
 	return "success", nil
 }
 
+//function repository for update user by id
 func (r *repository) UpdateByID(id string, dataUpdate map[string]interface{}) (entity.User, error) {
 	var user entity.User
 
@@ -69,5 +71,15 @@ func (r *repository) UpdateByID(id string, dataUpdate map[string]interface{}) (e
 		return user, err
 	}
 
+	return user, nil
+}
+
+//function repository for get data user by email (using for login)
+func (r *repository) FindByEmail(email string) (entity.User, error) {
+	var user entity.User
+
+	if err := r.db.Where("email = ?", email).Find(&user).Error; err != nil {
+		return user, err
+	}
 	return user, nil
 }

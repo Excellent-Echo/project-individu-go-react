@@ -12,3 +12,8 @@ type UpdateUserInput struct {
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
 }
+
+type LoginUserInput struct {
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}

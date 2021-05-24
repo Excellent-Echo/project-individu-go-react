@@ -16,6 +16,7 @@ type Service interface {
 	GetUserByID(id string) (UserFormat, error)
 	DeleteByUserID(id string) (interface{}, error)
 	UpdateUserByID(id string, dataUpdate entity.UpdateUserInput) (UserFormat, error)
+	LoginUser(userInput entity.LoginUserInput) (entity.User, error)
 }
 
 type service struct {
@@ -44,7 +45,7 @@ func (s *service) GetAllUser() ([]UserFormat, error) {
 
 //function service for create new user
 func (s *service) SaveNewUser(user entity.UserInput) (UserFormat, error) {
-	genPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.MaxCost)
+	genPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.MinCost)
 
 	if err != nil {
 		return UserFormat{}, err
@@ -156,4 +157,23 @@ func (s *service) UpdateUserByID(id string, dataInput entity.UpdateUserInput) (U
 	formatUser := FormatUser(userUpdated)
 
 	return formatUser, nil
+}
+
+func (s *service) LoginUser(userInput entity.LoginUserInput) (entity.User, error) {
+	user, err := s.repository.FindByEmail(userInput.Email)
+
+	if err != nil {
+		return user, err
+	}
+
+	if user.ID == 0 {
+		return user, errors.New("user not found")
+	}
+
+	//checking password
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(userInput.Password)); err != nil {
+		return user, errors.New("password invalid")
+	}
+
+	return user, nil
 }
