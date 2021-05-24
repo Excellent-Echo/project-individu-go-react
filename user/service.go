@@ -39,13 +39,11 @@ func (s *service) LoginUser(input entity.LoginUserInput) (entity.User, error) {
 		return user, errors.New(newError)
 	}
 
-	// pengecekan password
+	//pengecekan password
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
 		return user, errors.New("password invalid")
 	}
-
 	return user, nil
-
 }
 
 func (s *service) GetAllUser() ([]UserFormat, error) {

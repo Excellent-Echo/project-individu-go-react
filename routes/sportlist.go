@@ -19,5 +19,5 @@ var (
 func SportListRoutes(r *gin.Engine) {
 	r.GET("/sportlist", sportlistHandler.ShowUserHandler)
 	r.POST("/sportlist/register", sportlistHandler.CreateSportlistHandler)
-	r.GET("/users/:sportlist_id", sportlistHandler.GetSportListByIDHandler)
+	r.GET("/sportlist/:sportlist_id", sportlistHandler.GetSportListByIDHandler)
 }
