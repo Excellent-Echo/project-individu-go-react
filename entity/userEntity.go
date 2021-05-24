@@ -32,3 +32,9 @@ type UserInputUpdate struct {
 	Lastname  string `json:"lastname"`
 	Email     string `json:"email"`
 }
+
+// UserLoginInput inputan yang diperlukan users untuk login
+type UserLoginInput struct {
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
+}

@@ -11,6 +11,7 @@ type Repository interface {
 	FindUserByID(ID string) (entity.User, error)
 	FindandDeleteUserByID(ID string) (string, error)
 	FindAndUpdateUserByID(ID string, userUpdate map[string]interface{}) (entity.User, error)
+	FindUserByEmail(email string) (entity.User, error)
 }
 
 type repository struct {
@@ -68,4 +69,15 @@ func (r *repository) FindAndUpdateUserByID(ID string, userUpdate map[string]inte
 	}
 
 	return userWillUpdate, nil
+}
+
+// FindUserByEmail fungsi untuk mencari data user berdasarkan "email" di model users menggunakan Where dan Find
+func (r *repository) FindUserByEmail(email string) (entity.User, error) {
+	var user entity.User
+
+	if err := r.db.Where("email = ?", email).Find(&user).Error; err != nil {
+		return user, err
+	}
+
+	return user, nil
 }

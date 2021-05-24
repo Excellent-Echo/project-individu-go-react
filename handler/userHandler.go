@@ -2,17 +2,20 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"project-individu-go-react/auth"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
 	"project-individu-go-react/layer/user"
+	"strconv"
 )
 
 type userHandler struct {
 	userService user.Service
+	authService auth.Service
 }
 
-func NewUserHander(userService user.Service) *userHandler {
-	return &userHandler{userService}
+func NewUserHander(userService user.Service, authService auth.Service) *userHandler {
+	return &userHandler{userService, authService}
 }
 
 // ShowUserHandler untuk mengambil semua data user, jika user mengakses dari endpoint "/users"
@@ -131,6 +134,18 @@ func (h *userHandler) GetandUpdateUserByIDHandler(c *gin.Context) {
 		return
 	}
 
+	idParam, _ := strconv.Atoi(id)
+
+	// authorization userid dari params harus sama dengan user id yang login
+	userData := int(c.MustGet("currentUser").(int))
+
+	if idParam != userData {
+		responseError := helper.APIResponse("Unauthorize", 401, "error", gin.H{"error": "user ID not authorize"})
+
+		c.JSON(401, responseError)
+		return
+	}
+
 	users, err := h.userService.GetandUpdateUserByID(id, userUpdate)
 
 	if err != nil {
@@ -141,5 +156,36 @@ func (h *userHandler) GetandUpdateUserByIDHandler(c *gin.Context) {
 	}
 
 	response := helper.APIResponse("success update user by id", 200, "success", users)
+	c.JSON(200, response)
+}
+
+// UserLoginHandler untuk mencari data user berdasarkan email nya, jika user menginput dari endpoint "/users/login"
+func (h *userHandler) UserLoginHandler(c *gin.Context) {
+	var loginUserInput entity.UserLoginInput
+
+	if err := c.ShouldBindJSON(&loginUserInput); err != nil {
+		splitError := helper.SplitErrorInformation(err)
+		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"errors": splitError})
+		c.JSON(400, responseError)
+		return
+	}
+
+	userData, err := h.userService.LoginUserbyEmail(loginUserInput)
+
+	if err != nil {
+		responseError := helper.APIResponse("input data error", 401, "bad request", gin.H{"errors": err})
+		c.JSON(401, responseError)
+		return
+	}
+
+	token, err := h.authService.GenerateToken(userData.ID)
+
+	if err != nil {
+		responseError := helper.APIResponse("input data error", 401, "bad request", gin.H{"errors": err})
+		c.JSON(401, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success login user", 200, "success", gin.H{"token": token})
 	c.JSON(200, response)
 }

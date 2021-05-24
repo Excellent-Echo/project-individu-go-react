@@ -15,6 +15,7 @@ type Service interface {
 	GetUserByID(userID string) (UserFormat, error)
 	GetandDeleteUserByID(userID string) (interface{}, error)
 	GetandUpdateUserByID(userID string, dataUserInput entity.UserInputUpdate) (UserFormat, error)
+	LoginUserbyEmail(input entity.UserLoginInput) (entity.User, error)
 }
 
 type service struct {
@@ -167,4 +168,23 @@ func (s *service) GetandUpdateUserByID(userID string, dataUserInput entity.UserI
 	formatUser := FormatUser(userUpdated)
 
 	return formatUser, nil
+}
+
+func (s *service) LoginUserbyEmail(input entity.UserLoginInput) (entity.User, error) {
+	user, err := s.repository.FindUserByEmail(input.Email)
+
+	if err != nil {
+		return user, err
+	}
+
+	if user.ID == 0 {
+		newError := fmt.Sprintf("user id %v not found", user.ID)
+		return user, errors.New(newError)
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
+		return user, errors.New("password invalid")
+	}
+
+	return user, nil
 }
