@@ -1,6 +1,7 @@
 package user
 
 import (
+	"project-individu-go-react/auth"
 	"project-individu-go-react/entities"
 	"project-individu-go-react/helper"
 
@@ -9,10 +10,11 @@ import (
 
 type userDeliver struct {
 	userService Service
+	authService auth.Service
 }
 
-func NewUserDeliver(userService Service) *userDeliver {
-	return &userDeliver{userService}
+func NewUserDeliver(userService Service, authService auth.Service) *userDeliver {
+	return &userDeliver{userService, authService}
 }
 
 func (d *userDeliver) ShowUserDeliver(c *gin.Context) {
@@ -106,5 +108,39 @@ func (d *userDeliver) DeleteUserByIDDeliver(c *gin.Context) {
 	}
 
 	response := helper.APIResponse("success delete user by ID", 200, "success", user)
+	c.JSON(200, response)
+}
+
+//login delivery
+
+func (d *userDeliver) LoginUserDeliver(c *gin.Context) {
+	var inputLoginUser entities.LoginUserInput
+
+	if err := c.ShouldBindJSON(&inputLoginUser); err != nil {
+		splitError := helper.SplitErrorInformation(err)
+		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"errors": splitError})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	userData, err := d.userService.LoginUser(inputLoginUser)
+
+	if err != nil {
+		responseError := helper.APIResponse("input data error", 401, "bad request", gin.H{"errors": err})
+
+		c.JSON(401, responseError)
+		return
+	}
+
+	token, err := d.authService.GenerateToken(userData.ID)
+	if err != nil {
+		responseError := helper.APIResponse("input data error", 401, "bad request", gin.H{"errors": err})
+
+		c.JSON(401, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success login user", 200, "success", token)
 	c.JSON(200, response)
 }

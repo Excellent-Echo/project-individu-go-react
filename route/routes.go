@@ -1,7 +1,9 @@
 package route
 
 import (
+	"project-individu-go-react/auth"
 	"project-individu-go-react/config"
+	"project-individu-go-react/layer"
 	"project-individu-go-react/layer/account"
 	"project-individu-go-react/layer/customer"
 	"project-individu-go-react/layer/history"
@@ -16,7 +18,8 @@ var (
 
 	userRepository = user.NewRepository(DB)
 	userService    = user.NewService(userRepository)
-	userDelivery   = user.NewUserDeliver(userService)
+	authService    = auth.NewService()
+	userDelivery   = user.NewUserDeliver(userService, authService)
 
 	customerRepository = customer.NewRepository(DB)
 	customerService    = customer.NewService(customerRepository)
@@ -34,30 +37,31 @@ var (
 func UserRoutes(r *gin.Engine) {
 
 	//User Route
-	r.GET("/users", userDelivery.ShowUserDeliver)
-	r.GET("/users/:user_id", userDelivery.GetUserByIDDeliver)
-	r.POST("users/register", userDelivery.CreateUserDeliver)
-	r.PUT("users/:user_id", userDelivery.UpdateUserByIDDeliver)
-	r.DELETE("users/:user_id", userDelivery.DeleteUserByIDDeliver)
+	r.POST("/users/login", userDelivery.LoginUserDeliver)
+	r.GET("/users", layer.Middleware(userService, authService), userDelivery.ShowUserDeliver)
+	r.GET("/users/:user_id", layer.Middleware(userService, authService), userDelivery.GetUserByIDDeliver)
+	r.POST("users/register", layer.Middleware(userService, authService), userDelivery.CreateUserDeliver)
+	r.PUT("users/:user_id", layer.Middleware(userService, authService), userDelivery.UpdateUserByIDDeliver)
+	r.DELETE("users/:user_id", layer.Middleware(userService, authService), userDelivery.DeleteUserByIDDeliver)
 
 	//Customer Route
-	r.GET("/customers", customerDelivery.ShowCustomerDeliver)
-	r.GET("/customers/:cid", customerDelivery.GetCustomerByCIDDeliver)
-	r.POST("customers/register", customerDelivery.CreateCustomerDeliver)
-	r.PUT("/customers/:cid", customerDelivery.UpdateCustomerByCIDDeliver)
-	r.DELETE("/customers/:cid", customerDelivery.DeleteCustomerByCIDDeliver)
+	r.GET("/customers", layer.Middleware(userService, authService), customerDelivery.ShowCustomerDeliver)
+	r.GET("/customers/:cid", layer.Middleware(userService, authService), customerDelivery.GetCustomerByCIDDeliver)
+	r.POST("customers/register", layer.Middleware(userService, authService), customerDelivery.CreateCustomerDeliver)
+	r.PUT("/customers/:cid", layer.Middleware(userService, authService), customerDelivery.UpdateCustomerByCIDDeliver)
+	r.DELETE("/customers/:cid", layer.Middleware(userService, authService), customerDelivery.DeleteCustomerByCIDDeliver)
 
 	//Account Route
-	r.GET("/accounts", accountDelivery.ShowAccountDeliver)
-	r.GET("/accounts/:sid", accountDelivery.GetAccountBySIDDeliver)
-	r.POST("/accounts/register", accountDelivery.CreateAccountDeliver)
-	r.PUT("/accounts/:sid", accountDelivery.UpdateAccountBYSIDDeliver)
-	r.DELETE("/accounts/:sid", accountDelivery.DeleteAccountBySIDDeliver)
+	r.GET("/accounts", layer.Middleware(userService, authService), accountDelivery.ShowAccountDeliver)
+	r.GET("/accounts/:sid", layer.Middleware(userService, authService), accountDelivery.GetAccountBySIDDeliver)
+	r.POST("/accounts/register", layer.Middleware(userService, authService), accountDelivery.CreateAccountDeliver)
+	r.PUT("/accounts/:sid", layer.Middleware(userService, authService), accountDelivery.UpdateAccountBYSIDDeliver)
+	r.DELETE("/accounts/:sid", layer.Middleware(userService, authService), accountDelivery.DeleteAccountBySIDDeliver)
 
 	//History Route
-	r.GET("/histories", historyDelivery.ShowHistoriesDeliver)
-	r.GET("/history/:hid", historyDelivery.GetHistoryByHIDDeliver)
-	r.GET("/histories/account/:sid", historyDelivery.GetHistoriesBySIDDeliver)
-	r.POST("/history/new", historyDelivery.CreateHistoryDeliver)
+	r.GET("/histories", layer.Middleware(userService, authService), historyDelivery.ShowHistoriesDeliver)
+	r.GET("/history/:hid", layer.Middleware(userService, authService), historyDelivery.GetHistoryByHIDDeliver)
+	r.GET("/histories/account/:sid", layer.Middleware(userService, authService), historyDelivery.GetHistoriesBySIDDeliver)
+	r.POST("/history/new", layer.Middleware(userService, authService), historyDelivery.CreateHistoryDeliver)
 
 }

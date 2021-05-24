@@ -11,6 +11,7 @@ import (
 )
 
 type Service interface {
+	LoginUser(input entities.LoginUserInput) (entities.User, error)
 	GetAllUser() ([]UserFormat, error)
 	SaveNewUser(user entities.UserInput) (UserFormat, error)
 	GetUserByID(userID string) (UserFormat, error)
@@ -24,6 +25,25 @@ type service struct {
 
 func NewService(repo Repository) *service {
 	return &service{repo}
+}
+
+func (s *service) LoginUser(input entities.LoginUserInput) (entities.User, error) {
+	user, err := s.repository.FindByEmail(input.Email)
+
+	if err != nil {
+		return user, err
+	}
+
+	if user.ID == 0 {
+		newError := fmt.Sprintf("user id %v not found", user.ID)
+		return user, errors.New(newError)
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
+		return user, errors.New("password invalid")
+	}
+
+	return user, nil
 }
 
 func (s *service) GetAllUser() ([]UserFormat, error) {
