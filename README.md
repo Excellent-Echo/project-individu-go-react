@@ -16,8 +16,8 @@ Buatlah sebuah tabel diagram sesuai keinginan kalian dengan catatan :
   * last_name  : varchar(255)
   * email  : varchar(255), unique
   * password  : varchar(255)
-  * created_at : date(3) 
-  * updated_at : date(3)
+  * created_at : date(3)  
+  * updated_at : date(3)  
 
 3. table user memiliki relasi dengan tabel lain, setiap tabel selain tabel user juga memiliki relasi
 
