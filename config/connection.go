@@ -1,6 +1,9 @@
 package config
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -9,13 +12,12 @@ import (
 func Connect() *gorm.DB {
 	err := godotenv.Load()
 
-	// dbUser := os.Getenv("DB_USERNAME")
-	// dbPass := os.Getenv("DV_PASSWORD")
-	// dbHost := os.Getenv("DB_HOST")
-	// dbName := os.Getenv("DB_NAME")
+	dbUser := os.Getenv("DB_USERNAME")
+	dbPass := os.Getenv("DV_PASSWORD")
+	dbHost := os.Getenv("DB_HOST")
+	dbName := os.Getenv("DB_NAME")
 
-	// dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbName)
-	dsn := "Radika:!Satu234limA!@tcp(localhost)/AboutMoney?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbName)
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
