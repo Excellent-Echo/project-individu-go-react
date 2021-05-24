@@ -5,6 +5,7 @@ import (
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
 	"project-individu-go-react/user"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -80,6 +81,17 @@ func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
 		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"errors": splitError})
 
 		c.JSON(400, responseError)
+		return
+	}
+
+	idParam, _ := strconv.Atoi(id)
+
+	userData := int(c.MustGet("currentUser").(int))
+
+	if idParam != userData {
+		responseError := helper.APIResponse("Unauthorize", 401, "error", gin.H{"error": "user ID not authorize"})
+
+		c.JSON(401, responseError)
 		return
 	}
 
