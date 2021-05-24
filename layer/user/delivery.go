@@ -4,6 +4,7 @@ import (
 	"project-individu-go-react/auth"
 	"project-individu-go-react/entities"
 	"project-individu-go-react/helper"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -80,6 +81,18 @@ func (d *userDeliver) UpdateUserByIDDeliver(c *gin.Context) {
 		responseError := helper.APIResponse("Input data required", 400, "bad request", gin.H{"errors": err.Error()})
 
 		c.JSON(400, responseError)
+		return
+	}
+
+	idParam, _ := strconv.Atoi(id)
+
+	// authorization userid dari params harus sama dengan user id yang login
+	userData := int(c.MustGet("currentUser").(int))
+
+	if idParam != userData {
+		responseError := helper.APIResponse("Unauthorize", 401, "error", gin.H{"error": "user ID not authorize"})
+
+		c.JSON(401, responseError)
 		return
 	}
 
