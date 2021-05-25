@@ -9,8 +9,9 @@ import (
 func main() {
 
 	r := gin.Default()
+
 	routes.UserRoute(r)
 
-	r.Run(":5555")
+	r.Run()
 
 }
