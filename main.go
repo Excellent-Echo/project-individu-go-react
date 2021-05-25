@@ -9,11 +9,11 @@ func main() {
 	router := gin.Default()
 
 	routes.UserRoute(router)
-	routes.PsikologRoute(router)
-	routes.RoleRoute(router)
-	routes.BookingDetailRoute(router)
-	routes.BookingRoute(router)
+	//routes.PsikologRoute(router)
+	//routes.RoleRoute(router)
+	//routes.BookingDetailRoute(router)
+	//routes.BookingRoute(router)
 
-	router.Run(":3000")
+	router.Run()
 
 }
