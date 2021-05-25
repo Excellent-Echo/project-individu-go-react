@@ -43,11 +43,11 @@ func (s *questionService) FindAllQuestions() ([]QuestionFormat, error) {
 
 func (s *questionService) SaveNewQuestion(question entity.QuestionInput) (entity.Questions, error) {
 	var newQuestion = entity.Questions{
-		Title:     question.Title,
-		Content:   question.Content,
-		Tags:      question.TagID,
-		UserID:    question.UserID,
-		CreatedAt: time.Now(),
+		Title:   question.Title,
+		Content: question.Content,
+		Tags:    question.TagID,
+		UserID:  question.UserID,
+		// CreatedAt: time.Now(),
 	}
 
 	createQuestion, err := s.repository.PostQuestion(newQuestion)
