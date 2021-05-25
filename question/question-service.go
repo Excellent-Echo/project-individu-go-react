@@ -44,11 +44,12 @@ func (s *questionService) FindAllQuestions() ([]QuestionFormat, error) {
 
 func (s *questionService) SaveNewQuestion(userID int, question entity.QuestionInput) (entity.Questions, error) {
 	var newQuestion = entity.Questions{
-		Title:     question.Title,
-		Content:   question.Content,
-		Tags:      question.Tags,
-		UserID:    uint32(userID),
-		CreatedAt: time.Now(),
+		Title:   question.Title,
+		Content: question.Content,
+		// Tags:      question.Tags,
+		CategoryID: question.CategoryID,
+		UserID:     uint32(userID),
+		CreatedAt:  time.Now(),
 	}
 
 	createQuestion, err := s.repository.PostQuestion(newQuestion)
@@ -106,8 +107,8 @@ func (s *questionService) UpdateQuestionById(id string, dataInput entity.UpdateQ
 	if dataInput.Content != "" || len(dataInput.Content) != 0 {
 		dataUpdate["content"] = dataInput.Content
 	}
-	if len(dataInput.Tags) != 0 {
-		dataUpdate["tags"] = dataInput.Tags
+	if dataInput.CategoryID != 0 {
+		dataUpdate["category_id"] = dataInput.CategoryID
 	}
 
 	dataUpdate["updated_at"] = time.Now()
