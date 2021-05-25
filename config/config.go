@@ -1,23 +1,26 @@
 package config
 
 import (
+	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"os"
 	"project-individu-go-react/migration"
 )
 
 // ConnectToDatabase untuk koneksi dari database MySQL
 func ConnectToDatabase() *gorm.DB {
 	//err := godotenv.Load()
-	//
-	//dbUser := os.Getenv("DB_USERNAME")
-	//dbPass := os.Getenv("DB_PASSWORD")
-	//dbHost := os.Getenv("DB_HOST")
-	//dbName := os.Getenv("DB_NAME")
 
-	//dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbName)
+	dbUser := os.Getenv("DB_USERNAME")
+	dbPass := os.Getenv("DB_PASSWORD")
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+	dbName := os.Getenv("DB_NAME")
 
-	dsn := "cb4RUILMib:WOiDCnT5Ey@tcp(remotemysql.com:3306)/cb4RUILMib?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbPort, dbName)
+
+	//dsn := "cb4RUILMib:WOiDCnT5Ey@tcp(remotemysql.com:3306)/cb4RUILMib?charset=utf8mb4&parseTime=True&loc=Local"
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
