@@ -44,7 +44,9 @@ func (h *questionHandler) CreateQuestionHandler(c *gin.Context) {
 		return
 	}
 
-	response, err := h.questionService.SaveNewQuestion(inputQuestion)
+	userID := int(c.MustGet("currentUser").(int))
+
+	response, err := h.questionService.SaveNewQuestion(userID, inputQuestion)
 	if err != nil {
 		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
 

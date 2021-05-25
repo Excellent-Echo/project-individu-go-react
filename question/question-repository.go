@@ -25,7 +25,7 @@ func NewRepository(db *gorm.DB) *Repository {
 func (r *Repository) FindAllQuestions() ([]entity.Questions, error) {
 	var Questions []entity.Questions
 
-	err := r.db.Preload("Tags").Find(&Questions).Error
+	err := r.db.Preload("Tags").Preload("Answers").Find(&Questions).Error
 	if err != nil {
 		return Questions, err
 	}
@@ -44,7 +44,7 @@ func (r *Repository) PostQuestion(question entity.Questions) (entity.Questions, 
 func (r *Repository) FindQuestionById(id string) (entity.Questions, error) {
 	var question entity.Questions
 
-	if err := r.db.Where("id = ?", id).Preload("Tags").Find(&question).Error; err != nil {
+	if err := r.db.Where("id = ?", id).Preload("Tags").Preload("Answers").Find(&question).Error; err != nil {
 		return question, err
 	}
 

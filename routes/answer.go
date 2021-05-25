@@ -15,4 +15,6 @@ var (
 
 func AnswerRoute(r *gin.Engine) {
 	r.POST("/questions/:id", handler.Middleware(userService, authService), answerHandler.CreateAnswerHandler)
+	r.PATCH("/answers/:id", handler.Middleware(userService, authService), answerHandler.UpdateAnswerHandler)
+	r.DELETE("/answers/:id", handler.Middleware(userService, authService), answerHandler.DeleteAnswerHandler)
 }
