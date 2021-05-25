@@ -6,5 +6,5 @@ type Role struct {
 	Admin    string `json:"admin"`
 	User     string `json:"user"`
 	Psikolog string `json:"psikolog"`
-	//Users    []User `gorm:"foreignKey:RoleID"`
+	Users    []User `gorm:"foreignKey:RoleID"`
 }
