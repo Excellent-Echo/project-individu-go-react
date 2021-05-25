@@ -13,7 +13,7 @@ func Connect() *gorm.DB {
 	// err := godotenv.Load()
 
 	dbUser := os.Getenv("DB_USERNAME")
-	dbPass := os.Getenv("DV_PASSWORD")
+	dbPass := os.Getenv("DB_PASSWORD")
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 	dbName := os.Getenv("DB_NAME")
