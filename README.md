@@ -76,6 +76,12 @@ buatlah 1 routing khusus yang didapat dari 3rd party API ( bebas apa saja ) dan 
 
 - kemudian buatlah API documentation dengan menggunakan swagger (boleh membuat dokumentasi manual menggunakan API-DOC.md)
 
+Berhasil Deploy di Heroku
+:tada: :tada: :tada:
+
+Berikut Linknya :
+https://project-individu-go-react.herokuapp.com/
+
 # project Day 5 - 7
 ## release 8
 Buatlah front end tampilan yang dibutuhkan menggunakan framework REACT JS. dengan page yang wajib dibuat adalah :
