@@ -2,14 +2,16 @@ package auth
 
 import (
 	"errors"
+	"os"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/joho/godotenv"
 )
 
 var (
-	// err = godotenv.Load()
-	// key = os.Getenv("SECRET_KEY")
-	key = "rahasia"
+	err = godotenv.Load()
+	key = os.Getenv("SECRET_KEY")
+	// key = "rahasia"
 )
 
 type Service interface {
