@@ -12,8 +12,8 @@ type User struct {
 	Password  string    `json:"-"`
 	CreateAt  time.Time `json:"create_at"`
 	UpdatedAt time.Time `json:"updated_at"`
-	DeletedAt time.Time `gorm:"index" json:"-"`
-	Booking   []Booking `gorm:"foreignKey:UserID"`
+	//DeletedAt time.Time `gorm:"index" json:"-"`
+	Booking []Booking `gorm:"foreignKey:UserID"`
 }
 
 // UserInput untuk inputan yang diperlukan dari model users
