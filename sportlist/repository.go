@@ -8,7 +8,7 @@ import (
 
 type Repository interface {
 	FindAll() ([]entity.SportList, error)
-	Create(user entity.SportList) (entity.SportList, error)
+	Create(sportlist entity.SportList) (entity.SportList, error)
 	FindByID(ID string) (entity.SportList, error)
 }
 
