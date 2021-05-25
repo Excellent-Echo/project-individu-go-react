@@ -77,8 +77,8 @@ func (s *userService) SaveNewUser(user entity.UserInput) (UserFormat, error) {
 		LastName:  user.LastName,
 		Email:     user.Email,
 		Password:  string(genPassword),
-		// CreatedAt: time.Now(),
-		// UpdatedAt: time.Now(),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 
 	createUser, err := s.repository.CreateUser(newUser)
