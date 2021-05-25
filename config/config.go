@@ -17,7 +17,7 @@ func ConnectToDatabase() *gorm.DB {
 
 	//dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbName)
 
-	dsn := "root:root@tcp(localhost)/konsultasi_psikolog?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "cb4RUILMib:WOiDCnT5Ey@tcp(remotemysql.com:3306)/cb4RUILMib?charset=utf8mb4&parseTime=True&loc=Local"
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
