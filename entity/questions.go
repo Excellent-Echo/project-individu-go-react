@@ -11,6 +11,6 @@ type Questions struct {
 	Answers   []Answers `gorm:"foreignKey:QuestionID" json:"answers"`
 	CreatedAt time.Time `gorm:"type:datetime" json:"created_at"`
 	UpdatedAt time.Time `gorm:"type:datetime" json:"updated_at"`
-	DeletedAt time.Time `gorm:"type:datetime" json:"deleted_at"`
+	// DeletedAt time.Time `gorm:"type:datetime" json:"deleted_at"`
 	// Likes     []Likes   `gorm:"foreignKey:QuestionID" json:"likes"`
 }
