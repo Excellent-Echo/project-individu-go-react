@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"project-individu-go-react/routes"
 
 	"github.com/gin-gonic/gin"
@@ -13,5 +14,6 @@ func main() {
 	routes.QuestionRoute(r)
 	routes.TagRoute(r)
 
-	r.Run(":4444")
+	port := os.Getenv("PORT")
+	r.Run(":" + port)
 }
