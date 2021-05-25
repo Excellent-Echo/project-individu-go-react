@@ -15,5 +15,6 @@ var (
 
 func TagRoute(r *gin.Engine) {
 	r.GET("/tags", tagHandler.ShowAllTagsHandler)
+	r.POST("/tags", tagHandler.CreateTagHandler)
 
 }

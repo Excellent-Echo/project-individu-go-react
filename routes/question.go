@@ -18,5 +18,6 @@ func QuestionRoute(r *gin.Engine) {
 	r.POST("/questions/ask", handler.Middleware(userService, authService), questionHandler.CreateQuestionHandler)
 	r.GET("/questions/:id", handler.Middleware(userService, authService), questionHandler.ShowQuestionByIdHandler)
 	r.PATCH("/questions/:id/edit", handler.Middleware(userService, authService), questionHandler.UpdateQuestionByIdHandler)
+	r.DELETE("/questions/:id", handler.Middleware(userService, authService), questionHandler.DeleteByQuestionHandler)
 
 }

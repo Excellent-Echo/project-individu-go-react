@@ -1,7 +1,12 @@
 package tag
 
+import (
+	"project-individu-go-react/entity"
+)
+
 type TagService interface {
-	GetAllTags() ([]TagFormat, error)
+	GetAllTags() ([]entity.Tags, error)
+	SaveNewTag(tag entity.TagInput) (entity.Tags, error)
 }
 
 type tagService struct {
@@ -12,19 +17,26 @@ func NewService(repository TagRepository) *tagService {
 	return &tagService{repository}
 }
 
-func (s *tagService) GetAllTags() ([]TagFormat, error) {
+func (s *tagService) GetAllTags() ([]entity.Tags, error) {
 	tags, err := s.repository.GetAll()
 
-	var tagsFormat []TagFormat
-
-	for _, tag := range tags {
-		var tagFormat = FormattingTag(tag)
-		tagsFormat = append(tagsFormat, tagFormat)
+	if err != nil {
+		return tags, err
 	}
+
+	return tags, nil
+}
+
+func (s *tagService) SaveNewTag(tag entity.TagInput) (entity.Tags, error) {
+	var newTag = entity.Tags{
+		Tag: tag.Tag,
+	}
+
+	createTag, err := s.repository.NewTag(newTag)
 
 	if err != nil {
-		return tagsFormat, err
+		return createTag, err
 	}
 
-	return tagsFormat, nil
+	return createTag, nil
 }

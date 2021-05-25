@@ -105,5 +105,33 @@ func (h *questionHandler) UpdateQuestionByIdHandler(c *gin.Context) {
 
 	response := helper.APIResponse("update question succeed", 200, "success", question)
 	c.JSON(200, response)
+}
 
+func (h *questionHandler) DeleteByQuestionHandler(c *gin.Context) {
+	id := c.Param("id")
+
+	questionDetail, _ := h.questionService.FindQuestionById(id)
+
+	idParam := int(questionDetail.UserID)
+
+	userData := int(c.MustGet("currentUser").(int))
+
+	if idParam != userData {
+		responseError := helper.APIResponse("Unauthorize", 401, "error", gin.H{"error": "user ID not authorize"})
+
+		c.JSON(401, responseError)
+		return
+	}
+
+	question, err := h.questionService.DeleteQuestionById(id)
+
+	if err != nil {
+		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	response := helper.APIResponse("question was deleted successfully", 200, "success", question)
+	c.JSON(200, response)
 }

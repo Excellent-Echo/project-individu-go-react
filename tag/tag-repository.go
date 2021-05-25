@@ -8,6 +8,7 @@ import (
 
 type TagRepository interface {
 	GetAll() ([]entity.Tags, error)
+	NewTag(tag entity.Tags) (entity.Tags, error)
 }
 
 type Repository struct {
@@ -27,4 +28,12 @@ func (r *Repository) GetAll() ([]entity.Tags, error) {
 	}
 
 	return Tags, nil
+}
+
+func (r *Repository) NewTag(tag entity.Tags) (entity.Tags, error) {
+	if err := r.db.Create(&tag).Error; err != nil {
+		return tag, err
+	}
+
+	return tag, nil
 }

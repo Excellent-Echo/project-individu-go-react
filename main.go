@@ -13,6 +13,7 @@ func main() {
 	routes.UserRoute(r)
 	routes.QuestionRoute(r)
 	routes.TagRoute(r)
+	routes.AnswerRoute(r)
 
 	port := os.Getenv("PORT")
 	r.Run(":" + port)

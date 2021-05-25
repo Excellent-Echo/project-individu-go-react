@@ -11,7 +11,7 @@ type QuestionRepository interface {
 	PostQuestion(question entity.Questions) (entity.Questions, error)
 	FindQuestionById(id string) (entity.Questions, error)
 	UpdateQuestion(id string, dataUpdate map[string]interface{}) (entity.Questions, error)
-	// DeleteQuestion(id string) (string, error)
+	DeleteQuestion(id string) (string, error)
 }
 
 type Repository struct {
@@ -63,4 +63,12 @@ func (r *Repository) UpdateQuestion(id string, dataUpdate map[string]interface{}
 	}
 
 	return question, nil
+}
+
+func (r *Repository) DeleteQuestion(id string) (string, error) {
+	if err := r.db.Where("id = ?", id).Delete(&entity.Questions{}).Error; err != nil {
+		return "error", err
+	}
+
+	return "success", nil
 }

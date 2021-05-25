@@ -1,13 +1,17 @@
 package entity
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Answers struct {
-	ID         uint64    `gorm:"primaryKey;autoIncrement;not null" json:"id"`
-	Content    string    `gorm:"text;not null" json:"content"`
-	UserID     uint32    `gorm:"not null" json:"user_id"`
-	QuestionID uint64    `gorm:"not null" json:"question_id"`
-	CreatedAt  time.Time `gorm:"type:datetime;not null;default:current_timestamp" json:"-"`
-	UpdatedAt  time.Time `gorm:"type:datetime;not null;default:current_timestamp" json:"-"`
-	// DeletedAt  time.Time `gorm:"type:datetime;not null;default:current_timestamp" json:"deleted_at"`
+	ID         uint64         `gorm:"primaryKey;autoIncrement" json:"id"`
+	Content    string         `gorm:"text;not null" json:"content"`
+	UserID     uint32         `json:"user_id"`
+	QuestionID uint64         `json:"question_id"`
+	CreatedAt  time.Time      `gorm:"type:datetime;not null;default:current_timestamp" json:"-"`
+	UpdatedAt  time.Time      `gorm:"type:datetime;default:current_timestamp" json:"-"`
+	Deleted    gorm.DeletedAt `json:"-"`
 }

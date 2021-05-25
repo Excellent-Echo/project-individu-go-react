@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
+	"project-individu-go-react/user"
 	"time"
 )
 
@@ -12,8 +13,8 @@ type QuestionService interface {
 	FindAllQuestions() ([]QuestionFormat, error)
 	SaveNewQuestion(question entity.QuestionInput) (entity.Questions, error)
 	FindQuestionById(id string) (QuestionFormat, error)
-	UpdateQuestionById(id string, dataInput entity.UpdateQuestionInput) (entity.Questions, error)
-	// DeleteQuestionById(id string) (interface{}, error)
+	UpdateQuestionById(id string, dataInput entity.UpdateQuestionInput) (QuestionFormat, error)
+	DeleteQuestionById(id string) (interface{}, error)
 }
 
 type questionService struct {
@@ -43,11 +44,11 @@ func (s *questionService) FindAllQuestions() ([]QuestionFormat, error) {
 
 func (s *questionService) SaveNewQuestion(question entity.QuestionInput) (entity.Questions, error) {
 	var newQuestion = entity.Questions{
-		Title:   question.Title,
-		Content: question.Content,
-		Tags:    question.TagID,
-		UserID:  question.UserID,
-		// CreatedAt: time.Now(),
+		Title:     question.Title,
+		Content:   question.Content,
+		Tags:      question.Tags,
+		UserID:    question.UserID,
+		CreatedAt: time.Now(),
 	}
 
 	createQuestion, err := s.repository.PostQuestion(newQuestion)
@@ -81,22 +82,22 @@ func (s *questionService) FindQuestionById(id string) (QuestionFormat, error) {
 
 }
 
-func (s *questionService) UpdateQuestionById(id string, dataInput entity.UpdateQuestionInput) (entity.Questions, error) {
+func (s *questionService) UpdateQuestionById(id string, dataInput entity.UpdateQuestionInput) (QuestionFormat, error) {
 	var dataUpdate = map[string]interface{}{}
 
 	if err := helper.ValidateIDNumber(id); err != nil {
-		return entity.Questions{}, err
+		return QuestionFormat{}, err
 	}
 
 	question, err := s.repository.FindQuestionById(id)
 
 	if err != nil {
-		return entity.Questions{}, err
+		return QuestionFormat{}, err
 	}
 
 	if question.ID == 0 {
 		newError := fmt.Sprintf("question id %s is not found", id)
-		return entity.Questions{}, errors.New(newError)
+		return QuestionFormat{}, errors.New(newError)
 	}
 
 	if dataInput.Title != "" || len(dataInput.Title) != 0 {
@@ -105,11 +106,8 @@ func (s *questionService) UpdateQuestionById(id string, dataInput entity.UpdateQ
 	if dataInput.Content != "" || len(dataInput.Content) != 0 {
 		dataUpdate["content"] = dataInput.Content
 	}
-	// if len(dataInput.Tags) != 0 {
-	// 	dataUpdate["tags"] = dataInput.Tags
-	// }
-	if dataInput.TagID != 0 {
-		dataUpdate["tags"] = dataInput.TagID
+	if len(dataInput.Tags) != 0 {
+		dataUpdate["tags"] = dataInput.Tags
 	}
 
 	dataUpdate["updated_at"] = time.Now()
@@ -119,8 +117,43 @@ func (s *questionService) UpdateQuestionById(id string, dataInput entity.UpdateQ
 	questionUpdate, err := s.repository.UpdateQuestion(id, dataUpdate)
 
 	if err != nil {
-		return entity.Questions{}, err
+		return QuestionFormat{}, err
 	}
 
-	return questionUpdate, nil
+	formatQuestion := FormattingQuestion(questionUpdate)
+
+	return formatQuestion, nil
+}
+
+func (s *questionService) DeleteQuestionById(id string) (interface{}, error) {
+	if err := helper.ValidateIDNumber(id); err != nil {
+		return nil, err
+	}
+
+	question, err := s.repository.FindQuestionById(id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if question.ID == 0 {
+		newError := fmt.Sprintf("question id %s is not found", id)
+		return nil, errors.New(newError)
+	}
+
+	status, err := s.repository.DeleteQuestion(id)
+
+	if err != nil {
+		panic(err)
+	}
+
+	if status == "error" {
+		return nil, errors.New("error delete in internal server")
+	}
+
+	msg := fmt.Sprintf("delete question id %s succeed", id)
+
+	formatDelete := user.FormatDelete(msg)
+
+	return formatDelete, nil
 }

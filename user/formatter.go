@@ -30,7 +30,7 @@ func FormattingUser(user entity.User) UserFormat {
 	return userFormat
 }
 
-func FormatDeleteUser(msg string) DeleteFormat {
+func FormatDelete(msg string) DeleteFormat {
 	var deleteFormat = DeleteFormat{
 		Message:    msg,
 		TimeDelete: time.Now(),

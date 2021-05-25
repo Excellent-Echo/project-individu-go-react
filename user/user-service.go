@@ -187,7 +187,7 @@ func (s *userService) DeleteByUserID(id string) (interface{}, error) {
 
 	msg := fmt.Sprintf("delete user id %s succeed", id)
 
-	formatDelete := FormatDeleteUser(msg)
+	formatDelete := FormatDelete(msg)
 
 	return formatDelete, nil
 }
