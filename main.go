@@ -13,7 +13,7 @@ func main() {
 	routes.UserRoute(r)
 
 	// endpoint sportlist
-	// routes.SportListRoutes(r)
+	routes.SportListRoutes(r)
 
 	r.Run(":4444")
 }

@@ -21,3 +21,9 @@ type UpdateUserInput struct {
 type SportListInput struct {
 	SportName string `json:"sport_name" binding:"required"`
 }
+
+type FieldListInput struct {
+	FieldName  string `json:"field_name" binding:"required"`
+	FieldImage string `json:"field_image" binding:"required"`
+	SportID    string `json:"sport_id" binding:"required"`
+}
