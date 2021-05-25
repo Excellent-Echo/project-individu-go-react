@@ -10,12 +10,13 @@ import (
 var (
 	questionRepository = question.NewRepository(DB)
 	questionService    = question.QuestionNewService(questionRepository)
-	questionHandler    = handler.NewQuestionHandler(questionService)
+	questionHandler    = handler.NewQuestionHandler(questionService, authService)
 )
 
 func QuestionRoute(r *gin.Engine) {
 	r.GET("/questions", questionHandler.ShowAllQuestionsHandler)
-	r.POST("/questions/ask", questionHandler.CreateQuestionHandler)
-	r.GET("/questions/:id", questionHandler.ShowQuestionByIdHandler)
+	r.POST("/questions/ask", handler.Middleware(userService, authService), questionHandler.CreateQuestionHandler)
+	r.GET("/questions/:id", handler.Middleware(userService, authService), questionHandler.ShowQuestionByIdHandler)
+	r.PATCH("/questions/:id/edit", handler.Middleware(userService, authService), questionHandler.UpdateQuestionByIdHandler)
 
 }

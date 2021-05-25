@@ -11,6 +11,7 @@ func main() {
 
 	routes.UserRoute(r)
 	routes.QuestionRoute(r)
+	routes.TagRoute(r)
 
 	r.Run(":4444")
 }

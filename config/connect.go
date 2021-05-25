@@ -29,7 +29,6 @@ func Connect() *gorm.DB {
 	db.AutoMigrate(&entity.Questions{})
 	db.AutoMigrate(&entity.Tags{})
 	db.AutoMigrate(&entity.Answers{})
-	db.AutoMigrate(&entity.Likes{})
 
 	return db
 }

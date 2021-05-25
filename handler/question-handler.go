@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"project-individu-go-react/auth"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
 	"project-individu-go-react/question"
@@ -10,10 +11,11 @@ import (
 
 type questionHandler struct {
 	questionService question.QuestionService
+	authService     auth.Service
 }
 
-func NewQuestionHandler(questionService question.QuestionService) *questionHandler {
-	return &questionHandler{questionService}
+func NewQuestionHandler(questionService question.QuestionService, authService auth.Service) *questionHandler {
+	return &questionHandler{questionService, authService}
 }
 
 func (h *questionHandler) ShowAllQuestionsHandler(c *gin.Context) {
@@ -50,8 +52,8 @@ func (h *questionHandler) CreateQuestionHandler(c *gin.Context) {
 		return
 	}
 
-	userResponse := helper.APIResponse("insert new question succeed", 201, "success", response)
-	c.JSON(201, userResponse)
+	newResponse := helper.APIResponse("insert new question succeed", 201, "success", response)
+	c.JSON(201, newResponse)
 }
 
 func (h *questionHandler) ShowQuestionByIdHandler(c *gin.Context) {
@@ -67,4 +69,41 @@ func (h *questionHandler) ShowQuestionByIdHandler(c *gin.Context) {
 
 	response := helper.APIResponse("get question succeed", 200, "success", question)
 	c.JSON(200, response)
+}
+
+func (h *questionHandler) UpdateQuestionByIdHandler(c *gin.Context) {
+	id := c.Params.ByName("id")
+
+	var updateQuestionInput entity.UpdateQuestionInput
+
+	if err := c.ShouldBindJSON(&updateQuestionInput); err != nil {
+		splitError := helper.SplitErrorInformation(err)
+		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"errors": splitError})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	question, err := h.questionService.UpdateQuestionById(id, updateQuestionInput)
+	if err != nil {
+		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
+
+		c.JSON(500, responseError)
+		return
+	}
+
+	idParam := int(question.UserID)
+
+	userData := int(c.MustGet("currentUser").(int))
+
+	if idParam != userData {
+		responseError := helper.APIResponse("Unauthorize", 401, "error", gin.H{"error": "user ID not authorize"})
+
+		c.JSON(401, responseError)
+		return
+	}
+
+	response := helper.APIResponse("update question succeed", 200, "success", question)
+	c.JSON(200, response)
+
 }

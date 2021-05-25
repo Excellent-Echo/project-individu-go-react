@@ -13,5 +13,5 @@ type User struct {
 	UpdatedAt time.Time   `gorm:"type:datetime;not null;default:current_timestamp" json:"updated_at"`
 	Questions []Questions `gorm:"foreignKey:UserID" json:"questions"`
 	Answers   []Answers   `gorm:"foreignKey:UserID" json:"answers"`
-	Likes     []Likes     `gorm:"foreignKey:UserID" json:"likes"`
+	// Likes     []Likes     `gorm:"foreignKey:UserID" json:"likes"`
 }
