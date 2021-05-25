@@ -13,7 +13,7 @@ type User struct {
 	CreateAt  time.Time `json:"create_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 	//DeletedAt time.Time `gorm:"index" json:"-"`
-	Booking []Booking `gorm:"foreignKey:UserID"`
+	//Booking []Booking `gorm:"foreignKey:UserID"`
 }
 
 // UserInput untuk inputan yang diperlukan dari model users
