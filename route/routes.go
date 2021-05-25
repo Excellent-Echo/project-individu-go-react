@@ -40,7 +40,7 @@ func UserRoutes(r *gin.Engine) {
 	r.POST("/users/login", userDelivery.LoginUserDeliver)
 	r.GET("/users", layer.Middleware(userService, authService), userDelivery.ShowUserDeliver)
 	r.GET("/users/:user_id", layer.Middleware(userService, authService), userDelivery.GetUserByIDDeliver)
-	r.POST("users/register", layer.Middleware(userService, authService), userDelivery.CreateUserDeliver)
+	r.POST("users/register", userDelivery.CreateUserDeliver)
 	r.PUT("users/:user_id", layer.Middleware(userService, authService), userDelivery.UpdateUserByIDDeliver)
 	r.DELETE("users/:user_id", layer.Middleware(userService, authService), userDelivery.DeleteUserByIDDeliver)
 
