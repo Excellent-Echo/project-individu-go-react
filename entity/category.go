@@ -12,4 +12,5 @@ type Categories struct {
 	CreatedAt    time.Time      `gorm:"type:datetime;not null;default:current_timestamp" json:"-"`
 	UpdatedAt    time.Time      `gorm:"type:datetime;not null" json:"-"`
 	Deleted      gorm.DeletedAt `json:"-"`
+	Questions    []Questions    `gorm:"foreignKey:CategoryID" json:"questions"`
 }
