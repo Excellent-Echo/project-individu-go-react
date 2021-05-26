@@ -16,6 +16,6 @@ var (
 func CategoryRoute(r *gin.Engine) {
 	r.GET("/categories", categoryHandler.ShowAllCategoryHandler)
 	r.POST("/categories", categoryHandler.CreateCategoryHandler)
-	r.GET("/questions/categories/:category_name", categoryHandler.ShowCategoryByNameHandler)
+	r.GET("/categories/:category_name", categoryHandler.ShowCategoryByNameHandler)
 
 }
