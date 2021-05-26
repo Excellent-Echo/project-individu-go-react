@@ -34,7 +34,7 @@ func (r *Repository) FindAllQuestions() ([]entity.Questions, error) {
 }
 
 func (r *Repository) PostQuestion(question entity.Questions) (entity.Questions, error) {
-	if err := r.db.Create(&question).Error; err != nil {
+	if err := r.db.Preload("Category").Create(&question).Error; err != nil {
 		return question, err
 	}
 
@@ -58,7 +58,7 @@ func (r *Repository) UpdateQuestion(id string, dataUpdate map[string]interface{}
 		return question, err
 	}
 
-	if err := r.db.Where("id = ?", id).Find(&question).Error; err != nil {
+	if err := r.db.Where("id = ?", id).Preload("Category").Preload("Answers").Find(&question).Error; err != nil {
 		return question, err
 	}
 

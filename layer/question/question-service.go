@@ -11,7 +11,7 @@ import (
 
 type QuestionService interface {
 	FindAllQuestions() ([]QuestionFormat, error)
-	SaveNewQuestion(userID int, question entity.QuestionInput) (entity.Questions, error)
+	SaveNewQuestion(userID int, question entity.QuestionInput) (QuestionFormat, error)
 	FindQuestionById(id string) (QuestionFormat, error)
 	UpdateQuestionById(id string, dataInput entity.UpdateQuestionInput) (QuestionFormat, error)
 	DeleteQuestionById(id string) (interface{}, error)
@@ -42,7 +42,7 @@ func (s *questionService) FindAllQuestions() ([]QuestionFormat, error) {
 	return questionsFormat, nil
 }
 
-func (s *questionService) SaveNewQuestion(userID int, question entity.QuestionInput) (entity.Questions, error) {
+func (s *questionService) SaveNewQuestion(userID int, question entity.QuestionInput) (QuestionFormat, error) {
 	var newQuestion = entity.Questions{
 		Title:   question.Title,
 		Content: question.Content,
@@ -53,12 +53,13 @@ func (s *questionService) SaveNewQuestion(userID int, question entity.QuestionIn
 	}
 
 	createQuestion, err := s.repository.PostQuestion(newQuestion)
+	formatQuestion := FormattingQuestion(createQuestion)
 
 	if err != nil {
-		return createQuestion, err
+		return formatQuestion, err
 	}
 
-	return createQuestion, nil
+	return formatQuestion, nil
 }
 
 func (s *questionService) FindQuestionById(id string) (QuestionFormat, error) {
