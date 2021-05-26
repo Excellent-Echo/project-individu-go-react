@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"project-individu-go-react/answer"
 	"project-individu-go-react/handler"
+	"project-individu-go-react/layer/answer"
 
 	"github.com/gin-gonic/gin"
 )

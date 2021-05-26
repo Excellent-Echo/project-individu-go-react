@@ -2,7 +2,7 @@ package routes
 
 import (
 	"project-individu-go-react/handler"
-	"project-individu-go-react/tag"
+	"project-individu-go-react/layer/tag"
 
 	"github.com/gin-gonic/gin"
 )

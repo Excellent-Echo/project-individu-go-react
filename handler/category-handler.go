@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"project-individu-go-react/category"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
+	"project-individu-go-react/layer/category"
 
 	"github.com/gin-gonic/gin"
 )
@@ -65,6 +65,6 @@ func (h *categoryHandler) ShowCategoryByNameHandler(c *gin.Context) {
 		return
 	}
 
-	response := helper.APIResponse("get question succeed", 200, "success", category)
+	response := helper.APIResponse("get category succeed", 200, "success", category)
 	c.JSON(200, response)
 }

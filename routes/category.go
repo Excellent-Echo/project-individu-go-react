@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"project-individu-go-react/category"
 	"project-individu-go-react/handler"
+	"project-individu-go-react/layer/category"
 
 	"github.com/gin-gonic/gin"
 )

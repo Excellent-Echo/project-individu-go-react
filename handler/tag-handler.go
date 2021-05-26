@@ -3,7 +3,7 @@ package handler
 import (
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
-	"project-individu-go-react/tag"
+	"project-individu-go-react/layer/tag"
 
 	"github.com/gin-gonic/gin"
 )

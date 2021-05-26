@@ -1,10 +1,10 @@
 package handler
 
 import (
-	"project-individu-go-react/answer"
 	"project-individu-go-react/auth"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
+	"project-individu-go-react/layer/answer"
 	"strconv"
 
 	"github.com/gin-gonic/gin"

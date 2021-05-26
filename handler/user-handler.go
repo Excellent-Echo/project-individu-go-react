@@ -4,7 +4,7 @@ import (
 	"project-individu-go-react/auth"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
-	"project-individu-go-react/user"
+	"project-individu-go-react/layer/user"
 	"strconv"
 
 	"github.com/gin-gonic/gin"

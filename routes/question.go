@@ -2,7 +2,7 @@ package routes
 
 import (
 	"project-individu-go-react/handler"
-	"project-individu-go-react/question"
+	"project-individu-go-react/layer/question"
 
 	"github.com/gin-gonic/gin"
 )

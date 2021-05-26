@@ -3,7 +3,7 @@ package handler
 import (
 	"project-individu-go-react/auth"
 	"project-individu-go-react/helper"
-	"project-individu-go-react/user"
+	"project-individu-go-react/layer/user"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"

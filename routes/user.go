@@ -4,7 +4,7 @@ import (
 	"project-individu-go-react/auth"
 	"project-individu-go-react/config"
 	"project-individu-go-react/handler"
-	"project-individu-go-react/user"
+	"project-individu-go-react/layer/user"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"

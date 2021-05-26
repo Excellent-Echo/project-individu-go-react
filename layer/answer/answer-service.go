@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
-	"project-individu-go-react/user"
+	"project-individu-go-react/layer/user"
 	"time"
 )
 
