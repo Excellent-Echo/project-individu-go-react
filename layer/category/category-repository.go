@@ -4,6 +4,7 @@ import (
 	"project-individu-go-react/entity"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type CategoryRepository interface {
@@ -23,7 +24,7 @@ func NewRepository(db *gorm.DB) *Repository {
 func (r *Repository) GetAll() ([]entity.Categories, error) {
 	var Category []entity.Categories
 
-	err := r.db.Find(&Category).Error
+	err := r.db.Preload(clause.Associations).Find(&Category).Error
 	if err != nil {
 		return Category, err
 	}
