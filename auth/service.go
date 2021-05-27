@@ -5,10 +5,11 @@ import (
 	"os"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/joho/godotenv"
 )
 
 var (
-	// err = godotenv.Load()
+	err = godotenv.Load()
 	key = os.Getenv("SECRET_KEY")
 )
 
@@ -25,6 +26,10 @@ func NewService() *jwtService {
 }
 
 func (s *jwtService) GenerateToken(userID int) (string, error) {
+	if err != nil {
+		panic(err)
+	}
+
 	claim := jwt.MapClaims{
 		"user_id": userID,
 	}
