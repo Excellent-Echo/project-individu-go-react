@@ -10,6 +10,8 @@ import (
 func main() {
 	r := gin.Default()
 
+	r.Static("/images", "./images")
+
 	routes.UserRoute(r)
 	routes.QuestionRoute(r)
 	// routes.TagRoute(r)
