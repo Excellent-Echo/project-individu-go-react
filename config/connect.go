@@ -5,12 +5,13 @@ import (
 	"os"
 	"project-individu-go-react/entity"
 
+	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 func Connect() *gorm.DB {
-	// err := godotenv.Load()
+	err := godotenv.Load()
 
 	dbUser := os.Getenv("DB_USERNAME")
 	dbPass := os.Getenv("DB_PASSWORD")
