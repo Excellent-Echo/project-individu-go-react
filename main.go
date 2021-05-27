@@ -1,7 +1,7 @@
 package main
 
 import (
-	"PROJECT-INDIVIDU_GO_REACT/handler"
+	"PROJECT-INDIVIDU-GO-REACT/handler"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,10 +9,10 @@ import (
 func main() {
 	r := gin.Default()
 	r.GET("/users", handler.GetAllUser)
-	r.GET("/users/:user_id", handler.HandleUsersID)
+	r.GET("/users/:user_id", handler.GetuserByID)
 	r.POST("/users", handler.CreateNewUser)
-	r.DELETE("/users/:user_id", handler.HandleDeleteUser)
-	r.POST("/users/:user_id", handler.HandleUpdateUser)
+	r.DELETE("/users/:user_id", handler.DeleteByUserID)
+	r.POST("/users/:user_id", handler.UpdateUserByID)
 
 	r.Run(":1212")
 

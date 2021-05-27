@@ -8,11 +8,11 @@ import (
 
 type User struct {
 	gorm.Model
-	FirstName string
-	LastName  string
-	Email     string
-	Password  string
-	Role      []Role `gorm:"foreignKey:UserID"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	// Role      []Role `gorm:"foreignKey:User"`
 }
 
 type Role struct {
