@@ -15,6 +15,7 @@ func main() {
 	// routes.TagRoute(r)
 	routes.AnswerRoute(r)
 	routes.CategoryRoute(r)
+	routes.UserProfileRoute(r)
 
 	port := os.Getenv("PORT")
 	r.Run(":" + port)
