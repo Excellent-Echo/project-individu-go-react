@@ -1,7 +1,7 @@
 package config
 
 import (
-	"project-go-react/entity"
+	"github.com/panduwil/project-individu-go-react/entity"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

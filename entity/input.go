@@ -1,14 +1,8 @@
-package tabel
+package entity
 
-import "time"
-
-type User struct {
-	user_id    int       `gorm:"primaryKey" json:"user_id"`
-	first_name string    `json:"first_name"`
-	last_name  string    `json:"last_name"`
-	email      string    `json:"email"`
-	password   string    `json:"-"`
-	created_at time.Time `json:"created_at"`
-	updated_at time.Time `json:"updated_at"`
-	order_id   int       `gorm:"foreignKey:order_id"`
+type UserInput struct {
+	First_name string `json:"first_name"`
+	Last_name  string `json:"last_name"`
+	Email      string `json:"email"`
+	Password   string `json:"password"`
 }
