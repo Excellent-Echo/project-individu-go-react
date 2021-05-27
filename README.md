@@ -1,96 +1,420 @@
-# project-individu-go-react
+# Mini Forum App
 
-:tada: :tada: :tada:
+```
+https://forum-app-go.herokuapp.com
+```
 
-Kita akan membuat tugas project pribadi dengan membuat back end menggunakan GO dan package GIN-GONIC dan juga package GORM. Kemudian kita juga akan membuat frond end menggunakan REACT JS
+## List of available endpoints
 
-- Silahkan tentukan mau membuat project seperti apa, untuk tema bebas. Tetapi khusus untuk back end harus memenuhi kriteria dibawah ini.
+### users
 
-# Project - Day 1
-## Release 1
-Buatlah sebuah tabel diagram sesuai keinginan kalian dengan catatan :
-1. terdapat minimal 3 tabel di dalam database.
-2. memiliki tabel user, dengan kolom sebagai berikut : 
-  * id / user_id : primarykey, not null, auto increment
-  * first_name  : varchar(255)
-  * last_name  : varchar(255)
-  * email  : varchar(255), unique
-  * password  : varchar(255)
-  * created_at : date(3) 
-  * updated_at : date(3)
+- `GET /users`
+- `POST /users/register`
+- `POST /users/login`
+- `GET /users/:id`
+- `PUT /users/:id`
+- `DELETE /users/:id`
 
-3. table user memiliki relasi dengan tabel lain, setiap tabel selain tabel user juga memiliki relasi
+### questions
 
-> NB : Silahkan laporkan ketika release 1 sudah selesai di github dalam bentuk foto atau pdf.
+- `GET /questions`
+- `GET /questions/:id`
+- `POST /questions/ask`
+- `PATCH /questions/:id/edit`
+- `DELETE /questions/:id`
 
-## release 2
-Buatlah rest API yang dibutuhkan untuk menggunakan GIN - GONIC dan GORM.
-- REST API yang dibuat harus memenuhi basic CRUD ( create, read, update, delete)
-- Didalam rest API tersebut harus memiliki :
-   * POST "/users" ket : routingan untuk membuat user baru
-   * GET "/users" , ket : menampilkan seluruh user yang ada di database
-   * GET "/users/:user_id" , ket : menampilkan 1 user sesuai dengan parameter yang diberikan
-   * PUT "/users/:user_id", ket : melakukan update user sesuai dengan parameter yang diberikan
-   * DELETE "/users/:user_id" ket : routingan untuk melakukan delete user sesuai parameter yang diberikan"
+### answers
 
-# Project - Day 2
-## Release 3
+- `POST /questions/:id`
+- `PATCH /answers/:id`
+- `DELETE /answers/:id`
 
-- Silahkan perbaiki code REST API yang sudah di buat dengan menerapkan arsitektur yang sudah dijelaskan dengan menerapkan layer - layer :
-1. repository , ket : package ini adalah package yang digunakan untuk berkomunikasi dengan database
-2. service , ket : package ini adalah package yang digunakan untuk melakukan bussiness logic di back end
-3. handler / controller : package ini digunakan untuk berkomunikasi dengan user / pengguna eksternal baik itu menerima data atau menampilkan data
+### categories
 
+- `GET /categories`
+- `POST /categories`
+- `PUT /categories/:category_name`
 
-## release 4
-- Gunakan hashing untuk data yang bersifat pribadi dengan membuat package helper. Seperti password user atau data lain di tabel yang datanya perlu di enksipsi.
-- Aplikasikan "env" atau environment variabel pada project ini.
+## RESTful endpoints users
 
+### GET /users
 
-# Project Day 3
-## release 5
-### Saatnya menerapkan authorization menggunakan JWT "json web token" dan juga middleware di project ini. 
+> Get All users
 
-- Terdapat beberapa code yang wajib dibuat di project ini sebagai berikut: 
-1. buatlah routing untuk register user dan juga login user
-  * POST "/users/register" , ket : routingan register digunakan untuk melakukan register user
-  * POST "/users/login" , ket : routingan login digunakan untuk mendapatkan akses authorization dan juga mendapatkan data user yang sedang melakukan login 
+*Request Header*
 
-2. Silahkan menerapkan middleware untuk routingan :
-  * GET "users/:user_id"
-  * PUT "users/:user_id"
-  * DELETE "/users/:user_id"
+```
+{
+   "Authorization": "<your Authorization>"
+}
+```
 
-3. Gunakan middleware untuk akses routing yang bersifat privat atau memerlukan akses user login melalui routingan POST "/users/login"
+*Request Body*
 
-# Project Day 4
-## release 6
-buatlah 1 routing khusus yang didapat dari 3rd party API ( bebas apa saja ) dan diolah kemudian tampilkan menggunakan routing GET.
+```
+not needed
+```
 
-## release 7
-- lakukan deployment server menggunakan heroku dan juga mengaplikasikan env "environment variable" untuk menginput data connection database mysql sebagai berikut :
-1. MYSQL_DATABASE :	mysql (or your preferred database name)
-2. MYSQL_USER	:	mysql (or your preferred database username)
-3. MYSQL_PASSWORD :	A secure password for MYSQL_USER
-4. MYSQL_HOST	:	tcp or protocol deployment MYSQL
+*Response (200)*
 
-- kemudian buatlah API documentation dengan menggunakan swagger (boleh membuat dokumentasi manual menggunakan API-DOC.md)
+```
+{
+    "meta": {
+        "message": "get all users succeed",
+        "code": 200,
+        "status": "success"
+    },
+    "data": [
+        {
+            "id": 1,
+            "user_name": "marwanjuna",
+            "first_name": "marwan",
+            "last_name": "juna",
+            "email": "marwan@mail.com"
+        },
+        {
+            "id": 2,
+            "user_name": "uchihasasuke",
+            "first_name": "uchiha",
+            "last_name": "saske",
+            "email": "uchiha@mail.com"
+        }
+    ]
+}
+```
 
-# project Day 5 - 7
-## release 8
-Buatlah front end tampilan yang dibutuhkan menggunakan framework REACT JS. dengan page yang wajib dibuat adalah :
-1. page login 
-2. page register
-3. page home (untuk menampilkan home page)
-4. page user detail
-5. memiliki fitur log out
+*Response (500 - Internal Server Error)*
 
-## release 9
-Gunakan API yang sudah dideploy di heroku untuk kemudian digabungkan dengan front end ( wiring ) kemudian menerapkan beberapa fitur berikut :
-1. wajib menggunakan REDUX
-2. gunakan private route dipage user detail dan juga page yang dirasa memerlukan login user terlebih dahulu
+```
+{
+  "meta": {
+      "message": "Internal Server error",
+      "code": 500,
+      "status": "error"
+  }, 
+  "data": 
+      {
+        "error": ""
+      }
+}
+```
 
-## release 10
-Lakukan deployment frond end yang sudah dibuat menggunakan netlify.
+------
 
-> NB : Segera push data terbaru jika sudah selesai tiap release.
+### POST /users/register
+
+> Create new user
+
+*Request Header*
+
+```
+not needed
+```
+
+*Request Body*
+
+```
+{
+  "first_name" : "<first name to get insert into>",
+  "last_name" : "<last name to get insert into>",
+  "user_name": "<user name to get insert into>",
+  "email": "<email to get insert into>",
+  "password": "<password to get insert into>"
+}
+```
+
+*Response (201)*
+
+```
+{
+    "meta": {
+        "message": "insert user data succeed",
+        "code": 201,
+        "status": "success"
+    },
+    "data": {
+        "id": 3,
+        "user_name": "boruto",
+        "first_name": "uzumaki",
+        "last_name": "boruto",
+        "email": "boruto@mail.com"
+    }
+}
+```
+
+*Response (400 - Bad Request)*
+
+```
+{
+  "meta": {
+      "message": "input data required",
+      "code": 400,
+      "status": "bad request"
+  }, 
+  "data": 
+      {
+        "errors": []
+      }
+}
+```
+
+*Response (500 - Internal Server Error)*
+
+```
+{
+  "meta": {
+      "message": "Internal Server error",
+      "code": 500,
+      "status": "error"
+  }, 
+  "data": 
+      {
+        "error": ""
+      }
+}
+```
+
+------
+
+### POST /users/login
+
+> Compare data login on database with data inputed
+
+*Request Header*
+
+```
+not needed
+```
+
+*Request Body*
+
+```
+{
+  "email": "<email to get compare>",
+  "password": "<password to get compare>"
+}
+```
+
+*Response (200)*
+
+```
+{
+    "meta": {
+        "message": "login user succeed",
+        "code": 200,
+        "status": "success"
+    },
+    "data": {
+        "token": "<your token>"
+    }
+}
+```
+
+*Response (400 - Bad Request)*
+
+```
+{
+  "meta": {
+      "message": "input data required",
+      "code": 400,
+      "status": "bad request"
+  }, 
+  "data": 
+      {
+        "errors": []
+      }
+}
+```
+
+*Response (401 - Unauthorized)*
+
+```
+{
+    "meta": {
+      "message": "input data error",
+      "code": 401,
+      "status": "error"
+  }, 
+  "data": 
+      {
+        "error": ""
+      }
+}
+```
+
+*Response (500 - Internal Server Error)*
+
+```
+{
+  "meta": {
+      "message": "Internal Server error",
+      "code": 500,
+      "status": "error"
+  }, 
+  "data": 
+      {
+        "error": ""
+      }
+}
+```
+
+------
+
+### GET /users/:user_id
+
+> Get user by user ID
+
+*Request Header*
+
+```
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+*Request Body*
+
+```
+not needed
+```
+
+*Response (200)*
+
+```
+{
+    "meta": {
+        "message": "get user succeed",
+        "code": 200,
+        "status": "success"
+    },
+    "data": {
+        "id": 3,
+        "user_name": "boruto",
+        "first_name": "uzumaki",
+        "last_name": "boruto",
+        "email": "boruto@mail.com"
+    }
+}
+```
+
+*Response (500 - Internal Server Error)*
+
+```
+{
+  "meta" : {
+      "message": "Internal server error",
+      "code": 500,
+      "status": "error"
+  }, 
+  "data" : {
+      "error": ""
+  }
+}
+```
+
+------
+
+### PUT /users/:user_id
+
+> Update user by User iD
+
+*Request Header*
+
+```
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+*Request Body*
+
+```
+{
+    "last_name": "boruto"
+}
+```
+
+*Response (200)*
+
+```
+{
+    "meta": {
+        "message": "update user succeed",
+        "code": 200,
+        "status": "success"
+    },
+    "data": {
+        "id": 3,
+        "user_name": "boruto",
+        "first_name": "boruto",
+        "last_name": "boruto",
+        "email": "boruto@mail.com"
+    }
+}
+```
+
+*Response (500 - Internal Server Error)*
+
+```
+{
+  "meta" : {
+      "message": "Internal server error",
+      "code": 500,
+      "status": "error"
+  }, 
+  "data" : {
+      "error": ""
+  }
+}
+```
+
+------
+
+### DELETE /users/:user_id
+
+> Delete user by ID
+
+*Request Header*
+
+```
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+*Request Body*
+
+```
+not needed
+```
+
+*Response (200)*
+
+```
+{
+    "meta": {
+        "message": "user was deleted successfully",
+        "code": 200,
+        "status": "success"
+    },
+    "data": {
+        "message": "delete user id 3 succeed",
+        "delete_time": "2021-05-27T05:55:25.705047677Z"
+    }
+}
+```
+
+*Response (500 - Internal Server Error)*
+
+```go
+{
+  "meta" : {
+      "message": "Internal server error",
+      "code": 500,
+      "status": "error"
+  }, 
+  "data" : {
+      "error": ""
+  }
+}
+```
