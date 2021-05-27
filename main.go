@@ -1,19 +1,19 @@
 package main
 
 import (
-	"PROJECT-INDIVIDU-GO-REACT/config"
-	"PROJECT-INDIVIDU-GO-REACT/entity"
-	"fmt"
+	"PROJECT-INDIVIDU_GO_REACT/handler"
+
+	"github.com/gin-gonic/gin"
 )
 
-var DB = config.Connect()
-
 func main() {
-	var Users []entity.User
+	r := gin.Default()
+	r.GET("/users", handler.GetAllUser)
+	r.GET("/users/:user_id", handler.HandleUsersID)
+	r.POST("/users", handler.CreateNewUser)
+	r.DELETE("/users/:user_id", handler.HandleDeleteUser)
+	r.POST("/users/:user_id", handler.HandleUpdateUser)
 
-	if err := DB.Find(&Users).Error; err != nil {
-		panic(err.Error())
-	}
+	r.Run(":1212")
 
-	fmt.Println(Users)
 }
