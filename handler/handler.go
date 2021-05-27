@@ -24,29 +24,29 @@ func GetAllUser(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 }
 
-// func GetUserByID(c *gin.Context) {
-// 	var user entity.User
+func GetUserByID(c *gin.Context) {
+	var user entity.User
 
-// 	id := c.Param("user_id")
+	id := c.Param("user_id")
 
-// 	if err := DB.Where("id = ?", id).Find(&user).Error; err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{
-// 			"status":        "error bad request",
-// 			"error_message": err.Error(),
-// 		})
-// 		return
-// 	}
+	if err := DB.Where("id = ?", id).Find(&user).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status":        "error bad request",
+			"error_message": err.Error(),
+		})
+		return
+	}
 
-// 	if user.ID == 0 {
-// 		c.JSON(http.StatusNotFound, gin.H{
-// 			"status":        "error not found",
-// 			"error_message": "user id" + id + "not found in database",
-// 		})
-// 		return
-// 	}
+	if user.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{
+			"status":        "error not found",
+			"error_message": "user id" + id + "not found in database",
+		})
+		return
+	}
 
-// 	c.JSON(http.StatusOK, user)
-// }
+	c.JSON(http.StatusOK, user)
+}
 
 func CreateNewUser(c *gin.Context) {
 	var getUser entity.UserInput

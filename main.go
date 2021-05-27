@@ -9,7 +9,7 @@ func main() {
 	r := gin.Default()
 
 	r.GET("/users", handler.GetAllUser)
-	r.GET("/users/:user_id", handler.GetAllUser)
+	r.GET("/users/:user_id", handler.GetUserByID)
 	r.POST("/users", handler.CreateNewUser)
 
 	r.Run(":1212")
