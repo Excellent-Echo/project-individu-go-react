@@ -35,6 +35,12 @@ https://forum-app-go.herokuapp.com
 - `POST /categories`
 - `PUT /categories/:category_name`
 
+### userprofile
+
+- `GET /user_profile`
+- `POST /user_profile`
+- `PUT /user_profile`
+
 ## RESTful endpoints users
 
 ### GET /users
