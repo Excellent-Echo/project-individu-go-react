@@ -5,5 +5,3 @@ type UserProfile struct {
 	ProfileUser string `json:"profile_user"`
 	UserID      int    `json:"user_id"`
 }
-
-// type UserProfileInput
