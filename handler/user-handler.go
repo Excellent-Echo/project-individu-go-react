@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"project-individu-go-react/auth"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
@@ -46,10 +47,24 @@ func (h *userHandler) CreateUserHandler(c *gin.Context) {
 
 	response, err := h.userService.SaveNewUser(inputUser)
 	if err != nil {
-		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
+		emailDuplicateError := fmt.Sprintf("Error 1062: Duplicate entry '%s' for key 'email'", inputUser.Email)
+		userNameDuplicateError := fmt.Sprintf("Error 1062: Duplicate entry '%s' for key 'user_name'", inputUser.UserName)
+		if err.Error() == emailDuplicateError {
+			responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": "Email sudah digunakan"})
 
-		c.JSON(500, responseError)
-		return
+			c.JSON(500, responseError)
+			return
+		}
+		if err.Error() == userNameDuplicateError {
+			responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": "Username sudah digunakan"})
+
+			c.JSON(500, responseError)
+			return
+		}
+		// responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
+
+		// c.JSON(500, responseError)
+		// return
 	}
 
 	userResponse := helper.APIResponse("insert user data succeed", 201, "success", response)
