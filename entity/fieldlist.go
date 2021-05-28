@@ -8,8 +8,8 @@ type FieldList struct {
 	FieldImage string    `json:"field_image"`
 	CreatedAt  time.Time `json:"create_at"`
 	UpdatedAt  time.Time `json:"update_at"`
-	DeletedAt  time.Time `gorm:"index" json:"-"`
-	SportID    int       `json:"SportListID"`
+	// DeletedAt  time.Time `gorm:"index" json:"-"`
+	SportID int `json:"SportListID"`
 }
 
 type FieldListInput struct {
