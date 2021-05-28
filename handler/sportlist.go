@@ -19,7 +19,7 @@ func NewSportListHandler(sportlistService sportlist.Service) *sportlistHandler {
 
 //showUserHandler for handling show all user in db from route "/users"
 func (h *sportlistHandler) ShowUserHandler(c *gin.Context) {
-	users, err := h.sportlistService.GetAllSportList()
+	sportlist, err := h.sportlistService.GetAllSportList()
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -27,7 +27,7 @@ func (h *sportlistHandler) ShowUserHandler(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, users)
+	c.JSON(http.StatusOK, sportlist)
 }
 
 // CreateUserHandler for handing if user / external create new user from route "/users"
@@ -55,7 +55,7 @@ func (h *sportlistHandler) CreateSportlistHandler(c *gin.Context) {
 }
 
 // get user by 1
-// 1. get by id sesuai dengan paramter yg dikasih (repository)
+// 1. get by id sesuai dengan paramater yg dikasih (repository)
 // 2. service akan menampikan hasil user by id dengan format yang sudah ditentukan
 // 3. handler kita tangkap id dengan c.Param kemudian kita kirim ke service, terus kita tangkap responsenya
 

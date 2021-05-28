@@ -15,5 +15,5 @@ func main() {
 	// endpoint sportlist
 	routes.SportListRoutes(r)
 
-	r.Run(":4444")
+	r.Run()
 }

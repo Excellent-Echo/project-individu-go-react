@@ -27,6 +27,7 @@ func Connect() *gorm.DB {
 	}
 
 	db.AutoMigrate(&entity.User{})
+	db.AutoMigrate(&entity.FieldList{})
 	db.AutoMigrate(&entity.SportList{})
 
 	return db
