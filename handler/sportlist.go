@@ -64,12 +64,12 @@ func (h *sportlistHandler) GetSportListByIDHandler(c *gin.Context) {
 
 	sportlist, err := h.sportlistService.GetSportListByID(id)
 	if err != nil {
-		responseError := helper.APIResponse("error bad request user ID", 400, "error", gin.H{"error": err.Error()})
+		responseError := helper.APIResponse("error bad request sport list ID", 400, "error", gin.H{"error": err.Error()})
 
 		c.JSON(400, responseError)
 		return
 	}
 
-	response := helper.APIResponse("success get user by ID", 200, "success", sportlist)
+	response := helper.APIResponse("success get sport list by ID", 200, "success", sportlist)
 	c.JSON(200, response)
 }

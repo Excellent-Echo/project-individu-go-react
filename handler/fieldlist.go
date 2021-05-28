@@ -19,7 +19,7 @@ func NewFieldListHandler(fieldlistService fieldlist.Service) *fieldlistHandler {
 }
 
 //showFieldListHandler for handling show all fieldlist in db from route "/fieldlist"
-func (h *fieldlistHandler) showFieldListHandler(c *gin.Context) {
+func (h *fieldlistHandler) ShowFieldListHandler(c *gin.Context) {
 	fieldlist, err := h.fieldlistService.GetAllFieldList()
 
 	if err != nil {

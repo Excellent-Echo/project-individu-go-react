@@ -1,13 +1,20 @@
 package routes
 
-// var (
-// 	fieldlistRepository = fieldlist.NewRepository(DB)
-// 	fieldlistService = fieldlist.NewService(fieldlistRepository)
-// 	fieldlistHandler = handler.NewFieldListHandler(fieldlistService)
-// )
+import (
+	"projectpenyewaanlapangan/fieldlist"
+	"projectpenyewaanlapangan/handler"
 
-// func FieldListRoutes(r *gin.Engine) {
-// 	r.GET("/fieldlist", fieldlistHandler.showFieldListHandler)
-// 	r.POST("/fieldlist/register", fieldlistHandler.CreateFieldListHandler)
-// 	r.GET("/fieldlist/:fieldlistbyid", fieldlistHandler.)
-// }
+	"github.com/gin-gonic/gin"
+)
+
+var (
+	fieldlistRepository = fieldlist.NewRepository(DB)
+	fieldlistService    = fieldlist.NewService(fieldlistRepository)
+	fieldlistHandler    = handler.NewFieldListHandler(fieldlistService)
+)
+
+func FieldListRoutes(r *gin.Engine) {
+	r.GET("/fieldlist", fieldlistHandler.ShowFieldListHandler)
+	r.POST("/fieldlist/register", fieldlistHandler.CreateFieldListHandler)
+	r.GET("/fieldlist/:fieldlistbyid", fieldlistHandler.GetFieldListByID)
+}
