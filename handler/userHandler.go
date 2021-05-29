@@ -120,7 +120,7 @@ func (h *userHandler) GetandDeleteUserByIDHandler(c *gin.Context) {
 	c.JSON(200, responseSuccess)
 }
 
-// GetandUpdateUserByIDHandler untuk menghapus data user berdasarkan id, jika user menginput dari endpoint "/users/user_id"
+// GetandUpdateUserByIDHandler untuk update data user berdasarkan id, jika user menginput dari endpoint "/users/user_id"
 func (h *userHandler) GetandUpdateUserByIDHandler(c *gin.Context) {
 	id := c.Params.ByName("user_id")
 
