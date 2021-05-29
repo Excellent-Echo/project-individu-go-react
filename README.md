@@ -696,4 +696,229 @@ _Response (500 - Internal Server Error)_
 }
 ```
 ---
+## RESTful endpoints booking
+### GET /booking
 
+> Get All booking
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```json
+{
+  "meta" : {
+      "message" : "Success Get All Bookings Data",
+      "code" : 200,
+      "status" : "Status OK"
+  }, 
+  "data" : [			
+      {
+          "id" : 1,
+          "user_id" : 1,
+          "psikolog_id" : 2,
+          "booking_date" : 2021-05-25,
+          "booking_time" : 07:27:39.907,
+      }, {
+          "id" : 2,
+          "user_id" : 2,
+          "psikolog_id" : 4,
+          "booking_date" : 2021-05-25,
+          "booking_time" : 07:27:39.907,
+      }
+      , {
+          "id" : 3,
+          "user_id" : 3,
+          "psikolog_id" : 6,
+          "booking_date" : 2021-05-25,
+          "booking_time" : 07:27:39.907,
+      }
+  ]
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "meta" : {
+      "message" : "Internal server error",
+      "code" : 500,
+      "status" : "error"
+  }, 
+  "data" : {
+      "error" : ""
+  }
+}
+```
+---
+
+### POST /booking/order  
+
+> Create new booking
+
+_Request Header_
+```
+not needed
+```
+
+_Request Body_
+```json
+{
+  "user_id" : "<Your id user>",
+  "psikolog_id" : "<Psikolog id to get insert into>",
+  "booking_date" : "<Booking Date to get insert into>",
+  "booking_time": "<Booking Time to get insert into>"
+}
+```
+
+_Response (201)_
+```json
+{
+  "meta" : {
+      "message" : "Success Create new Bookings Data",
+      "code" : 201,
+      "status" : "Status Created"
+  }, 
+  "data" : 
+      {
+        "id" : <given id by system>,
+        "user_id" : "<posted user id>",
+        "psikolog_id" : "<posted psikolog id>",
+        "booking_date" : "<posted booking date>",
+        "booking_time" : "<posted booking time>"
+      }
+}
+```
+
+_Response (400 - Bad Request)_
+```json
+{
+  "meta" : {
+      "message" : "input data required",
+      "code" : 400,
+      "status" : "bad request"
+  }, 
+  "data" : 
+      {
+        "errors" : []
+      }
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "meta" : {
+      "message" : "Internal Server error",
+      "code" : 500,
+      "status" : "error"
+  }, 
+  "data" : 
+      {
+        "error" : ""
+      }
+}
+```
+---
+
+### GET /booking/:booking_id 
+
+> Get booking by booking ID
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```json
+{
+  "meta" : {
+      "message" : "Success get booking by id",
+      "code" : 200,
+      "status" : "success"
+  }, 
+  "data" :
+      {
+        "id" : 2,
+        "user_id" : 2,
+        "psikolog_id" : 4,
+        "booking_date" : 2021-05-25,
+        "booking_time" : 07:27:39.907
+      }
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "meta" : {
+      "message" : "Internal server error",
+      "code" : 500,
+      "status" : "error"
+  }, 
+  "data" : {
+      "error" : ""
+  }
+}
+```
+---
+
+### DELETE /booking/:booking_id 
+
+> Delete booking by ID
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```json
+{
+  "meta" : {
+      "message" : "Success delete booking id",
+      "code" : 200,
+      "status" : "Delete OK"
+  }, 
+  "data" : "",
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "meta" : {
+      "message" : "Internal server error",
+      "code" : 500,
+      "status" : "error"
+  }, 
+  "data" : {
+      "error" : ""
+  }
+}
+```
+---
