@@ -922,3 +922,218 @@ _Response (500 - Internal Server Error)_
 }
 ```
 ---
+---
+## RESTful endpoints roles
+### GET /roles
+
+> Get All roles
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```json
+{
+  "meta" : {
+      "message" : "Success Get All Roles Data",
+      "code" : 200,
+      "status" : "Status OK"
+  }, 
+  "data" : [			
+      {
+          "id" : 1,
+          "nama_role" : admin,
+          "description" : CRUD frontend function from dashboard,
+      }, {
+          "id" : 2,
+          "nama_role" : user,
+          "description" : looking for psikolog consulting services,
+      }
+      , {
+          "id" : 3,
+          "nama_role" : psikolog,
+          "description" : provide consulting services to users,
+      }
+  ]
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "meta" : {
+      "message" : "Internal server error",
+      "code" : 500,
+      "status" : "error"
+  }, 
+  "data" : {
+      "error" : ""
+  }
+}
+```
+---
+
+### POST /roles
+
+> Create new roles
+
+_Request Header_
+```
+not needed
+```
+
+_Request Body_
+```json
+{
+  "nama_role" : "<Nama role  to get insert into>",
+  "description" : "<Description to get insert into>",
+}
+```
+
+_Response (201)_
+```json
+{
+  "meta" : {
+      "message" : "Success Create new Roles Data",
+      "code" : 201,
+      "status" : "Status Created"
+  }, 
+  "data" : 
+      {
+        "id" : <given id by system>,
+        "nama_role" : "<posted name role>",
+        "description" : "<posted description>"
+      }
+}
+```
+
+_Response (400 - Bad Request)_
+```json
+{
+  "meta" : {
+      "message" : "input data required",
+      "code" : 400,
+      "status" : "bad request"
+  }, 
+  "data" : 
+      {
+        "errors" : []
+      }
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "meta" : {
+      "message" : "Internal Server error",
+      "code" : 500,
+      "status" : "error"
+  }, 
+  "data" : 
+      {
+        "error" : ""
+      }
+}
+```
+---
+
+### GET /roles/:role_id 
+
+> Get roles by role ID
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```json
+{
+  "meta" : {
+      "message" : "Success get role by id",
+      "code" : 200,
+      "status" : "success"
+  }, 
+  "data" :
+      {
+        "id" : 1,
+        "nama_role" : admin,
+        "description" : CRUD frontend function from dashboard
+      }
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "meta" : {
+      "message" : "Internal server error",
+      "code" : 500,
+      "status" : "error"
+  }, 
+  "data" : {
+      "error" : ""
+  }
+}
+```
+---
+
+### DELETE /roles/:role_id   
+
+> Delete role by ID
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```json
+{
+  "meta" : {
+      "message" : "Success delete role id",
+      "code" : 200,
+      "status" : "Delete OK"
+  }, 
+  "data" : "",
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "meta" : {
+      "message" : "Internal server error",
+      "code" : 500,
+      "status" : "error"
+  }, 
+  "data" : {
+      "error" : ""
+  }
+}
+```
+---
