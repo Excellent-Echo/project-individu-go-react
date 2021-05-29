@@ -16,6 +16,7 @@ func main() {
 	routes.RoleRoute(router)
 	routes.BookingDetailRoute(router)
 
-	router.Run(":3000")
+	//router.Run(":3000")
+	router.Run()
 
 }

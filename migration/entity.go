@@ -23,7 +23,6 @@ type Psikologi struct {
 	Price           int             `json:"price"`
 	JenisKonsultasi string          `json:"jenis_konsultasi"`
 	Description     string          `json:"description"`
-	Review          string          `json:"review"`
 	CreateAt        time.Time       `json:"create_at"`
 	UpdatedAt       time.Time       `json:"updated_at"`
 	DeletedAt       time.Time       `gorm:"index"  json:"-"`
@@ -49,9 +48,8 @@ type BookingDetail struct {
 	PsikologID int `json:"psikolog_id"`
 }
 type Role struct {
-	ID       int    `gorm:"primaryKey"`
-	Admin    string `json:"admin"`
-	User     string `json:"user"`
-	Psikolog string `json:"psikolog"`
-	Users    []User `gorm:"foreignKey:RoleID"`
+	ID          int    `gorm:"primaryKey"`
+	NamaRole    string `json:"nama_role"`
+	Description string `json:"description"`
+	Users       []User `gorm:"foreignKey:RoleID"`
 }
