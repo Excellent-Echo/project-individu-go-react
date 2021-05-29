@@ -1137,3 +1137,175 @@ _Response (500 - Internal Server Error)_
 }
 ```
 ---
+---
+## RESTful endpoints booking detail
+### GET /booking-detail  
+
+> Get All booking detail  
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```json
+{
+  "meta" : {
+      "message" : "Success Get All Booking Details Data",
+      "code" : 200,
+      "status" : "Status OK"
+  }, 
+  "data" : [			
+      {
+          "id" : 1,
+          "booking_id" : 2,
+          "psikolog_id" : 4,
+      }, {
+          "id" : 2,
+          "booking_id" : 3,
+          "psikolog_id" : 5,
+      }
+      , {
+          "id" : 3,
+          "booking_id" : 5,
+          "psikolog_id" : 5,
+      }
+  ]
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "meta" : {
+      "message" : "Internal server error",
+      "code" : 500,
+      "status" : "error"
+  }, 
+  "data" : {
+      "error" : ""
+  }
+}
+```
+---
+
+### POST /booking-detail 
+
+> Create new booking detail
+
+_Request Header_
+```
+not needed
+```
+
+_Request Body_
+```json
+{
+  "booking_id" : "<booking id to get insert into>",
+  "psikolog_id" : "<psikolog id to get insert into>",
+}
+```
+
+_Response (201)_
+```json
+{
+  "meta" : {
+      "message" : "Success Create new Booking Detail Data",
+      "code" : 201,
+      "status" : "Status Created"
+  }, 
+  "data" : 
+      {
+        "id" : <given id by system>,
+        "booking_id" : "<posted name role>",
+        "psikolog_id" : "<posted description>"
+      }
+}
+```
+
+_Response (400 - Bad Request)_
+```json
+{
+  "meta" : {
+      "message" : "input data required",
+      "code" : 400,
+      "status" : "bad request"
+  }, 
+  "data" : 
+      {
+        "errors" : []
+      }
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "meta" : {
+      "message" : "Internal Server error",
+      "code" : 500,
+      "status" : "error"
+  }, 
+  "data" : 
+      {
+        "error" : ""
+      }
+}
+```
+---
+
+### GET /booking-detail/:booking_detail_id 
+
+> Get booking detail by booking detail ID
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```json
+{
+  "meta" : {
+      "message" : "Success get booking detail by id",
+      "code" : 200,
+      "status" : "success"
+  }, 
+  "data" :
+      {
+        "id" : 1,
+        "booking_id" : 2,
+        "psikolog_i" : 4
+      }
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "meta" : {
+      "message" : "Internal server error",
+      "code" : 500,
+      "status" : "error"
+  }, 
+  "data" : {
+      "error" : ""
+  }
+}
+```
+---
