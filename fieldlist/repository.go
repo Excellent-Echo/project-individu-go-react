@@ -8,8 +8,8 @@ import (
 
 type Repository interface {
 	// FindAll() ([]entity.FieldList, error)
-	Create(fieldlist entity.FieldList) (entity.FieldList, error)
-	FindByID(ID string) (entity.FieldList, error)
+	Create(fieldlist entity.FieldListSportName) (entity.FieldListSportName, error)
+	FindByID(ID string) (entity.FieldListSportName, error)
 	FindAll() ([]entity.FieldListSportName, error)
 }
 
@@ -31,7 +31,7 @@ func NewRepository(db *gorm.DB) *repository {
 // 	return fieldlists, nil
 // }
 
-func (r *repository) Create(fieldlist entity.FieldList) (entity.FieldList, error) {
+func (r *repository) Create(fieldlist entity.FieldListSportName) (entity.FieldListSportName, error) {
 	if err := r.db.Create(&fieldlist).Error; err != nil {
 		return fieldlist, err
 	}
@@ -39,10 +39,10 @@ func (r *repository) Create(fieldlist entity.FieldList) (entity.FieldList, error
 	return fieldlist, nil
 }
 
-func (r *repository) FindByID(ID string) (entity.FieldList, error) {
-	var fieldlist entity.FieldList
+func (r *repository) FindByID(ID string) (entity.FieldListSportName, error) {
+	var fieldlist entity.FieldListSportName
 
-	if err := r.db.Where("id = ?", ID).Find(&fieldlist).Error; err != nil {
+	if err := r.db.Model(entity.FieldList{}).Select("field_lists.id, field_lists.field_name, field_lists.field_image, field_lists.rent_price, field_lists.created_at, field_lists.updated_at, sport_lists.sport_name").Joins("left join sport_lists on sport_lists.id = field_lists.sport_id").Scan(&fieldlist).Where("id = ?", ID).Find(&fieldlist).Error; err != nil {
 		return fieldlist, err
 	}
 
