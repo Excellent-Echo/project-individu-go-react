@@ -14,36 +14,36 @@ Konsultasi psikolog app is an application to schedule a psychologist consultatio
 
 ## List of available endpoints
 ### users
-- `GET /users`
-- `POST /users/register`
-- `POST /users/login`
-- `GET /users/:user_id`
-- `PUT /users/:user_id`
-- `DELETE /users/:user_id`
+- `GET https://konsultasi-psikolog.herokuapp.com/users`
+- `POST https://konsultasi-psikolog.herokuapp.com/users/register`
+- `POST https://konsultasi-psikolog.herokuapp.com/users/login`
+- `GET https://konsultasi-psikolog.herokuapp.com/users/:user_id`
+- `PUT https://konsultasi-psikolog.herokuapp.com/users/:user_id`
+- `DELETE https://konsultasi-psikolog.herokuapp.com/users/:user_id`
 
 ### psikologs
-- `GET /psikologs`
-- `POST /psikologs`
-- `GET /psikologs/:psikolog_id`
-- `PUT /psikologs/:psikolog_id`
-- `DELETE /psikologs/:psikolog_id`
+- `GET https://konsultasi-psikolog.herokuapp.com/psikologs`
+- `POST https://konsultasi-psikolog.herokuapp.com/psikologs`
+- `GET https://konsultasi-psikolog.herokuapp.com/psikologs/:psikolog_id`
+- `PUT https://konsultasi-psikolog.herokuapp.com/psikologs/:psikolog_id`
+- `DELETE https://konsultasi-psikolog.herokuapp.com/psikologs/:psikolog_id`
 
 ### booking
-- `GET /booking`
-- `POST /booking/order`
-- `GET /booking/:booking_id`
-- `DELETE /booking/:booking_id`
+- `GET https://konsultasi-psikolog.herokuapp.com/booking`
+- `POST https://konsultasi-psikolog.herokuapp.com/booking/order`
+- `GET https://konsultasi-psikolog.herokuapp.com/booking/:booking_id`
+- `DELETE https://konsultasi-psikolog.herokuapp.com/booking/:booking_id`
 
 ### booking detail
-- `GET /booking-detail`
-- `POST /booking-detail`
-- `GET /booking-detail/:booking_detail_id`
+- `GET https://konsultasi-psikolog.herokuapp.com/booking-detail`
+- `POST https://konsultasi-psikolog.herokuapp.com/booking-detail`
+- `GET https://konsultasi-psikolog.herokuapp.com/booking-detail/:booking_detail_id`
 
 ### roles
-- `GET /roles`
-- `POST /roles`
-- `GET /roles/:role_id`
-- `DELETE /roles/:role_id`
+- `GET https://konsultasi-psikolog.herokuapp.com/roles`
+- `POST https://konsultasi-psikolog.herokuapp.com/roles`
+- `GET https://konsultasi-psikolog.herokuapp.com/roles/:role_id`
+- `DELETE https://konsultasi-psikolog.herokuapp.com/roles/:role_id`
 
 
 ## RESTful endpoints users
