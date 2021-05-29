@@ -2,9 +2,8 @@ package entity
 
 import "time"
 
-// Booking struct tabel bookings
 type Booking struct {
-	ID             int             `gorm:"primaryKey"`
+	ID             int             `gorm:"primaryKey" json:"id"`
 	UserID         int             `json:"user_id"`
 	PsikologID     int             `json:"psikolog_id"`
 	BookingDate    int             `json:"booking_date"`

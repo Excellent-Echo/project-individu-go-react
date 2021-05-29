@@ -11,11 +11,11 @@ func main() {
 
 	router.Use(cors.Default())
 	routes.UserRoute(router)
-	//routes.PsikologRoute(router)
+	routes.PsikologRoute(router)
+	routes.BookingRoute(router)
 	//routes.RoleRoute(router)
 	//routes.BookingDetailRoute(router)
-	//routes.BookingRoute(router)
 
-	router.Run()
+	router.Run(":3000")
 
 }
