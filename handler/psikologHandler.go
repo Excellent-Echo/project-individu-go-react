@@ -2,17 +2,20 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"project-individu-go-react/auth"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
 	"project-individu-go-react/layer/psikolog"
+	"strconv"
 )
 
 type psikologHandler struct {
 	psikologService psikolog.Service
+	authService     auth.Service
 }
 
-func NewPsikologHandler(psikologService psikolog.Service) *psikologHandler {
-	return &psikologHandler{psikologService}
+func NewPsikologHandler(psikologService psikolog.Service, authService auth.Service) *psikologHandler {
+	return &psikologHandler{psikologService, authService}
 }
 
 func (h *psikologHandler) ShowPsikologHandler(c *gin.Context) {
@@ -93,6 +96,18 @@ func (h *psikologHandler) UpdatePsikologByIDHandler(c *gin.Context) {
 		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"errors": splitError})
 
 		c.JSON(400, responseError)
+		return
+	}
+
+	idParam, _ := strconv.Atoi(id)
+
+	// authorization userid dari params harus sama dengan user id yang login
+	userData := int(c.MustGet("currentUser").(int))
+
+	if idParam != userData {
+		responseError := helper.APIResponse("Unauthorize", 401, "error", gin.H{"error": "user ID not authorize"})
+
+		c.JSON(401, responseError)
 		return
 	}
 
