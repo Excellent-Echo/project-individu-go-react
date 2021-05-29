@@ -9,7 +9,7 @@ import (
 )
 
 type Service interface {
-	GetAllFieldList() ([]entity.FieldList, error)
+	GetAllFieldList() ([]entity.FieldListSportName, error)
 	SaveNewFieldList(fieldlist entity.FieldListInput, SportID string) (entity.FieldList, error)
 	GetFieldListByID(fieldlistID string) (entity.FieldList, error)
 }
@@ -22,13 +22,13 @@ func NewService(repo Repository) *service {
 	return &service{repo}
 }
 
-func (s *service) GetAllFieldList() ([]entity.FieldList, error) {
+func (s *service) GetAllFieldList() ([]entity.FieldListSportName, error) {
 	fieldlists, err := s.repository.FindAll()
 
-	var formatFieldLists []entity.FieldList
+	var formatFieldLists []entity.FieldListSportName
 
 	for _, fieldlist := range fieldlists {
-		formatFieldList := FormatFieldList(fieldlist)
+		formatFieldList := FormatFieldListSportName(fieldlist)
 		formatFieldLists = append(formatFieldLists, formatFieldList)
 	}
 

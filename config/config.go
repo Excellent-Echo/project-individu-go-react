@@ -3,6 +3,7 @@ package config
 import (
 	"projectpenyewaanlapangan/entity"
 
+	// "github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -29,6 +30,8 @@ func Connect() *gorm.DB {
 	db.AutoMigrate(&entity.User{})
 	db.AutoMigrate(&entity.FieldList{})
 	db.AutoMigrate(&entity.SportList{})
+	db.AutoMigrate(&entity.BookingList{})
+	db.AutoMigrate(&entity.Transaksi{})
 
 	return db
 }
