@@ -5,7 +5,6 @@ import (
 	"time"
 )
 
-// UserFormat untuk formatting yang ada di model user
 type UserFormat struct {
 	ID        int    `json:"id"`
 	RoleID    int    `json:"role_id"`

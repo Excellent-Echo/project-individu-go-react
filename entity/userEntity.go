@@ -2,7 +2,6 @@ package entity
 
 import "time"
 
-// User struct untuk tabel users
 type User struct {
 	ID        int       `gorm:"primaryKey" json:"id"`
 	RoleID    int       `json:"role_id"`
@@ -16,7 +15,6 @@ type User struct {
 	Booking []Booking `gorm:"foreignKey:UserID"`
 }
 
-// UserInput untuk inputan yang diperlukan dari model users
 type UserInput struct {
 	RoleID    int    `json:"role_id" binding:"required"`
 	Firstname string `json:"firstname" binding:"required"`
@@ -25,7 +23,6 @@ type UserInput struct {
 	Password  string `json:"password" binding:"required"`
 }
 
-// UserInputUpdate inputan yang diperlukan users untuk update data
 type UserInputUpdate struct {
 	RoleID    int    `json:"role_id"`
 	FirstName string `json:"firstname"`
@@ -33,7 +30,6 @@ type UserInputUpdate struct {
 	Email     string `json:"email"`
 }
 
-// UserLoginInput inputan yang diperlukan users untuk login
 type UserLoginInput struct {
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required"`
