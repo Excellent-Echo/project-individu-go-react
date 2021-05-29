@@ -15,8 +15,8 @@ type Booking struct {
 }
 
 type BookingInput struct {
-	UserID      int `json:"user_id"`
-	PsikologID  int `json:"psikolog_id"`
-	BookingDate int `json:"booking_date"`
-	BookingTime int `json:"booking_time"`
+	UserID      int `json:"user_id" binding:"required"`
+	PsikologID  int `json:"psikolog_id" binding:"required"`
+	BookingDate int `json:"booking_date" binding:"required"`
+	BookingTime int `json:"booking_time" binding:"required"`
 }
