@@ -13,7 +13,7 @@ func main() {
 	routes.UserRoute(router)
 	routes.PsikologRoute(router)
 	routes.BookingRoute(router)
-	//routes.RoleRoute(router)
+	routes.RoleRoute(router)
 	routes.BookingDetailRoute(router)
 
 	router.Run(":3000")

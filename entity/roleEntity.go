@@ -1,10 +1,18 @@
 package entity
 
-// Role struct tabel role
 type Role struct {
-	ID       int    `gorm:"primaryKey"`
-	Admin    string `json:"admin"`
-	User     string `json:"user"`
-	Psikolog string `json:"psikolog"`
-	Users    []User `gorm:"foreignKey:RoleID"`
+	ID          int    `gorm:"primaryKey" json:"id"`
+	NamaRole    string `json:"nama_role"`
+	Description string `json:"description"`
+	Users       []User `gorm:"foreignKey:RoleID"`
+}
+
+type RoleInput struct {
+	NamaRole    string `json:"nama_role" binding:"required"`
+	Description string `json:"description" binding:"required"`
+}
+
+type RoleInputUpdate struct {
+	NamaRole    string `json:"nama_role"`
+	Description string `json:"description"`
 }
