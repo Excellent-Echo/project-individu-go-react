@@ -53,3 +53,9 @@ type Role struct {
 	Description string `json:"description"`
 	Users       []User `gorm:"foreignKey:RoleID"`
 }
+
+type UserProfile struct {
+	ID        int    `json:"id"`
+	ImageUser string `json:"image_user"`
+	UserID    int    `json:"user_id"`
+}

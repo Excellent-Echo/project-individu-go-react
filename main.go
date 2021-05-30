@@ -11,6 +11,7 @@ func main() {
 
 	router.Use(cors.Default())
 	routes.UserRoute(router)
+	routes.UserProfileRoute(router)
 	routes.PsikologRoute(router)
 	routes.BookingRoute(router)
 	routes.RoleRoute(router)
