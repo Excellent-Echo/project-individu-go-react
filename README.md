@@ -1319,7 +1319,7 @@ _Response (500 - Internal Server Error)_
 - `POST /users_profile`
 - `PUT /users_profile`
 
-### GET /user_profile
+### GET /users_profile
 > get user profile by user ID login 
 
 _Request Header_
@@ -1344,7 +1344,7 @@ _Response (200)_
   }, 
   "data" : {
         "id": 1,
-        "profile_user" : "https://todo-rest-api-golang.herokuapp.com/images/profile-7-google.com.jpg",
+        "profile_user" : "https://konsultasi-psikolog.herokuapp.com/images/profile-7-google.com.jpg",
         "user_id" : 2 
     }
 }
@@ -1380,7 +1380,7 @@ _Response (500 - Internal Server Error)_
 ```
 ---
 
-### POST /user_profile
+### POST /users_profile
 > update user profile by user id login
 
 _Request Header_
@@ -1405,7 +1405,7 @@ _Response (201)_
   }, 
   "data" : {
         "id": 1,
-        "profile_user" : "https://todo-rest-api-golang.herokuapp.com/images/profile-7-google.com.jpg",
+        "profile_user" : "https://konsultasi-psikolog.herokuapp.com/images/profile-7-google.com.jpg",
         "user_id" : 2 
     }
 }
