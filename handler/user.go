@@ -25,9 +25,9 @@ func (h *userHandler) ShowAllUser(c *gin.Context) {
 	users, err := h.userService.GetAllUser()
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "error in internal server",
-		})
+		responseError := helper.APIResponse("internal server error", http.StatusOK, "error", gin.H{"errors": err.Error()})
+
+		c.JSON(http.StatusOK, responseError)
 		return
 	}
 
@@ -35,8 +35,32 @@ func (h *userHandler) ShowAllUser(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+func (h *userHandler) CreateUserHandler(c *gin.Context) {
+	var inputUser entity.UserInput
+
+	if err := c.ShouldBindJSON(&inputUser); err != nil {
+
+		splitError := helper.SplitErrorInformation(err)
+		responseError := helper.APIResponse("input data required", http.StatusOK, "bad request", gin.H{"errors": splitError})
+
+		c.JSON(http.StatusOK, responseError)
+		return
+	}
+
+	newUser, err := h.userService.SaveNewUser(inputUser)
+	if err != nil {
+		responseError := helper.APIResponse("internal server error", http.StatusOK, "error", gin.H{"errors": err.Error()})
+
+		c.JSON(http.StatusOK, responseError)
+		return
+	}
+	response := helper.APIResponse("success create new User", http.StatusOK, "Status OK", newUser)
+	c.JSON(http.StatusOK, response)
+}
+
 var DB = config.Connection()
 
+// GET - ALL - USER
 // func GetAllUser(c *gin.Context) {
 // 	var users []entity.User
 
@@ -51,37 +75,38 @@ var DB = config.Connection()
 // 	c.JSON(http.StatusOK, users)
 // }
 
-func CreateNewUser(c *gin.Context) {
-	var getUser entity.UserInput
+// CREATE - NEW - USER
+// func CreateNewUser(c *gin.Context) {
+// 	var getUser entity.UserInput
 
-	if err := c.ShouldBindJSON(&getUser); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status":        "error bad request",
-			"error_message": err.Error(),
-		})
-		return
-	}
+// 	if err := c.ShouldBindJSON(&getUser); err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{
+// 			"status":        "error bad request",
+// 			"error_message": err.Error(),
+// 		})
+// 		return
+// 	}
 
-	var newUser = entity.User{
-		First_name: getUser.First_name,
-		Last_name:  getUser.Last_name,
-		Password:   getUser.Password,
-		Email:      getUser.Email,
-		Created_at: time.Now(),
-		Updated_at: time.Now(),
-	}
+// 	var newUser = entity.User{
+// 		First_name: getUser.First_name,
+// 		Last_name:  getUser.Last_name,
+// 		Password:   getUser.Password,
+// 		Email:      getUser.Email,
+// 		Created_at: time.Now(),
+// 		Updated_at: time.Now(),
+// 	}
 
-	if err := DB.Create(&newUser).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"status":        "error bad request",
-			"error_message": err.Error(),
-		})
-		return
-	}
+// 	if err := DB.Create(&newUser).Error; err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{
+// 			"status":        "error bad request",
+// 			"error_message": err.Error(),
+// 		})
+// 		return
+// 	}
 
-	c.JSON(http.StatusCreated, newUser)
+// 	c.JSON(http.StatusCreated, newUser)
 
-}
+// }
 
 func HandleUsersID(c *gin.Context) {
 	var users entity.User

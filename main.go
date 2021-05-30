@@ -21,7 +21,7 @@ func main() {
 	r.GET("/users", userHandler.ShowAllUser)
 	// r.GET("/users", handler.GetAllUser)
 	// r.GET("/users/:user_id", handler.HandleUsersID)
-	r.POST("/users", handler.CreateNewUser)
+	r.POST("/users/register", userHandler.CreateUserHandler)
 	// r.DELETE("/users/:user_id", handler.HandleDeleteUser)
 	// r.POST("/users/:user_id", handler.HandleUpdateUser)
 
