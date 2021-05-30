@@ -3,16 +3,17 @@ package migration
 import "time"
 
 type User struct {
-	ID        int       `gorm:"primaryKey" json:"id"`
-	RoleID    int       `json:"role_id"`
-	Firstname string    `json:"firstname"`
-	Lastname  string    `json:"lastname"`
-	Email     string    `json:"email"`
-	Password  string    `json:"-"`
-	CreateAt  time.Time `json:"create_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-	DeletedAt time.Time `gorm:"index" json:"-"`
-	Booking   []Booking `gorm:"foreignKey:UserID"`
+	ID          int           `gorm:"primaryKey" json:"id"`
+	RoleID      int           `json:"role_id"`
+	Firstname   string        `json:"firstname"`
+	Lastname    string        `json:"lastname"`
+	Email       string        `json:"email"`
+	Password    string        `json:"-"`
+	CreateAt    time.Time     `json:"create_at"`
+	UpdatedAt   time.Time     `json:"updated_at"`
+	DeletedAt   time.Time     `gorm:"index" json:"-"`
+	Booking     []Booking     `gorm:"foreignKey:UserID"`
+	UserProfile []UserProfile `gorm:"foreignKey:UserID"`
 }
 
 type Psikologi struct {
