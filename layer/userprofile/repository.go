@@ -7,7 +7,7 @@ import (
 
 type Repository interface {
 	FindByUserProfileID(userID string) (entity.UserProfile, error)
-	CreateUserProfile(userProfile entity.UserProfile) (entity.UserProfile, error)
+	Create(userProfile entity.UserProfile) (entity.UserProfile, error)
 	UpdateUserProfileByID(ID string, dataUserProfileUpdate map[string]interface{}) (entity.UserProfile, error)
 }
 
@@ -27,13 +27,13 @@ func (r *repository) FindByUserProfileID(userID string) (entity.UserProfile, err
 	return userProfile, nil
 }
 
-func (r *repository) CreateUserProfile(userProfile entity.UserProfile) (entity.UserProfile, error) {
+func (r *repository) Create(userProfile entity.UserProfile) (entity.UserProfile, error) {
 	if err := r.db.Create(&userProfile).Error; err != nil {
 		return userProfile, err
 	}
+
 	return userProfile, nil
 }
-
 func (r *repository) UpdateUserProfileByID(ID string, dataUserProfileUpdate map[string]interface{}) (entity.UserProfile, error) {
 	var userProfile entity.UserProfile
 	if err := r.db.Model(&userProfile).Where("id = ?", ID).Updates(dataUserProfileUpdate).Error; err != nil {

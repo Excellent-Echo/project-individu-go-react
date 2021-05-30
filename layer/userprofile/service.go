@@ -42,11 +42,11 @@ func (s *service) SavenewUserProfile(pathFile string, userID int) (entity.UserPr
 	}
 
 	newUserProfile := entity.UserProfile{
-		ImageUser: pathFile,
-		UserID:    userID,
+		ProfileUser: pathFile,
+		UserID:      userID,
 	}
 
-	userProfile, err := s.repository.CreateUserProfile(newUserProfile)
+	userProfile, err := s.repository.Create(newUserProfile)
 
 	if err != nil {
 		return userProfile, err
