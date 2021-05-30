@@ -33,14 +33,14 @@ func (h *userProfileHandler) GetUserProfileByUserIDHandler(c *gin.Context) {
 func (h *userProfileHandler) SaveNewUserProfileHandler(c *gin.Context) {
 	userData := int(c.MustGet("currentUser").(int))
 	// input in postman
-	fileImage, err := c.FormFile("images")
+	fileImage, err := c.FormFile("profile")
 	if err != nil {
 		responseError := helper.APIResponse("status bad request", 400, "error", gin.H{"error": err.Error()})
 		c.JSON(400, responseError)
 		return
 	}
 
-	path := fmt.Sprintf("images/images-%d-%s", userData, fileImage.Filename)
+	path := fmt.Sprintf("images/profile-%d-%s", userData, fileImage.Filename)
 	err = c.SaveUploadedFile(fileImage, path)
 	if err != nil {
 		responseError := helper.APIResponse("status bad request", 400, "error", gin.H{"error": err.Error()})
@@ -64,14 +64,14 @@ func (h *userProfileHandler) UpdateUserProfileByIDHandler(c *gin.Context) {
 	userData := int(c.MustGet("currentUser").(int))
 	ID := strconv.Itoa(userData)
 	//input in postman
-	fileImage, err := c.FormFile("images")
+	fileImage, err := c.FormFile("profile")
 	if err != nil {
 		responseError := helper.APIResponse("status bad request", 400, "error", gin.H{"error": err.Error()})
 		c.JSON(400, responseError)
 		return
 	}
 
-	path := fmt.Sprintf("images/images-%d-%s", userData, fileImage.Filename)
+	path := fmt.Sprintf("images/profile-%d-%s", userData, fileImage.Filename)
 	err = c.SaveUploadedFile(fileImage, path)
 	if err != nil {
 		responseError := helper.APIResponse("status bad request", 400, "error", gin.H{"error": err.Error()})
