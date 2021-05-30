@@ -11,6 +11,7 @@ func main() {
 
 	r := gin.Default()
 
+	// CORS
 	r.Use(cors.Default())
 
 	routes.UserRoute(r)
