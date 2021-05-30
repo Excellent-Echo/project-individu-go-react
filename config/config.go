@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"os"
@@ -11,7 +10,7 @@ import (
 
 // ConnectToDatabase untuk koneksi dari database MySQL
 func ConnectToDatabase() *gorm.DB {
-	err := godotenv.Load()
+	//err := godotenv.Load()
 
 	dbUser := os.Getenv("DB_USERNAME")
 	dbPass := os.Getenv("DB_PASSWORD")
