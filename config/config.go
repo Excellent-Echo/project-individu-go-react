@@ -15,10 +15,10 @@ func ConnectToDatabase() *gorm.DB {
 	dbUser := os.Getenv("DB_USERNAME")
 	dbPass := os.Getenv("DB_PASSWORD")
 	dbHost := os.Getenv("DB_HOST")
-	dbPort := os.Getenv("DB_PORT")
+	//dbPort := os.Getenv("DB_PORT")
 	dbName := os.Getenv("DB_NAME")
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbPort, dbName)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbName)
 
 	//dsn := "cb4RUILMib:WOiDCnT5Ey@tcp(remotemysql.com:3306)/cb4RUILMib?charset=utf8mb4&parseTime=True&loc=Local"
 
@@ -34,6 +34,7 @@ func ConnectToDatabase() *gorm.DB {
 	db.AutoMigrate(&migration.Booking{})
 	db.AutoMigrate(&migration.BookingDetail{})
 	db.AutoMigrate(&migration.Psikologi{})
+	db.AutoMigrate(&migration.UserProfile{})
 
 	return db
 }
