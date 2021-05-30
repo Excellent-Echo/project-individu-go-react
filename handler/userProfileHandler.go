@@ -59,7 +59,7 @@ func (h *userProfileHandler) SaveNewUserProfileHandler(c *gin.Context) {
 		return
 	}
 
-	pathProfileSave := "https://todo-rest-api-golang.herokuapp.com/" + path
+	pathProfileSave := "https://konsultasi-psikolog.herokuapp.com/" + path
 
 	userProfile, err := h.service.SavenewUserProfile(pathProfileSave, userData)
 
@@ -101,7 +101,7 @@ func (h *userProfileHandler) UpdateUserProfileByIDHandler(c *gin.Context) {
 		return
 	}
 
-	pathProfileSave := "https://todo-rest-api-golang.herokuapp.com/" + path
+	pathProfileSave := "https://konsultasi-psikolog.herokuapp.com/" + path
 
 	userProfile, err := h.service.UpdateUserProfileByID(pathProfileSave, ID)
 
