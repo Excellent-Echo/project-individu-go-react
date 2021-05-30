@@ -55,6 +55,7 @@ type Role struct {
 	Users       []User `gorm:"foreignKey:RoleID"`
 }
 
+//test
 type UserProfile struct {
 	ID          int    `json:"id"`
 	ProfileUser string `json:"profile_user"`
