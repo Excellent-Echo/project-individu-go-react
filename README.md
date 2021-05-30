@@ -46,9 +46,9 @@ Konsultasi psikolog app is an application to schedule a psychologist consultatio
 - `DELETE https://konsultasi-psikolog.herokuapp.com/roles/:role_id`
 
 ### userProfiles
-- `GET /users_profile`
-- `POST /users_profile`
-- `PUT /users_profile`
+- `GET https://konsultasi-psikolog.herokuapp.com/users_profile`
+- `POST https://konsultasi-psikolog.herokuapp.com/users_profile`
+- `PUT https://konsultasi-psikolog.herokuapp.com/users_profile`
 
 ## RESTful endpoints users
 ### GET /users
