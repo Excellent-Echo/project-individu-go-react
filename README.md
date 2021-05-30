@@ -45,6 +45,10 @@ Konsultasi psikolog app is an application to schedule a psychologist consultatio
 - `GET https://konsultasi-psikolog.herokuapp.com/roles/:role_id`
 - `DELETE https://konsultasi-psikolog.herokuapp.com/roles/:role_id`
 
+### userProfiles
+- `GET /users_profile`
+- `POST /users_profile`
+- `PUT /users_profile`
 
 ## RESTful endpoints users
 ### GET /users
@@ -1291,6 +1295,208 @@ _Response (200)_
         "id" : 1,
         "booking_id" : 2,
         "psikolog_i" : 4
+      }
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "meta" : {
+      "message" : "Internal server error",
+      "code" : 500,
+      "status" : "error"
+  }, 
+  "data" : {
+      "error" : ""
+  }
+}
+```
+---
+
+## RESTful endpoints userProfile
+- `GET /users_profile` 
+- `POST /users_profile`
+- `PUT /users_profile`
+
+### GET /user_profile
+> get user profile by user ID login 
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```json
+{
+  "meta" : {
+      "message" : "success get user profile by user ID",
+      "code" : 200,
+      "status" : "success"
+  }, 
+  "data" : {
+        "id": 1,
+        "profile_user" : "https://todo-rest-api-golang.herokuapp.com/images/profile-7-google.com.jpg",
+        "user_id" : 2 
+    }
+}
+```
+
+_Response (401 - Unauthorized)_
+```json
+{
+    "meta" : {
+      "message" : "Unauthorize",
+      "code" : 401,
+      "status" : "error"
+  }, 
+  "data" : 
+      {
+        "error" : ""
+      }
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "meta" : {
+      "message" : "Internal server error",
+      "code" : 500,
+      "status" : "error"
+  }, 
+  "data" : {
+      "error" : ""
+  }
+}
+```
+---
+
+### POST /user_profile
+> update user profile by user id login
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```
+file upload (google.com.jpg)
+```
+
+_Response (201)_
+```json
+{
+  "meta" : {
+      "message" : "success get user profile by user ID",
+      "code" : 201,
+      "status" : "success"
+  }, 
+  "data" : {
+        "id": 1,
+        "profile_user" : "https://todo-rest-api-golang.herokuapp.com/images/profile-7-google.com.jpg",
+        "user_id" : 2 
+    }
+}
+```
+
+_Response (400 - Bad Request)_
+```json
+{
+  "meta" : {
+      "message" : "input data required",
+      "code" : 400,
+      "status" : "bad request"
+  }, 
+  "data" : {
+      "error" : ""
+  }
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "meta" : {
+      "message" : "Internal server error",
+      "code" : 500,
+      "status" : "error"
+  }, 
+  "data" : {
+      "error" : ""
+  }
+}
+```
+---
+
+### PUT /users_profile
+> update user profile by user id login
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```json
+Upload new image file in postman form data
+```
+
+
+_Response (201)_
+```json
+{
+  "meta" : {
+      "message" : "success update user profile image",
+      "code" : 200,
+      "status" : "success update"
+  }, 
+  "data" : {
+        "id": 1,
+        "image_user": "https://konsultasi-psikolog.herokuapp.com/images/profile-7-google.com.jpg,
+        "user_id": 4,
+    }
+}
+```
+
+_Response (400 - Bad Request)_
+```json
+{
+  "meta" : {
+      "message" : "input data required",
+      "code" : 400,
+      "status" : "bad request"
+  }, 
+  "data" : {
+      "errors" : []
+  }
+}
+```
+
+_Response (401 - Unauthorized)_
+```json
+{
+    "meta" : {
+      "message" : "Unauthorize",
+      "code" : 401,
+      "status" : "error"
+  }, 
+  "data" : 
+      {
+        "error" : ""
       }
 }
 ```
