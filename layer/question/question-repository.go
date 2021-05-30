@@ -25,7 +25,7 @@ func NewRepository(db *gorm.DB) *Repository {
 func (r *Repository) FindAllQuestions() ([]entity.Questions, error) {
 	var Questions []entity.Questions
 
-	err := r.db.Preload("Category").Preload("Answers").Find(&Questions).Error
+	err := r.db.Preload("User").Preload("Category").Preload("Answers").Find(&Questions).Error
 	if err != nil {
 		return Questions, err
 	}
