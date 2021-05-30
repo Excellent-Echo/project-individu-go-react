@@ -23,10 +23,12 @@ func NewService(repository Repository) *service {
 }
 
 func (s *service) GetUserProfileByUserID(userID string) (entity.UserProfile, error) {
-	userProfile, err := s.repository.FindByUserProfileID(userID)
+	userProfile, err := s.repository.FindByUserID(userID)
+
 	if err != nil {
 		return userProfile, err
 	}
+
 	return userProfile, nil
 }
 
@@ -34,7 +36,7 @@ func (s *service) SavenewUserProfile(pathFile string, userID int) (entity.UserPr
 
 	ID := strconv.Itoa(userID)
 
-	userProfileCheck, _ := s.repository.FindByUserProfileID(ID)
+	userProfileCheck, _ := s.repository.FindByUserID(ID)
 
 	if userProfileCheck.UserID == userID {
 		errooStatus := fmt.Sprintf("user profile for user id %d has been created", userID)
@@ -56,15 +58,21 @@ func (s *service) SavenewUserProfile(pathFile string, userID int) (entity.UserPr
 }
 
 func (s *service) UpdateUserProfileByID(pathFile string, userProfileID string) (entity.UserProfile, error) {
-	var dataImageUpdate = map[string]interface{}{}
+	var dataUpdate = map[string]interface{}{}
+
 	if err := helper.ValidateIDNumber(userProfileID); err != nil {
 		return entity.UserProfile{}, err
 	}
-	dataImageUpdate["image_user"] = pathFile
 
-	userProfileUpdate, err := s.repository.UpdateUserProfileByID(userProfileID, dataImageUpdate)
+	dataUpdate["profile_user"] = pathFile
+
+	// fmt.Println(dataUpdate)
+
+	userProfileUpdate, err := s.repository.UpdateByID(userProfileID, dataUpdate)
+
 	if err != nil {
 		return userProfileUpdate, err
 	}
+
 	return userProfileUpdate, nil
 }
