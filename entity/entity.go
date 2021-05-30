@@ -1,6 +1,10 @@
 package entity
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Category struct {
 	Category_id   int    `gorm:"primaryKey" json:"category_id"`
@@ -21,13 +25,24 @@ type Product struct {
 	Gambar_product     string `json:"gambar_product"`
 }
 
-type User struct {
-	User_id    int       `gorm:"primaryKey" json:"user_id"`
-	First_name string    `json:"first_name"`
-	Last_name  string    `json:"last_name"`
-	Email      string    `json:"email"`
-	Password   string    `json:"-"`
-	Created_at time.Time `json:"created_at"`
-	Updated_at time.Time `json:"updated_at"`
-	Order_id   int       `gorm:"foreignKey:order_id"`
+type UserDetail struct {
+	ID          int `gorm:"primaryKey"`
+	Address     string
+	Gender      string
+	NoHandphone int
+	UserID      int
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	DeletedAt   gorm.DeletedAt `gorm:"index"`
 }
+
+// type User struct {
+// 	User_id    int       `gorm:"primaryKey" json:"user_id"`
+// 	First_name string    `json:"first_name"`
+// 	Last_name  string    `json:"last_name"`
+// 	Email      string    `json:"email"`
+// 	Password   string    `json:"-"`
+// 	Created_at time.Time `json:"created_at"`
+// 	Updated_at time.Time `json:"updated_at"`
+// 	Order_id   int       `gorm:"foreignKey:order_id"`
+// }

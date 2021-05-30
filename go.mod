@@ -1,4 +1,4 @@
-module github.com/panduwil/project-individu-go-react
+module project-individu-go-react
 
 go 1.16
 

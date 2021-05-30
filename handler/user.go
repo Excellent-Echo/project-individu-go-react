@@ -5,27 +5,51 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/panduwil/project-individu-go-react/config"
-	"github.com/panduwil/project-individu-go-react/entity"
+	"project-individu-go-react/config"
+	"project-individu-go-react/entity"
+	"project-individu-go-react/helper"
+	"project-individu-go-react/user"
 
 	"github.com/gin-gonic/gin"
 )
 
-var DB = config.Connection()
+type userHandler struct {
+	userService user.Service
+}
 
-func GetAllUser(c *gin.Context) {
-	var users []entity.User
+func NewUserHandler(userService user.Service) *userHandler {
+	return &userHandler{userService}
+}
 
-	if err := DB.Find(&users).Error; err != nil {
+func (h *userHandler) ShowAllUser(c *gin.Context) {
+	users, err := h.userService.GetAllUser()
+
+	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "error in internal server",
 		})
-
 		return
 	}
 
-	c.JSON(http.StatusOK, users)
+	response := helper.APIResponse("success get all user", http.StatusOK, "status OK", users)
+	c.JSON(http.StatusOK, response)
 }
+
+var DB = config.Connection()
+
+// func GetAllUser(c *gin.Context) {
+// 	var users []entity.User
+
+// 	if err := DB.Find(&users).Error; err != nil {
+// 		c.JSON(http.StatusInternalServerError, gin.H{
+// 			"message": "error in internal server",
+// 		})
+
+// 		return
+// 	}
+
+// 	c.JSON(http.StatusOK, users)
+// }
 
 func CreateNewUser(c *gin.Context) {
 	var getUser entity.UserInput
