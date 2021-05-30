@@ -9,9 +9,9 @@ import (
 )
 
 type Service interface {
-	GetUserProfileByID(userID string) (entity.UserProfile, error)
-	MakeNewUserProfile(pathFile string, userID int) (entity.UserProfile, error)
-	UpdateUserProfileByID(pathFile string, userID string) (entity.UserProfile, error)
+	GetUserProfileByUserID(userID string) (entity.UserProfile, error)
+	SavenewUserProfile(pathFile string, userID int) (entity.UserProfile, error)
+	UpdateUserProfileByID(pathFile string, userProfileID string) (entity.UserProfile, error)
 }
 
 type service struct {
@@ -22,7 +22,7 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service) GetUserProfileByID(userID string) (entity.UserProfile, error) {
+func (s *service) GetUserProfileByUserID(userID string) (entity.UserProfile, error) {
 	userProfile, err := s.repository.FindByUserProfileID(userID)
 	if err != nil {
 		return userProfile, err
@@ -30,33 +30,39 @@ func (s *service) GetUserProfileByID(userID string) (entity.UserProfile, error) 
 	return userProfile, nil
 }
 
-func (s *service) MakeNewUserProfile(pathFile string, userID int) (entity.UserProfile, error) {
+func (s *service) SavenewUserProfile(pathFile string, userID int) (entity.UserProfile, error) {
+
 	ID := strconv.Itoa(userID)
-	checkingUserProfile, _ := s.repository.FindByUserProfileID(ID)
-	if checkingUserProfile.UserID == userID {
-		StatusError := fmt.Sprintf("user profile for user id %d succesful created", userID)
-		return checkingUserProfile, errors.New(StatusError)
+
+	userProfileCheck, _ := s.repository.FindByUserProfileID(ID)
+
+	if userProfileCheck.UserID == userID {
+		errooStatus := fmt.Sprintf("user profile for user id %d has been created", userID)
+		return userProfileCheck, errors.New(errooStatus)
 	}
 
-	addNewUserProfile := entity.UserProfile{
+	newUserProfile := entity.UserProfile{
 		ImageUser: pathFile,
 		UserID:    userID,
 	}
-	userProfile, err := s.repository.CreateUserProfile(addNewUserProfile)
+
+	userProfile, err := s.repository.CreateUserProfile(newUserProfile)
+
 	if err != nil {
 		return userProfile, err
 	}
+
 	return userProfile, nil
 }
 
-func (s *service) UpdateUserProfileByID(pathFile string, userID string) (entity.UserProfile, error) {
+func (s *service) UpdateUserProfileByID(pathFile string, userProfileID string) (entity.UserProfile, error) {
 	var dataImageUpdate = map[string]interface{}{}
-	if err := helper.ValidateIDNumber(userID); err != nil {
+	if err := helper.ValidateIDNumber(userProfileID); err != nil {
 		return entity.UserProfile{}, err
 	}
 	dataImageUpdate["image_user"] = pathFile
 
-	userProfileUpdate, err := s.repository.UpdateUserProfileByID(userID, dataImageUpdate)
+	userProfileUpdate, err := s.repository.UpdateUserProfileByID(userProfileID, dataImageUpdate)
 	if err != nil {
 		return userProfileUpdate, err
 	}
