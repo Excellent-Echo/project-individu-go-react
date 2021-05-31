@@ -15,6 +15,6 @@ var (
 
 func FieldListRoutes(r *gin.Engine) {
 	r.GET("/fieldlist", fieldlistHandler.ShowFieldListHandler)
-	r.POST("/fieldlist/register", fieldlistHandler.SaveNewFieldListHandler)
+	r.POST("/fieldlist", fieldlistHandler.SaveNewFieldListHandler)
 	r.GET("/fieldlist/:fieldlistbyid", fieldlistHandler.GetFieldListByID)
 }
