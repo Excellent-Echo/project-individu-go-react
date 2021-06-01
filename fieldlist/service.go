@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"projectpenyewaanlapangan/entity"
 	"projectpenyewaanlapangan/helper"
-	"strconv"
+	"time"
 )
 
 type Service interface {
-	GetAllFieldList() ([]entity.FieldListSportName, error)
-	SaveNewFieldList(pathFile string, SportID int) (entity.FieldListSportName, error)
-	GetFieldListByID(fieldlistID string) (entity.FieldListSportName, error)
+	GetAllFieldList() ([]entity.FieldList, error)
+	SaveNewFieldList(pathFile string, fieldListInput entity.FieldListInput) (FieldListFormat, error)
+	GetFieldListByID(fieldlistID string) (entity.FieldList, error)
+	UpdateFieldListById(pathFile string, fieldlistID string, fieldListInput entity.FieldListInput) (FieldListFormat, error)
 }
 
 type service struct {
@@ -22,88 +23,81 @@ func NewService(repo Repository) *service {
 	return &service{repo}
 }
 
-func (s *service) GetAllFieldList() ([]entity.FieldListSportName, error) {
-	fieldlists, err := s.repository.FindAll()
-
-	var formatFieldLists []entity.FieldListSportName
-
-	for _, fieldlist := range fieldlists {
-		formatFieldList := FormatFieldListSportName(fieldlist)
-		formatFieldLists = append(formatFieldLists, formatFieldList)
-	}
+func (s *service) GetAllFieldList() ([]entity.FieldList, error) {
+	fieldList, err := s.repository.FindAll()
 
 	if err != nil {
-		return formatFieldLists, err
+		return fieldList, err
 	}
 
-	return formatFieldLists, nil
+	return fieldList, nil
 }
 
-func (s *service) GetFieldListByID(fieldlistID string) (entity.FieldListSportName, error) {
-	if err := helper.ValidateIDNumber(fieldlistID); err != nil {
-		return entity.FieldListSportName{}, err
-	}
-
-	fieldlist, err := s.repository.FindByID(fieldlistID)
+func (s *service) GetFieldListByID(fieldlistID string) (entity.FieldList, error) {
+	fieldList, err := s.repository.FindByID(fieldlistID)
 
 	if err != nil {
-		return entity.FieldListSportName{}, err
+		return fieldList, err
 	}
 
-	if fieldlist.ID == 0 {
-		newError := fmt.Sprintf("field list id %s not found", fieldlistID)
-		return entity.FieldListSportName{}, errors.New(newError)
+	return fieldList, nil
+}
+
+func (s *service) SaveNewFieldList(pathFile string, fieldListInput entity.FieldListInput) (FieldListFormat, error) {
+
+	newFieldList := entity.FieldList{
+		FieldName:  fieldListInput.FieldName,
+		RentPrice:  fieldListInput.RentPrice,
+		FieldImage: pathFile,
 	}
 
-	formatFieldList := FormatFieldListSportName(fieldlist)
+	createFieldList, err := s.repository.Create(newFieldList)
+	formatFieldList := FormatFieldList(createFieldList)
+
+	if err != nil {
+		return formatFieldList, err
+	}
 
 	return formatFieldList, nil
 }
 
-// func (s *service) SaveNewFieldList(fieldlist entity.FieldListInput, SportID string) (entity.FieldList, error) {
+func (s *service) UpdateFieldListById(pathFile string, fieldlistID string, fieldListInput entity.FieldListInput) (FieldListFormat, error) {
+	var dataUpdate = map[string]interface{}{}
 
-// 	IDSport, _ := strconv.Atoi(SportID)
-
-// 	var NewFieldList = entity.FieldList{
-// 		FieldName:  fieldlist.FieldName,
-// 		FieldImage: fieldlist.FieldImage,
-// 		RentPrice:  fieldlist.RentPrice,
-// 		SportID:    IDSport,
-// 	}
-
-// 	createFieldList, err := s.repository.Create(NewFieldList)
-// 	formatFieldList := FormatFieldList(createFieldList)
-
-// 	if err != nil {
-// 		return formatFieldList, err
-// 	}
-
-// 	return formatFieldList, nil
-// }
-
-func (s *service) SaveNewFieldList(pathFile string, SportID int) (entity.FieldListSportName, error) {
-	ID := strconv.Itoa(SportID)
-
-	fieldImageCheck, _ := s.repository.FindByID(ID)
-
-	if fieldImageCheck.SportID == SportID {
-		errorStatus := fmt.Sprintf("field list for sport id %d has been created", SportID)
-		return fieldImageCheck, errors.New(errorStatus)
+	if err := helper.ValidateIDNumber(fieldlistID); err != nil {
+		return FieldListFormat{}, err
 	}
 
-	newFieldImage := entity.FieldListSportName{
-		FieldName:  fieldImageCheck.FieldName,
-		FieldImage: fieldImageCheck.FieldImage,
-		RentPrice:  fieldImageCheck.RentPrice,
-		SportID:    fieldImageCheck.SportID,
-	}
-
-	fieldImage, err := s.repository.Create(newFieldImage)
+	field, err := s.repository.FindByID(fieldlistID)
 
 	if err != nil {
-		return fieldImage, err
+		return FieldListFormat{}, err
 	}
 
-	return fieldImage, err
+	if field.ID == 0 {
+		newError := fmt.Sprintf("field id %s not found", fieldlistID)
+		return FieldListFormat{}, errors.New(newError)
+	}
 
+	if fieldListInput.FieldName != "" || len(fieldListInput.FieldName) != 0 {
+		dataUpdate["field_name"] = fieldListInput.FieldName
+	}
+
+	if fieldListInput.RentPrice != 0 {
+		dataUpdate["rent_price"] = fieldListInput.RentPrice
+	}
+
+	dataUpdate["field_image"] = pathFile
+
+	dataUpdate["updated_at"] = time.Now()
+
+	fieldUpdated, err := s.repository.UpdateByID(fieldlistID, dataUpdate)
+
+	if err != nil {
+		return FieldListFormat{}, err
+	}
+
+	formatFieldList := FormatFieldList(fieldUpdated)
+
+	return formatFieldList, nil
 }

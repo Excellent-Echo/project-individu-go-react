@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"projectpenyewaanlapangan/entity"
 	"projectpenyewaanlapangan/fieldlist"
 	"projectpenyewaanlapangan/helper"
 
@@ -29,42 +30,6 @@ func (h *fieldlistHandler) ShowFieldListHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, fieldlist)
 }
 
-// // CreateFieldListHandler for handing if field / external create new fieldlist from route "/fieldlist"
-// func (h *fieldlistHandler) CreateFieldListHandler(c *gin.Context) {
-// 	sportlistData := int(c.MustGet("currentSportList").(int))
-
-// 	if sportlistData == 0 {
-// 		responseError := helper.APIResponse("Unauthorize", 401, "error", gin.H{"error": "user not authorize / not login"})
-
-// 		c.JSON(401, responseError)
-// 		return
-// 	}
-
-// 	sportlistID := strconv.Itoa(sportlistData)
-
-// 	var inputFieldList entity.FieldListInput
-
-// 	if err := c.ShouldBindJSON(&inputFieldList); err != nil {
-// 		splitError := helper.SplitErrorInformation(err)
-// 		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"errors": splitError})
-
-// 		c.JSON(400, responseError)
-// 		return
-// 	}
-
-// 	NewFieldList, err := h.fieldlistService.SaveNewFieldList(inputFieldList, sportlistID)
-
-// 	if err != nil {
-// 		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
-
-// 		c.JSON(500, responseError)
-// 		return
-// 	}
-
-// 	response := helper.APIResponse("success create new Field List", 201, "status Created", NewFieldList)
-// 	c.JSON(201, response)
-// }
-
 func (h *fieldlistHandler) GetFieldListByID(c *gin.Context) {
 	id := c.Params.ByName("fieldlistid")
 
@@ -82,9 +47,9 @@ func (h *fieldlistHandler) GetFieldListByID(c *gin.Context) {
 }
 
 func (h *fieldlistHandler) SaveNewFieldListHandler(c *gin.Context) {
-	fieldData := int(c.MustGet("current filed").(int))
 
-	file, err := c.FormFile("fieldimage") //postman
+	var fieldListInput entity.FieldListInput
+	file, err := c.FormFile("field_image") // postman
 
 	if err != nil {
 		responseError := helper.APIResponse("status bad request", 400, "error", gin.H{"error": err.Error()})
@@ -93,20 +58,21 @@ func (h *fieldlistHandler) SaveNewFieldListHandler(c *gin.Context) {
 		return
 	}
 
-	path := fmt.Sprintf("images/fieldimage-%d-%s", fieldData, file.Filename)
+	path := fmt.Sprintf("images/profile-%d-%s", fieldListInput, file.Filename)
 
 	err = c.SaveUploadedFile(file, path)
 
 	if err != nil {
+		// log.Println("error line 63")
 		responseError := helper.APIResponse("status bad request", 400, "error", gin.H{"error": err.Error()})
 
 		c.JSON(400, responseError)
 		return
 	}
 
-	pathFieldList := "https://rentfield.herokuapp.com/" + path
+	pathFieldSave := "https://rentfield.herokuapp.com/" + path
 
-	FieldListData, err := h.fieldlistService.SaveNewFieldList(pathFieldList, fieldData)
+	newField, err := h.fieldlistService.SaveNewFieldList(pathFieldSave, fieldListInput)
 
 	if err != nil {
 		responseError := helper.APIResponse("Internal server error", 500, "error", gin.H{"error": err.Error()})
@@ -115,7 +81,48 @@ func (h *fieldlistHandler) SaveNewFieldListHandler(c *gin.Context) {
 		return
 	}
 
-	response := helper.APIResponse("success create field list", 201, "success", FieldListData)
+	response := helper.APIResponse("success create user profile", 201, "success", newField)
 	c.JSON(201, response)
+}
+
+func (h *fieldlistHandler) UpdateFieldListByIdHandler(c *gin.Context) {
+	id := c.Params.ByName("field_id")
+
+	var updateFieldInput entity.FieldListInput
+
+	file, err := c.FormFile("field_image")
+
+	if err != nil {
+		responseError := helper.APIResponse("status bad request", 400, "error", gin.H{"error": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	path := fmt.Sprintf("images/field_image-%d-%s", updateFieldInput, file.Filename)
+
+	err = c.SaveUploadedFile(file, path)
+
+	if err != nil {
+		// log.Println("error line 63")
+		responseError := helper.APIResponse("status bad request", 400, "error", gin.H{"error": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	pathFieldSave := "https://rentfield.herokuapp.com/" + path
+
+	updateField, err := h.fieldlistService.UpdateFieldListById(pathFieldSave, id, updateFieldInput)
+
+	if err != nil {
+		responseError := helper.APIResponse("Internal server error", 500, "error", gin.H{"error": err.Error()})
+
+		c.JSON(500, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success update user profile", 200, "success", updateField)
+	c.JSON(200, response)
 
 }

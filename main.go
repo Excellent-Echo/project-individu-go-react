@@ -12,9 +12,6 @@ func main() {
 	// endpoint user
 	routes.UserRoute(r)
 
-	// endpoint sportlist
-	routes.SportListRoutes(r)
-
 	// endpoint fieldlist
 	routes.FieldListRoutes(r)
 

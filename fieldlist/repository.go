@@ -8,9 +8,10 @@ import (
 
 type Repository interface {
 	// FindAll() ([]entity.FieldList, error)
-	Create(fieldlist entity.FieldListSportName) (entity.FieldListSportName, error)
-	FindByID(ID string) (entity.FieldListSportName, error)
-	FindAll() ([]entity.FieldListSportName, error)
+	Create(fieldlist entity.FieldList) (entity.FieldList, error)
+	FindByID(ID string) (entity.FieldList, error)
+	FindAll() ([]entity.FieldList, error)
+	UpdateByID(ID string, dataUpdate map[string]interface{}) (entity.FieldList, error)
 }
 
 type repository struct {
@@ -21,17 +22,7 @@ func NewRepository(db *gorm.DB) *repository {
 	return &repository{db}
 }
 
-// func (r *repository) FindAll() ([]entity.FieldList, error) {
-// 	var fieldlists []entity.FieldList
-
-// 	if err := r.db.Find(&fieldlists).Error; err != nil {
-// 		return fieldlists, err
-// 	}
-
-// 	return fieldlists, nil
-// }
-
-func (r *repository) Create(fieldlist entity.FieldListSportName) (entity.FieldListSportName, error) {
+func (r *repository) Create(fieldlist entity.FieldList) (entity.FieldList, error) {
 	if err := r.db.Create(&fieldlist).Error; err != nil {
 		return fieldlist, err
 	}
@@ -39,24 +30,36 @@ func (r *repository) Create(fieldlist entity.FieldListSportName) (entity.FieldLi
 	return fieldlist, nil
 }
 
-func (r *repository) FindByID(ID string) (entity.FieldListSportName, error) {
-	var fieldlist entity.FieldListSportName
+func (r *repository) FindByID(ID string) (entity.FieldList, error) {
+	var fieldlist entity.FieldList
 
-	if err := r.db.Model(entity.FieldList{}).Select("field_lists.id, field_lists.field_name, field_lists.field_image, field_lists.rent_price, field_lists.created_at, field_lists.updated_at, sport_lists.sport_name").Joins("left join sport_lists on sport_lists.id = field_lists.sport_id").Scan(&fieldlist).Where("id = ?", ID).Find(&fieldlist).Error; err != nil {
+	if err := r.db.Where("id = ?", ID).Find(&fieldlist).Error; err != nil {
 		return fieldlist, err
 	}
 
 	return fieldlist, nil
 }
 
-func (e *repository) FindAll() ([]entity.FieldListSportName, error) {
-	var FieldLists []entity.FieldListSportName
+func (e *repository) FindAll() ([]entity.FieldList, error) {
+	var fieldLists []entity.FieldList
 
-	if err := e.db.Model(entity.FieldList{}).Select("field_lists.id, field_lists.field_name, field_lists.field_image, field_lists.rent_price, field_lists.created_at, field_lists.updated_at, sport_lists.sport_name").Joins("left join sport_lists on sport_lists.id = field_lists.sport_id").Scan(&FieldLists).Error; err != nil {
-		return FieldLists, err
+	if err := e.db.Find(&fieldLists).Error; err != nil {
+		return fieldLists, err
 	}
 
-	return FieldLists, nil
+	return fieldLists, nil
 }
 
-// db.Model(&User{}).Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&result{})
+func (r *repository) UpdateByID(ID string, dataUpdate map[string]interface{}) (entity.FieldList, error) {
+	var fieldList entity.FieldList
+
+	if err := r.db.Model(&fieldList).Where("id = ?", ID).Updates(dataUpdate).Error; err != nil {
+		return fieldList, err
+	}
+
+	if err := r.db.Where("id= ? ", ID).Find(&fieldList).Error; err != nil {
+		return fieldList, err
+	}
+
+	return fieldList, nil
+}

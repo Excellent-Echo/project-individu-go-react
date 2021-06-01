@@ -1,28 +1,29 @@
 package fieldlist
 
-import "projectpenyewaanlapangan/entity"
+import (
+	"projectpenyewaanlapangan/entity"
+	"time"
+)
 
-func FormatFieldList(fieldlist entity.FieldList) entity.FieldList {
-	var FormatFieldList = entity.FieldList{
-		ID:         fieldlist.ID,
-		FieldName:  fieldlist.FieldName,
-		FieldImage: fieldlist.FieldImage,
-		RentPrice:  fieldlist.RentPrice,
-		SportID:    fieldlist.SportID,
-	}
-
-	return FormatFieldList
+type FieldListFormat struct {
+	ID         int    `gorm:"primaryKey" json:"id"`
+	FieldName  string `json:"field_name"`
+	FieldImage string `json:"field_image"`
+	RentPrice  int    `json:"rent_price"`
 }
 
-func FormatFieldListSportName(fieldlist entity.FieldListSportName) entity.FieldListSportName {
-	var FormatFieldListSportName = entity.FieldListSportName{
+type DeleteFormat struct {
+	Message    string    `json:"message"`
+	TimeDelete time.Time `json:"time_delete"`
+}
+
+func FormatFieldList(fieldlist entity.FieldList) FieldListFormat {
+	var formatFieldList = FieldListFormat{
 		ID:         fieldlist.ID,
 		FieldName:  fieldlist.FieldName,
 		FieldImage: fieldlist.FieldImage,
 		RentPrice:  fieldlist.RentPrice,
-		SportID:    fieldlist.SportID,
-		SportName:  fieldlist.SportName,
 	}
 
-	return FormatFieldListSportName
+	return formatFieldList
 }
