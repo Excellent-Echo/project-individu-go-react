@@ -9,6 +9,8 @@ import (
 func main() {
 	r := gin.Default()
 
+	r.Static("/images", "./images")
+
 	// endpoint user
 	routes.UserRoute(r)
 

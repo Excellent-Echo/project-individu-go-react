@@ -99,7 +99,7 @@ func (h *fieldlistHandler) UpdateFieldListByIdHandler(c *gin.Context) {
 		return
 	}
 
-	path := fmt.Sprintf("images/field_image-%d-%s", updateFieldInput, file.Filename)
+	path := fmt.Sprintf("images/field_image-%v-%s", updateFieldInput, file.Filename)
 
 	err = c.SaveUploadedFile(file, path)
 
