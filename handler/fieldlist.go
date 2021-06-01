@@ -31,7 +31,7 @@ func (h *fieldlistHandler) ShowFieldListHandler(c *gin.Context) {
 }
 
 func (h *fieldlistHandler) GetFieldListByID(c *gin.Context) {
-	id := c.Params.ByName("fieldlistid")
+	id := c.Params.ByName("field_id")
 
 	fieldlist, err := h.fieldlistService.GetFieldListByID(id)
 
