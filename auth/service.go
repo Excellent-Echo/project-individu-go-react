@@ -2,7 +2,6 @@ package auth
 
 import (
 	"errors"
-	"log"
 	"os"
 
 	"github.com/dgrijalva/jwt-go"
@@ -27,9 +26,9 @@ func NewService() *jwtService {
 }
 
 func (s *jwtService) GenerateToken(userID int) (string, error) {
-	if err != nil {
-		log.Println(err)
-	}
+	// if err != nil {
+	// 	log.Println(err)
+	// }
 
 	claim := jwt.MapClaims{
 		"user_id": userID,
