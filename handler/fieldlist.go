@@ -58,7 +58,7 @@ func (h *fieldlistHandler) SaveNewFieldListHandler(c *gin.Context) {
 		return
 	}
 
-	path := fmt.Sprintf("images/field_image-%s-%s", fieldListInput, file.Filename)
+	path := fmt.Sprintf("images/field_image-%v-%s", fieldListInput, file.Filename)
 
 	err = c.SaveUploadedFile(file, path)
 
