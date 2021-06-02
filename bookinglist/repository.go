@@ -8,10 +8,10 @@ import (
 
 type Repository interface {
 	FindAll() ([]entity.BookingList, error)
+	FindAllByUserAndField(userID string, fieldID string) ([]entity.BookingList, error)
 	FindByID(ID string) (entity.BookingList, error)
 	Create(bookinglist entity.BookingList) (entity.BookingList, error)
 	UpdateByID(ID string, dataUpdate map[string]interface{}) (entity.BookingList, error)
-	DeleteByID(ID string) (string, error)
 }
 
 type repository struct {
@@ -40,6 +40,16 @@ func (r *repository) FindByID(ID string) (entity.BookingList, error) {
 	}
 
 	return booking, nil
+}
+
+func (r *repository) FindAllByUserAndField(userID string, fieldID string) ([]entity.BookingList, error) {
+	var books []entity.BookingList
+
+	if err := r.db.Where("user_id = ? AND field_id = ?", userID, fieldID).Find(&books).Error; err != nil {
+		return books, err
+	}
+
+	return books, nil
 }
 
 func (r *repository) Create(bookinglist entity.BookingList) (entity.BookingList, error) {

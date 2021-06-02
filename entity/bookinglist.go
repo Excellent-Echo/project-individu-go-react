@@ -14,8 +14,13 @@ type BookingList struct {
 }
 
 type BookingListInput struct {
+	Date        time.Time `json:"date" binding:"required"`
+	FieldID     int       `json:"field_id"  binding:"required"`
+	TimeForPlay int       `json:"time_for_play" binding:"required"`
+}
+
+type UpdateBookingListInput struct {
 	Date        time.Time `json:"date"`
-	UserID      int       `json:"user_id"`
 	FieldID     int       `json:"field_id"`
 	TimeForPlay int       `json:"time_for_play"`
 }

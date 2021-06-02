@@ -33,13 +33,14 @@ type UserProfile struct {
 }
 
 type BookingList struct {
-	ID          int       `gorm:"primaryKey" json:"id"`
-	Date        time.Time `json:"date"`
-	TimeForPlay int       `json:"time_for_play"`
-	CreatedAt   time.Time `json:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at"`
-	DeletedAt   time.Time `gorm:"index" json:"-"`
-	Users       []User    `gorm:"foreignKey:BookingListID"`
+	ID          int         `gorm:"primaryKey" json:"id"`
+	Date        time.Time   `json:"date"`
+	TimeForPlay int         `json:"time_for_play"`
+	CreatedAt   time.Time   `json:"created_at"`
+	UpdatedAt   time.Time   `json:"updated_at"`
+	DeletedAt   time.Time   `gorm:"index" json:"-"`
+	Users       []User      `gorm:"foreignKey:BookingListID"`
+	Fields      []FieldList `gorm:"foreignKey:BookingListID"`
 }
 
 type FieldList struct {

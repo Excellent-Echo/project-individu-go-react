@@ -17,5 +17,5 @@ func main() {
 	// endpoint fieldlist
 	routes.FieldListRoutes(r)
 
-	r.Run()
+	r.Run(":4444")
 }
