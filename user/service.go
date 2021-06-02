@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"projectpenyewaanlapangan/entity"
 	"projectpenyewaanlapangan/helper"
+	"projectpenyewaanlapangan/userdetail"
+	"projectpenyewaanlapangan/userprofile"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -20,11 +22,13 @@ type Service interface {
 }
 
 type service struct {
-	repository Repository
+	repository            Repository
+	userDetailRepository  userdetail.Repository
+	userProfileRepository userprofile.Repository
 }
 
-func NewService(repo Repository) *service {
-	return &service{repo}
+func NewService(repository Repository, userDetailRepository userdetail.Repository, userProfileRepository userprofile.Repository) *service {
+	return &service{repository, userDetailRepository, userProfileRepository}
 }
 
 func (s *service) LoginUser(input entity.LoginUserInput) (entity.User, error) {
