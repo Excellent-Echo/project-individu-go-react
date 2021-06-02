@@ -11,7 +11,7 @@ import (
 var (
 	// DB             *gorm.DB = config.Connect()
 	userRepository = user.NewRepository(DB)
-	userService    = user.NewService(userRepository)
+	userService    = user.NewService(userRepository, userDetailRepository, userProfileRepository)
 	authService    = auth.NewService()
 	userHandler    = handler.NewUserHandler(userService, authService)
 )
