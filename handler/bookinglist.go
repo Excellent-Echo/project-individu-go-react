@@ -15,7 +15,7 @@ type bookingHandler struct {
 	authService auth.Service
 }
 
-func NewTodoHandler(bookService bookinglist.Service, authService auth.Service) *bookingHandler {
+func NewBookingHandler(bookService bookinglist.Service, authService auth.Service) *bookingHandler {
 	return &bookingHandler{bookService, authService}
 }
 
