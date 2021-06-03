@@ -1,9 +1,7 @@
 package user
 
-import "project-go-react/entity"
-
 type Service interface {
-	GetAllUser() ([]entity.User, error)
+	GetAllUser() ([]UserFormat, error)
 }
 
 type service struct {
@@ -14,12 +12,19 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service) GetAllUser() ([]entity.User, error) {
+func (s *service) GetAllUser() ([]UserFormat, error) {
 	Users, err := s.repository.GetAll()
 
-	if err != nil {
-		return Users, err
+	var usersFormat []UserFormat
+
+	for _, user := range Users {
+		var userFormat = FormattingUser(user)
+		usersFormat = append(usersFormat, userFormat)
 	}
 
-	return Users, nil
+	if err != nil {
+		return usersFormat, err
+	}
+
+	return usersFormat, nil
 }
