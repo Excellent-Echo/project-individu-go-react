@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"project-go-react/helper"
 	"project-go-react/user"
 
 	"github.com/gin-gonic/gin"
@@ -24,5 +25,6 @@ func (h *userhandler) ShowAllUser(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, users)
+	userResponse := helper.APIResponse("success get all user", 200, "success", users)
+	c.JSON(http.StatusOK, userResponse)
 }
