@@ -14,11 +14,12 @@ type UserDetail struct {
 }
 
 type User struct {
-	ID          int           `gorm:"primaryKey" json:"id"`
-	FirstName   string        `json:"first_name"`
-	LastName    string        `json:"last_name"`
-	Email       string        `json:"email"`
-	Password    string        `json:"-"`
+	ID          int    `gorm:"primaryKey" json:"id"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	Email       string `json:"email"`
+	Password    string `json:"-"`
+	FieldID     int
 	CreatedAt   time.Time     `json:"created_at"`
 	UpdatedAt   time.Time     `json:"updated_at"`
 	DeletedAt   time.Time     `gorm:"index" json:"-"`
@@ -33,21 +34,22 @@ type UserProfile struct {
 }
 
 type BookingList struct {
-	ID          int         `gorm:"primaryKey" json:"id"`
-	Date        time.Time   `json:"date"`
-	TimeForPlay int         `json:"time_for_play"`
-	CreatedAt   time.Time   `json:"created_at"`
-	UpdatedAt   time.Time   `json:"updated_at"`
-	DeletedAt   time.Time   `gorm:"index" json:"-"`
-	Users       []User      `gorm:"foreignKey:BookingListID"`
-	Fields      []FieldList `gorm:"foreignKey:BookingListID"`
+	ID          int       `gorm:"primaryKey" json:"id"`
+	Date        time.Time `json:"date"`
+	TimeForPlay int       `json:"time_for_play"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
+	DeletedAt   time.Time `gorm:"index" json:"-"`
+	Field       FieldList `gorm:"foreignKey:BookingListID"`
 }
 
 type FieldList struct {
-	ID         int       `gorm:"primaryKey" json:"id"`
-	FieldName  string    `json:"field_name"`
-	FieldImage string    `json:"field_image"`
-	RentPrice  int       `json:"rent_price"`
+	ID         int    `gorm:"primaryKey" json:"id"`
+	FieldName  string `json:"field_name"`
+	FieldImage string `json:"field_image"`
+	RentPrice  int    `json:"rent_price"`
+	BookingID  int
+	User       User      `gorm:"foreignKey:FieldListID"`
 	CreatedAt  time.Time `json:"create_at"`
 	UpdatedAt  time.Time `json:"update_at"`
 	DeletedAt  time.Time `gorm:"index" json:"-"`
