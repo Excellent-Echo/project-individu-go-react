@@ -17,5 +17,13 @@ func main() {
 	// endpoint fieldlist
 	routes.FieldListRoutes(r)
 
+	// endpoint booking list
+
+	routes.BookingLIstRoute(r)
+
+	routes.UserProfileRoute(r)
+
+	routes.UserDetailRoute(r)
+
 	r.Run(":4444")
 }
