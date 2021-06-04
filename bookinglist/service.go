@@ -4,56 +4,27 @@ import (
 	"errors"
 	"fmt"
 	"projectpenyewaanlapangan/entity"
-	"projectpenyewaanlapangan/fieldlist"
 	"projectpenyewaanlapangan/helper"
-	"projectpenyewaanlapangan/user"
-	"strconv"
 	"time"
 )
 
 type Service interface {
 	GetAllBookingList() ([]entity.BookingList, error)
 	GetBookingByID(bookingID string) (entity.BookingList, error)
-	GetAllBookingbyUserIDAndField(userID string, fieldID string) ([]entity.BookingList, error)
-	SaveNewBooking(inputBooking entity.BookingListInput, userID string, fieldID string) (entity.BookingList, error)
+	SaveNewBooking(inputBooking entity.BookingListInput) (entity.BookingList, error)
 	UpdateBookByID(bookingID string, dataInput entity.UpdateBookingListInput) (entity.BookingList, error)
 }
 
 type service struct {
-	repository      Repository
-	userRepository  user.Repository
-	fieldRepository fieldlist.Repository
+	repository Repository
 }
 
-func NewService(repository Repository, userRepository user.Repository, fieldRepository fieldlist.Repository) *service {
-	return &service{repository, userRepository, fieldRepository}
+func NewService(repository Repository) *service {
+	return &service{repository}
 }
 
 func (s *service) GetAllBookingList() ([]entity.BookingList, error) {
 	books, err := s.repository.FindAll()
-
-	if err != nil {
-		return books, err
-	}
-
-	return books, nil
-}
-
-func (s *service) GetAllBookingbyUserIDAndField(userID string, fieldID string) ([]entity.BookingList, error) {
-	user, err := s.userRepository.FindByID(userID)
-	field, err := s.fieldRepository.FindByID(fieldID)
-
-	if user.ID == 0 {
-		newError := fmt.Sprintf("user id %s not found", userID)
-		return []entity.BookingList{}, errors.New(newError)
-	}
-
-	if field.ID == 0 {
-		newError := fmt.Sprintf("field id %s not found", fieldID)
-		return []entity.BookingList{}, errors.New(newError)
-	}
-
-	books, err := s.repository.FindAllByUserAndField(userID, fieldID)
 
 	if err != nil {
 		return books, err
@@ -77,15 +48,11 @@ func (s *service) GetBookingByID(bookingID string) (entity.BookingList, error) {
 	return book, nil
 }
 
-func (s *service) SaveNewBooking(inputBooking entity.BookingListInput, userID string, fieldID string) (entity.BookingList, error) {
-	IDUser, _ := strconv.Atoi(userID)
-	IDField, _ := strconv.Atoi(fieldID)
+func (s *service) SaveNewBooking(inputBooking entity.BookingListInput) (entity.BookingList, error) {
 
 	var newBooking = entity.BookingList{
 		Date:        inputBooking.Date,
 		TimeForPlay: inputBooking.TimeForPlay,
-		UserID:      IDUser,
-		FieldID:     IDField,
 		CreatedAt:   time.Now(),
 		UpdatedAt:   time.Now(),
 	}

@@ -10,6 +10,7 @@ type FieldListFormat struct {
 	FieldName  string `json:"field_name"`
 	FieldImage string `json:"field_image"`
 	RentPrice  int    `json:"rent_price"`
+	Users      []entity.User
 }
 
 type DeleteFormat struct {

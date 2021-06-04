@@ -33,7 +33,7 @@ func (r *repository) Create(fieldlist entity.FieldList) (entity.FieldList, error
 func (r *repository) FindByID(ID string) (entity.FieldList, error) {
 	var fieldlist entity.FieldList
 
-	if err := r.db.Where("id = ?", ID).Find(&fieldlist).Error; err != nil {
+	if err := r.db.Preload("Users").Where("id = ?", ID).Find(&fieldlist).Error; err != nil {
 		return fieldlist, err
 	}
 
@@ -43,7 +43,7 @@ func (r *repository) FindByID(ID string) (entity.FieldList, error) {
 func (e *repository) FindAll() ([]entity.FieldList, error) {
 	var fieldLists []entity.FieldList
 
-	if err := e.db.Find(&fieldLists).Error; err != nil {
+	if err := e.db.Preload("Users").Find(&fieldLists).Error; err != nil {
 		return fieldLists, err
 	}
 

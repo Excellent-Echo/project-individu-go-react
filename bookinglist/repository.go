@@ -8,7 +8,6 @@ import (
 
 type Repository interface {
 	FindAll() ([]entity.BookingList, error)
-	FindAllByUserAndField(userID string, fieldID string) ([]entity.BookingList, error)
 	FindByID(ID string) (entity.BookingList, error)
 	Create(bookinglist entity.BookingList) (entity.BookingList, error)
 	UpdateByID(ID string, dataUpdate map[string]interface{}) (entity.BookingList, error)
@@ -25,7 +24,7 @@ func NewRepository(db *gorm.DB) *repository {
 func (r *repository) FindAll() ([]entity.BookingList, error) {
 	var bookinglist []entity.BookingList
 
-	if err := r.db.Find(&bookinglist).Error; err != nil {
+	if err := r.db.Preload("FieldLists").Find(&bookinglist).Error; err != nil {
 		return bookinglist, err
 	}
 
@@ -35,21 +34,11 @@ func (r *repository) FindAll() ([]entity.BookingList, error) {
 func (r *repository) FindByID(ID string) (entity.BookingList, error) {
 	var booking entity.BookingList
 
-	if err := r.db.Where("id = ?", ID).Find(&booking).Error; err != nil {
+	if err := r.db.Preload("FieldLists").Where("id = ?", ID).Find(&booking).Error; err != nil {
 		return booking, err
 	}
 
 	return booking, nil
-}
-
-func (r *repository) FindAllByUserAndField(userID string, fieldID string) ([]entity.BookingList, error) {
-	var books []entity.BookingList
-
-	if err := r.db.Where("user_id = ? AND field_id = ?", userID, fieldID).Find(&books).Error; err != nil {
-		return books, err
-	}
-
-	return books, nil
 }
 
 func (r *repository) Create(bookinglist entity.BookingList) (entity.BookingList, error) {
