@@ -16,6 +16,9 @@ func main() {
 
 	routes.UserRoute(r)
 	routes.CourseRoute(r)
-	r.Run()
+	routes.CategoryRoute(r)
+	routes.UserDetailRoute(r)
+	routes.UserProfileRoute(r)
+	r.Run(":5555")
 
 }

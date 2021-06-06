@@ -27,3 +27,17 @@ func (h *courseHandler) ShowCourseHandler(c *gin.Context) {
 	response := helper.APIResponse("success get all data course", 200, "status ok", courses)
 	c.JSON(200, response)
 }
+
+func (h *courseHandler) ShowCourseByIDHandler(c *gin.Context) {
+	id := c.Param("id")
+
+	user, err := h.courseService.GetCourseByID(id)
+	if err != nil {
+		responseErr := helper.APIResponse("error bad request", 400, "error", gin.H{"error": err.Error()})
+
+		c.JSON(400, responseErr)
+		return
+	}
+	response := helper.APIResponse("success get data user by id", 200, "success", user)
+	c.JSON(200, response)
+}

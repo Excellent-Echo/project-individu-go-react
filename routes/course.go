@@ -15,4 +15,5 @@ var (
 
 func CourseRoute(r *gin.Engine) {
 	r.GET("/courses", courseHandler.ShowCourseHandler)
+	r.GET("/courses/:id", courseHandler.ShowCourseByIDHandler)
 }

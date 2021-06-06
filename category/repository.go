@@ -7,7 +7,8 @@ import (
 )
 
 type Repository interface {
-	FindAll() (entity.Category, error)
+	FindAll() ([]entity.Category, error)
+	FindByID(id string) (entity.Category, error)
 }
 
 type repository struct {
@@ -18,11 +19,21 @@ func NewRepository(db *gorm.DB) *repository {
 	return &repository{db}
 }
 
-func (r *repository) FindAll() (entity.Category, error) {
-	var Categories entity.Category
+func (r *repository) FindAll() ([]entity.Category, error) {
+	var Categories []entity.Category
 
 	if err := r.db.Find(&Categories).Error; err != nil {
 		return Categories, err
 	}
 	return Categories, nil
+}
+
+func (r *repository) FindByID(id string) (entity.Category, error) {
+	var category entity.Category
+
+	if err := r.db.Where("id = ?", id).Find(&category).Error; err != nil {
+		return category, err
+	}
+
+	return category, nil
 }
