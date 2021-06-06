@@ -1,21 +1,36 @@
 package user
 
-import "project-individu-go-react/entity"
+import (
+	"project-individu-go-react/entity"
+	"time"
+)
 
 type UserFormat struct {
-	User_id    int    `json:"user_id"`
-	First_name string `json:"first_name"`
-	Last_name  string `json:"last_name"`
-	Email      string `json:"email"`
+	ID       int    `json:"id"`
+	UserName string `json:"username"`
+	Email    string `json:"email"`
+}
+
+type DeleteFormat struct {
+	Message    string    `json:"message"`
+	TimeDelete time.Time `json:"time_delete"`
 }
 
 func FormatUser(user entity.User) UserFormat {
 	var formatUser = UserFormat{
-		User_id:    user.User_id,
-		First_name: user.First_name,
-		Last_name:  user.Last_name,
-		Email:      user.Email,
+		ID:       user.ID,
+		UserName: user.UserName,
+		Email:    user.Email,
 	}
 
 	return formatUser
+}
+
+func FormatDeleteUser(msg string) DeleteFormat {
+	var deleteFormat = DeleteFormat{
+		Message:    msg,
+		TimeDelete: time.Now(),
+	}
+
+	return deleteFormat
 }

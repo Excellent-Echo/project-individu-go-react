@@ -1,29 +1,15 @@
 package main
 
 import (
-	"project-individu-go-react/config"
-	"project-individu-go-react/handler"
-	"project-individu-go-react/user"
+	"project-individu-go-react/routes"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
-)
-
-var (
-	DB             *gorm.DB = config.Connection()
-	userRepository          = user.NewRepository(DB)
-	userService             = user.NewService(userRepository)
-	userHandler             = handler.NewUserHandler(userService)
 )
 
 func main() {
 	r := gin.Default()
-	r.GET("/users", userHandler.ShowAllUser)
-	// r.GET("/users", handler.GetAllUser)
-	// r.GET("/users/:user_id", handler.HandleUsersID)
-	r.POST("/users/register", userHandler.CreateUserHandler)
-	// r.DELETE("/users/:user_id", handler.HandleDeleteUser)
-	// r.POST("/users/:user_id", handler.HandleUpdateUser)
+
+	routes.UserRoute(r)
 
 	r.Run(":8080")
 }

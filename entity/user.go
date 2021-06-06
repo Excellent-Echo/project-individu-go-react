@@ -3,14 +3,29 @@ package entity
 import "time"
 
 type User struct {
-	User_id    int       `gorm:"primaryKey" json:"user_id"`
-	First_name string    `json:"first_name"`
-	Last_name  string    `json:"last_name"`
-	Email      string    `json:"email"`
-	Password   string    `json:"-"`
-	Created_at time.Time `json:"created_at"`
-	Updated_at time.Time `json:"updated_at"`
-	Deleted_at time.Time `json:"-"`
-	Order_id   int       `gorm:"foreignKey:order_id"`
-	// UserDetail []UserDetail `gorm:"foreignKey:UserID"`
+	ID         int        `gorm:"primaryKey" json:"user_id"`
+	UserName   string     `json:"username"`
+	Email      string     `json:"email"`
+	Role       string     `json:"role"`
+	Password   string     `json:"-"`
+	CreatedAt  time.Time  `json:"created_at"`
+	UpdatedAt  time.Time  `json:"updated_at"`
+	UserDetail UserDetail `gorm:"foreignKey:udetail_id"`
+	Order      []Order    `gorm:"foreignKey:order_id"`
+}
+
+type LoginUserInput struct {
+	Email    string `json:"email" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
+type UserInput struct {
+	UserName string `json:"username" binding:"required"`
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
+}
+
+type UpdateUserInput struct {
+	UsernName string `json:"username"`
+	Email     string `json:"email"`
 }

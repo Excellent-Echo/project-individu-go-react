@@ -1,11 +1,10 @@
 package handler
 
 import (
-	"log"
 	"net/http"
-	"time"
+	"strconv"
 
-	"project-individu-go-react/config"
+	"project-individu-go-react/auth"
 	"project-individu-go-react/entity"
 	"project-individu-go-react/helper"
 	"project-individu-go-react/user"
@@ -15,145 +14,163 @@ import (
 
 type userHandler struct {
 	userService user.Service
+	authService auth.Service
 }
 
-func NewUserHandler(userService user.Service) *userHandler {
-	return &userHandler{userService}
+func NewUserHandler(userService user.Service, authService auth.Service) *userHandler {
+	return &userHandler{userService, authService}
 }
 
+// SHOW ALL USER
 func (h *userHandler) ShowAllUser(c *gin.Context) {
 	users, err := h.userService.GetAllUser()
 
 	if err != nil {
-		responseError := helper.APIResponse("internal server error", http.StatusOK, "error", gin.H{"errors": err.Error()})
+		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"errors": err.Error()})
 
-		c.JSON(http.StatusOK, responseError)
+		c.JSON(500, responseError)
 		return
 	}
 
-	response := helper.APIResponse("success get all user", http.StatusOK, "status OK", users)
-	c.JSON(http.StatusOK, response)
+	response := helper.APIResponse("success get all user", 200, "status OK", users)
+	c.JSON(200, response)
 }
 
+// CREATE NEW USER OR REGISTER
 func (h *userHandler) CreateUserHandler(c *gin.Context) {
 	var inputUser entity.UserInput
 
 	if err := c.ShouldBindJSON(&inputUser); err != nil {
 
 		splitError := helper.SplitErrorInformation(err)
-		responseError := helper.APIResponse("input data required", http.StatusOK, "bad request", gin.H{"errors": splitError})
+		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"errors": splitError})
 
-		c.JSON(http.StatusOK, responseError)
+		c.JSON(400, responseError)
+		return
+	}
+
+	// max len password 6
+	if err := helper.ValidatePassword(inputUser.Password); err != nil {
+
+		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"error": "error validate password length < 6"})
+
+		c.JSON(400, responseError)
 		return
 	}
 
 	newUser, err := h.userService.SaveNewUser(inputUser)
 	if err != nil {
-		responseError := helper.APIResponse("internal server error", http.StatusOK, "error", gin.H{"errors": err.Error()})
+		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"errors": err.Error()})
 
-		c.JSON(http.StatusOK, responseError)
+		c.JSON(500, responseError)
 		return
 	}
-	response := helper.APIResponse("success create new User", http.StatusOK, "Status OK", newUser)
+	response := helper.APIResponse("success create new User", 201, "Status OK", newUser)
+	c.JSON(201, response)
+}
+
+// GET USER BY ID
+func (h *userHandler) GetUserByIDHandler(c *gin.Context) {
+	id := c.Params.ByName("user_id")
+
+	user, err := h.userService.GetUserByID(id)
+	if err != nil {
+		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success get user by ID", 200, "success", user)
+	c.JSON(200, response)
+}
+
+// DELETE USER BY ID
+func (h *userHandler) DeleteUserByIDHandler(c *gin.Context) {
+	id := c.Params.ByName("user_id")
+
+	user, err := h.userService.DeleteUserByID(id)
+
+	if err != nil {
+		responseError := helper.APIResponse("error bad request delete user", 400, "error", gin.H{"error": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success delete user by ID", 200, "success", user)
+	c.JSON(200, response)
+}
+
+// UPDATE USER BY ID
+func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
+	id := c.Params.ByName("user_id")
+
+	var updateUserInput entity.UpdateUserInput
+
+	if err := c.ShouldBindJSON(&updateUserInput); err != nil {
+		splitError := helper.SplitErrorInformation(err)
+		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"errors": splitError})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	idParam, _ := strconv.Atoi(id)
+
+	// ngecek id sama apa engga sama yang di inputin
+	userData := int(c.MustGet("currentUser").(int))
+
+	if idParam != userData {
+		responseError := helper.APIResponse("Unauthorize", 401, "error", gin.H{"error": "user ID not authorize"})
+
+		c.JSON(401, responseError)
+		return
+	}
+
+	user, err := h.userService.UpdateUserByID(id, updateUserInput)
+	if err != nil {
+		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"error": err.Error()})
+
+		c.JSON(500, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success update user by ID", http.StatusOK, "success", user)
 	c.JSON(http.StatusOK, response)
 }
 
-var DB = config.Connection()
+// USER LOGIN
+func (h *userHandler) LoginUserHandler(c *gin.Context) {
+	var inputLoginUser entity.LoginUserInput
 
-// GET - ALL - USER
-// func GetAllUser(c *gin.Context) {
-// 	var users []entity.User
+	if err := c.ShouldBindJSON(&inputLoginUser); err != nil {
+		//splitError := helper.SplitErrorInformation(err)
+		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"errors": err.Error()})
 
-// 	if err := DB.Find(&users).Error; err != nil {
-// 		c.JSON(http.StatusInternalServerError, gin.H{
-// 			"message": "error in internal server",
-// 		})
-
-// 		return
-// 	}
-
-// 	c.JSON(http.StatusOK, users)
-// }
-
-// CREATE - NEW - USER
-// func CreateNewUser(c *gin.Context) {
-// 	var getUser entity.UserInput
-
-// 	if err := c.ShouldBindJSON(&getUser); err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{
-// 			"status":        "error bad request",
-// 			"error_message": err.Error(),
-// 		})
-// 		return
-// 	}
-
-// 	var newUser = entity.User{
-// 		First_name: getUser.First_name,
-// 		Last_name:  getUser.Last_name,
-// 		Password:   getUser.Password,
-// 		Email:      getUser.Email,
-// 		Created_at: time.Now(),
-// 		Updated_at: time.Now(),
-// 	}
-
-// 	if err := DB.Create(&newUser).Error; err != nil {
-// 		c.JSON(http.StatusBadRequest, gin.H{
-// 			"status":        "error bad request",
-// 			"error_message": err.Error(),
-// 		})
-// 		return
-// 	}
-
-// 	c.JSON(http.StatusCreated, newUser)
-
-// }
-
-func HandleUsersID(c *gin.Context) {
-	var users entity.User
-
-	id := c.Params.ByName("user_id")
-
-	if err := DB.Where("user_id = ?", id).Find(&users).Error; err != nil {
-		log.Println(err.Error())
-	}
-
-	c.JSON(http.StatusOK, users)
-}
-
-func HandleDeleteUser(c *gin.Context) {
-	id := c.Params.ByName("user_id")
-
-	if err := DB.Where("user_id = ?", id).Delete(&entity.User{}).Error; err != nil {
-		log.Println(err.Error())
+		c.JSON(400, responseError)
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"user_id": id,
-		"message": "success delete",
-	})
-}
+	userData, err := h.userService.LoginUser(inputLoginUser)
 
-func HandleUpdateUser(c *gin.Context) {
-	var user entity.User
-	var userInput entity.UserInput
+	if err != nil {
+		//splitError := helper.SplitErrorInformation(err)
+		responseError := helper.APIResponse("input data required", 401, "bad request", gin.H{"errors": err.Error()})
 
-	id := c.Params.ByName("user_id")
-	DB.Where("user_id = ?", id).Find(&user)
-
-	if err := c.ShouldBindJSON(&userInput); err != nil {
-		log.Println(err.Error())
+		c.JSON(401, responseError)
 		return
 	}
-	user.First_name = userInput.First_name
-	user.Last_name = userInput.Last_name
-	user.Email = userInput.Email
-	user.Password = userInput.Password
-	user.Updated_at = time.Now()
 
-	if err := DB.Where("user_id = ?", id).Save(&user).Error; err != nil {
-		log.Println(err.Error())
+	token, err := h.authService.GenerateToken(userData.ID)
+
+	if err != nil {
+		//splitError := helper.SplitErrorInformation(err)
+		responseError := helper.APIResponse("input data required", 500, "bad request", gin.H{"errors": err.Error()})
+
+		c.JSON(500, responseError)
 		return
 	}
-	c.JSON(http.StatusOK, user)
+	response := helper.APIResponse("success login user", 200, "success", gin.H{"token": token})
+	c.JSON(200, response)
 }
