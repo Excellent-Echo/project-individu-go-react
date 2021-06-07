@@ -1,0 +1,10 @@
+package category
+
+import "project-individu-go-react/entity"
+
+type CategoryDetailFormat struct {
+	ID          int             `json:"id"`
+	Name        string          `json:"name"`
+	Description string          `json:"description"`
+	Courses     []entity.Course `json:"courses"`
+}
